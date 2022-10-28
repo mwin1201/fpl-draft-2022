@@ -10,13 +10,14 @@ const corsOptions = {
     origin: "http://localhost:3000"
 };
 
-const requestEndpoint = "https://draft.premierleague.com/api/league/18161/details";
+// this section is the endpoint to gather the team names and players in the FPL Draft league
+const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";
 
 app.get('/getTeams', cors(corsOptions), async (req, res) => {
     const fetchOptions = {
         method: "GET"
     }
-    const response = await fetch(requestEndpoint, fetchOptions);
+    const response = await fetch(leagueDetailsEndpoint, fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
 });
