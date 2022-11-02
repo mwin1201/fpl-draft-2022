@@ -33,6 +33,11 @@ const Homepage = () => {
         });
     };
 
+    const goToPremPlayers = () => {
+        navigate("/premPlayers");
+    };
+
+
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
             return team.id === entry_id;
@@ -71,6 +76,12 @@ const Homepage = () => {
                 </Link>
                 <button onClick={goToFixtures}>
                         Fixture History
+                </button>
+            </div>
+            <div>
+                <Link to="/premPlayers"></Link>
+                <button onClick={goToPremPlayers}>
+                    See Players
                 </button>
             </div>
         </main>

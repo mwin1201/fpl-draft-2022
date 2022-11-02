@@ -22,6 +22,18 @@ app.get('/getTeams', cors(corsOptions), async (req, res) => {
     res.json(jsonResponse);
 });
 
+// this section is the endpoint to get all the players in the Premier League
+const premPlayersEndpoint = "https://draft.premierleague.com/api/bootstrap-static";
+
+app.get('/getPremPlayers', cors(corsOptions), async (req, res) => {
+    const fetchOptions = {
+        method: "GET"
+    }
+    const response = await fetch(premPlayersEndpoint, fetchOptions);
+    const jsonResponse = await response.json();
+    res.json(jsonResponse);
+})
+
 
 app.listen(PORT, () => {
     console.log(`FPL app listening at http://localhost:${PORT}`);
