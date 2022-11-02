@@ -22,6 +22,7 @@ app.get('/getTeams', cors(corsOptions), async (req, res) => {
     res.json(jsonResponse);
 });
 
+
 app.listen(PORT, () => {
     console.log(`FPL app listening at http://localhost:${PORT}`);
 });
