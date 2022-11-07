@@ -37,6 +37,14 @@ const Homepage = () => {
         navigate("/premPlayers");
     };
 
+    const goToLineups = () => {
+        navigate("/Lineups", {
+            state: {
+                data: teamData
+            }
+        });
+    };
+
 
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
@@ -82,6 +90,16 @@ const Homepage = () => {
                 <Link to="/premPlayers"></Link>
                 <button onClick={goToPremPlayers}>
                     See Players
+                </button>
+            </div>
+            <div>
+                <Link
+                    to="/Lineups"
+                    state={{data: teamData}}
+                >
+                </Link>
+                <button onClick={goToLineups}>
+                    See Team Lineups
                 </button>
             </div>
         </main>

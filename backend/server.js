@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
+const bodyParser = require("body-parser");
 
 const PORT = 5000;
 const app = express();
 
+app.use(bodyParser.json());
 app.use(cors());
 const corsOptions = {
     origin: "http://localhost:3000"
@@ -32,6 +34,19 @@ app.get('/getPremPlayers', cors(corsOptions), async (req, res) => {
     const response = await fetch(premPlayersEndpoint, fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
+});
+
+// this section is the endpoint to grab each of the FPL league player team lineups
+//const lineupEndpoint = "https://draft.premierleague.com/api/entry/";
+
+app.get('/getLineups/:team/:event', cors(corsOptions), async (req, res) => {
+    const fetchOptions = {
+        method: "GET"
+    }
+    const response = await fetch("https://draft.premierleague.com/api/entry/"+ req.params.team +"/event/"+ req.params.event)
+    const jsonResponse = await response.json();
+    res.json(jsonResponse);
+
 })
 
 
