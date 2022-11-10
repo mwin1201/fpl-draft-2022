@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from "react";
-const axios = require('axios').default;
+import React, { useState } from "react";
+import {Link, useNavigate} from "react-router-dom"
 
 // there are issues with the filtering functionality i need to fix
 
 const PremPlayers = () => {
-    const [playerPositions, setPlayerPositions] = useState([]);
-    const [players, setPlayers] = useState([]);
-    const [premTeams, setPremTeams] = useState([]);
     const [filterPoints, setFilterPoints] = useState(0);
-    //const [filterTeam, setFilterTeam] = useState(0);
 
-    useEffect(() => {
-        getPlayers();
-    },[])
+    let playerPositions = JSON.parse(localStorage.getItem("element_types"));
+    let players = JSON.parse(localStorage.getItem("elements"));
+    let premTeams = JSON.parse(localStorage.getItem("teams"));
   
-    const getPlayers = () => {
-        axios.get("http://localhost:5000/getPremPlayers")
-            .then((apiResponse) => {
-                console.log(apiResponse);
-                setPlayerPositions(apiResponse.data.element_types);
-                setPlayers(apiResponse.data.elements);
-                setPremTeams(apiResponse.data.teams);
-            })
+    const navigate = useNavigate();
+    const goToHomepage = () => {
+        navigate("/");
     };
 
     const handleSubmit = async (event) => {
@@ -38,6 +29,12 @@ const PremPlayers = () => {
 
     return (
         <div>
+            <div>
+                <Link to="/"></Link>
+                <button onClick={goToHomepage}>
+                    Homepage
+                </button>
+            </div>
             <h3>Player Positions</h3>
             {playerPositions.map((position) => (
                 <div key={position.id}>

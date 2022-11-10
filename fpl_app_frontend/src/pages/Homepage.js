@@ -1,36 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {Link, useNavigate} from "react-router-dom"
-const axios = require("axios").default;
+import getLeagueData from "../data/ApiCalls";
+import getPlayers from "../data/Players";
 
 
 const Homepage = () => {
-    const [teamData, setTeamData] = useState([]);
-    const [leagueData, setLeagueData] = useState("");
-    const [standingsData, setStandingsData] = useState([]);
-    const [fixtureData, setFixtureData] = useState([]);
 
     useEffect(() => {
-        getData();
+        localStorage.clear();
+        getLeagueData();
+        getPlayers();
     },[]);
 
-    const getData = () => {
-        axios.get("http://localhost:5000/getTeams")
-            .then((apiTeamResponse) => {
-                console.log(apiTeamResponse);
-                setLeagueData(apiTeamResponse.data.league);
-                setStandingsData(apiTeamResponse.data.standings);
-                setFixtureData(apiTeamResponse.data.matches);
-                setTeamData(apiTeamResponse.data.league_entries);
-            })
-    };
+    let teamData = JSON.parse(localStorage.getItem("league_entries"));
+    let leagueData = JSON.parse(localStorage.getItem("league_data"));
+    let standingsData = JSON.parse(localStorage.getItem("standings"));
 
     const navigate = useNavigate();
     const goToFixtures = () => {
-        navigate("/fixtureHistory", {
-            state: {
-                data: fixtureData
-            }
-        });
+        navigate("/fixtureHistory");
     };
 
     const goToPremPlayers = () => {
@@ -38,11 +26,7 @@ const Homepage = () => {
     };
 
     const goToLineups = () => {
-        navigate("/Lineups", {
-            state: {
-                data: teamData
-            }
-        });
+        navigate("/Lineups");
     };
 
 
@@ -77,11 +61,7 @@ const Homepage = () => {
                 ))}
             </div>
             <div>
-                <Link
-                    to="/fixtureHistory"
-                    state={{data: fixtureData}}
-                >
-                </Link>
+                <Link to="/fixtureHistory"></Link>
                 <button onClick={goToFixtures}>
                         Fixture History
                 </button>
@@ -93,11 +73,7 @@ const Homepage = () => {
                 </button>
             </div>
             <div>
-                <Link
-                    to="/Lineups"
-                    state={{data: teamData}}
-                >
-                </Link>
+                <Link to="/Lineups"></Link>
                 <button onClick={goToLineups}>
                     See Team Lineups
                 </button>
