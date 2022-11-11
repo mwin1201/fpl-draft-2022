@@ -5,6 +5,7 @@ import {Link, useNavigate} from "react-router-dom"
 
 const PremPlayers = () => {
     const [filterPoints, setFilterPoints] = useState(0);
+    const [filterTeam, setFilterTeam] = useState(1);
 
     let playerPositions = JSON.parse(localStorage.getItem("element_types"));
     let players = JSON.parse(localStorage.getItem("elements"));
@@ -18,12 +19,9 @@ const PremPlayers = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         let points = document.getElementById("points").value;
-        //let team = document.getElementById("team").value;
-        //console.log("points ", points);
-        //console.log("team ", team);
+        let teamId = document.getElementById("team").value;
         setFilterPoints(points);
-        //setFilterTeam(team);
-        //console.log(filterPoints, filterTeam);
+        setFilterTeam(teamId);
     };
 
 
@@ -54,6 +52,12 @@ const PremPlayers = () => {
                 <form id="filters" onSubmit={handleSubmit}>
                     <label htmlFor="points">Points: </label>
                     <input type="number" id="points" name="points" min="0"></input>
+                    <label htmlFor="team">Prem Team: </label>
+                    <select name="team" id="team">
+                        {premTeams.map((team) => (
+                            <option key={team.id} value={team.id}>{team.name}</option>
+                        ))}
+                    </select>
                     <button type="submit">Submit</button>
                 </form>
             </div>
@@ -61,19 +65,12 @@ const PremPlayers = () => {
 
             <h3>Filtered Players</h3>
             {players.filter(player =>
-                (player.total_points >= filterPoints)
+                (player.total_points >= filterPoints) && (player.team == filterTeam)
             )
             .sort((a, b) => b.total_points - a.total_points)
             .map((filteredPlayer,i) => (
                 <div key={filteredPlayer.id}>
                    #{i}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
-                </div>
-            ))}
-
-            <h3>Players</h3>
-            {players.map((player) => (
-                <div key={player.id}>
-                    {player.first_name} {player.second_name} - {player.total_points} points
                 </div>
             ))}
 
