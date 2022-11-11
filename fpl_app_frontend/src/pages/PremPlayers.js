@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
 
-// there are issues with the filtering functionality i need to fix
-
 const PremPlayers = () => {
     const [filterPoints, setFilterPoints] = useState(0);
     const [filterTeam, setFilterTeam] = useState(1);
