@@ -34,7 +34,7 @@ const Aggregate = () => {
                 let curTeam = allPlayers.filter((player) => {
                     return player.team === premTeams[i].id
                 });
-                teamPointsArr.push({teamId: premTeams[i].id, premTeam: premTeams[i].name, totalPoints: calculatePoints(curTeam)})
+                teamPointsArr.push({teamId: premTeams[i].id, premTeam: premTeams[i].name, totalPoints: calculatePoints(curTeam), players: curTeam});
             }
             setTeamPoints(teamPointsArr);
         };
@@ -42,9 +42,15 @@ const Aggregate = () => {
         calculateTeamPoints();
     },[])
 
-    const doMath = (value) => {
-        const result = (value/points) * 100;
+    const doMath = (numerator, denominator) => {
+        const result = (numerator/denominator) * 100;
         return result.toFixed(2);
+    };
+
+    const getPosition = (position) => {
+        let playerPositions = JSON.parse(localStorage.getItem("element_types"));
+        let type = playerPositions.filter((pos) => pos.id === position);
+        return type[0].singular_name_short;
     };
 
     if (points < 1) { 
@@ -66,7 +72,15 @@ const Aggregate = () => {
             <h2>Team Breakdown</h2>
             {teamPoints.sort((a,b) => b.totalPoints - a.totalPoints)
             .map((team, i) => (
-                <div key={team.teamId}>{i+1}. {team.premTeam}: {team.totalPoints} points - {doMath(team.totalPoints)}% of all points</div>
+                <div key={team.teamId}>
+                    <h3>{i+1}. {team.premTeam}: {team.totalPoints} points - {doMath(team.totalPoints, points)}% of all points</h3>
+                    {team.players.sort((a,b) => b.total_points - a.total_points).map((player) => (
+                        <div key={player.id}>
+                            <strong>{getPosition(player.element_type)}</strong> {player.first_name} {player.second_name}: {player.total_points} points - {doMath(player.total_points,team.totalPoints)} % of team total points
+                        </div>
+                    ))}
+                </div>
+
             ))}
 
 
