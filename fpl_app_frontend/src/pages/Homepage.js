@@ -26,7 +26,11 @@ const Homepage = () => {
     };
 
     const goToLineups = () => {
-        navigate("/Lineups");
+        navigate("/lineups");
+    };
+
+    const goToAggregate = () => {
+        navigate("/aggregate");
     };
 
 
@@ -37,6 +41,11 @@ const Homepage = () => {
         return oneTeam[0].entry_name;
     };
 
+    if (!teamData || !leagueData || !standingsData) {
+        return (
+            <div>Loading...click refresh</div>
+        )
+    }
 
     return (
         <main>
@@ -73,9 +82,15 @@ const Homepage = () => {
                 </button>
             </div>
             <div>
-                <Link to="/Lineups"></Link>
+                <Link to="/lineups"></Link>
                 <button onClick={goToLineups}>
                     See Team Lineups
+                </button>
+            </div>
+            <div>
+                <Link to="/aggregate"></Link>
+                <button onClick={goToAggregate}>
+                    See Aggregate Data
                 </button>
             </div>
         </main>
