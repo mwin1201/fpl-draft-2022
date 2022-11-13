@@ -4,8 +4,8 @@ const axios = require('axios').default;
 
 const Lineups = () => {
     const [teamLineups, setTeamLineups] = useState([]);
-    const [playerFilter, setPlayerFilter] = useState();
-    const [gameweekFilter, setGameweekFilter] = useState();
+    const [playerFilter, setPlayerFilter] = useState(65420);
+    const [gameweekFilter, setGameweekFilter] = useState(1);
 
     let players = JSON.parse(localStorage.getItem("elements"));
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));

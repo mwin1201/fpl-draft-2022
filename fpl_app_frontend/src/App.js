@@ -7,6 +7,7 @@ import Homepage from './pages/Homepage';
 import Fixtures from './pages/Fixtures';
 import PremPlayers from './pages/PremPlayers';
 import Lineups from './pages/Lineups';
+import Aggregate from './pages/Aggregate';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path='/' element={<Homepage/>}></Route>
         <Route path='/fixtureHistory' element={<Fixtures/>}></Route>
         <Route path='/premPlayers' element={<PremPlayers/>}></Route>
-        <Route path='/Lineups' element={<Lineups/>}></Route>
+        <Route path='/lineups' element={<Lineups/>}></Route>
+        <Route path='/aggregate' element={<Aggregate/>}></Route>
       </Routes>
     </Router>
   );
