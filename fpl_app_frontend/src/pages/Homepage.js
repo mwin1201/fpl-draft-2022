@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {Link, useNavigate} from "react-router-dom"
 import getLeagueData from "../data/ApiCalls";
 import getPlayers from "../data/Players";
+import getDraftData from "../data/DraftData";
 
 
 const Homepage = () => {
@@ -10,6 +11,7 @@ const Homepage = () => {
         localStorage.clear();
         getLeagueData();
         getPlayers();
+        getDraftData();
     },[]);
 
     let teamData = JSON.parse(localStorage.getItem("league_entries"));
@@ -31,6 +33,10 @@ const Homepage = () => {
 
     const goToAggregate = () => {
         navigate("/aggregate");
+    };
+
+    const goToDraft = () => {
+        navigate("/draft");
     };
 
 
@@ -91,6 +97,12 @@ const Homepage = () => {
                 <Link to="/aggregate"></Link>
                 <button onClick={goToAggregate}>
                     See Aggregate Data
+                </button>
+            </div>
+            <div>
+                <Link to="/draft"></Link>
+                <button onClick={goToDraft}>
+                    See Draft Data
                 </button>
             </div>
         </main>
