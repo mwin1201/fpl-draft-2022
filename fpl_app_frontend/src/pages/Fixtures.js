@@ -3,8 +3,9 @@ import {Link, useNavigate} from "react-router-dom"
 
 const Fixtures = () => {
     const [filterTeam, setFilterTeam] = useState(0);
+    const [fixtureData, setFixtureData] = useState(JSON.parse(localStorage.getItem("matches")))
 
-    let fixtureData = JSON.parse(localStorage.getItem("matches"));
+    //let fixtureData = JSON.parse(localStorage.getItem("matches"));
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
 
     const getTeamName = (teamId) => {
@@ -22,10 +23,13 @@ const Fixtures = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        let fixtureArr = JSON.parse(localStorage.getItem("matches"));
         let teamSelected = document.getElementById("leagueTeam").value;
         setFilterTeam(teamSelected);
-
+        setFixtureData(fixtureArr.filter((fixture) => (fixture.league_entry_1 == teamSelected) || (fixture.league_entry_2 == teamSelected)));
     };
+
+    console.log("data", fixtureData);
 
     return (
         <div>
@@ -48,27 +52,14 @@ const Fixtures = () => {
                 </form>
             </div>
             <h1>Fixture History</h1>
-            {!filterTeam ?
-                <div>
-                {fixtureData.map((fixture,i) => (
-                    <div key={i}>
-                        <h3>Week {fixture.event}</h3>
-                        {getTeamName(fixture.league_entry_1)}: {fixture.league_entry_1_points}pts vs {getTeamName(fixture.league_entry_2)}: {fixture.league_entry_2_points}pts
-                    </div>
-                ))}
+            <div>
+            {fixtureData.map((fixture,i) => (
+                <div key={i}>
+                    <h3>Week {fixture.event}</h3>
+                    {getTeamName(fixture.league_entry_1)}: {fixture.league_entry_1_points}pts vs {getTeamName(fixture.league_entry_2)}: {fixture.league_entry_2_points}pts
                 </div>
-                :
-                <div>
-                    <h1>YOOOOOO wtf {filterTeam}</h1>
-                {fixtureData.filter((fixture) => ((fixture.league_entry_1 === filterTeam) || (fixture.league_entry_2 === filterTeam)))
-                .map((filteredFixture,i) => (
-                    <div key={i}>
-                        <h3>Week {filteredFixture.event}</h3>
-                        {getTeamName(filteredFixture.league_entry_1)}: {filteredFixture.league_entry_1_points}pts vs {getTeamName(filteredFixture.league_entry_2)}: {filteredFixture.league_entry_2_points}pts
-                    </div>
-                ))}
-                </div>
-            }
+            ))}
+            </div>
         </div>
     );
 
