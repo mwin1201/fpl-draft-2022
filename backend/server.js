@@ -37,7 +37,6 @@ app.get('/getPremPlayers', cors(corsOptions), async (req, res) => {
 });
 
 // this section is the endpoint to grab each of the FPL league player team lineups
-//const lineupEndpoint = "https://draft.premierleague.com/api/entry/";
 
 app.get('/getLineups/:team/:event', cors(corsOptions), async (req, res) => {
     const fetchOptions = {
@@ -47,7 +46,19 @@ app.get('/getLineups/:team/:event', cors(corsOptions), async (req, res) => {
     const jsonResponse = await response.json();
     res.json(jsonResponse);
 
-})
+});
+
+// this section is the endpoint for draft data
+const draftDataEndpoint = "https://draft.premierleague.com/api/draft/18161/choices";
+
+app.get('/getDraftData', cors(corsOptions), async (req, res) => {
+    const fetchOptions = {
+        method: "GET"
+    }
+    const response = await fetch(draftDataEndpoint, fetchOptions);
+    const jsonResponse = await response.json();
+    res.json(jsonResponse);
+});
 
 
 app.listen(PORT, () => {
