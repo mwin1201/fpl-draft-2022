@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import getLeagueData from "../data/ApiCalls";
 import getPlayers from "../data/Players";
 import getDraftData from "../data/DraftData";
+import getGameweek from "../data/CurrentGameweek";
 
 
 const Homepage = () => {
@@ -12,6 +13,7 @@ const Homepage = () => {
         getLeagueData();
         getPlayers();
         getDraftData();
+        getGameweek();
     },[]);
 
     let teamData = JSON.parse(localStorage.getItem("league_entries"));
@@ -39,6 +41,10 @@ const Homepage = () => {
         navigate("/draft");
     };
 
+    const goToLeaders = () => {
+        navigate("/leagueLeaders");
+    };
+
 
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
@@ -55,26 +61,6 @@ const Homepage = () => {
 
     return (
         <main>
-            <div>
-                <h1>FPL DRAFT 2022/23</h1>
-                <h2>{leagueData.name}</h2>
-            </div>
-            <div>
-                <h3>The participants</h3>
-                {teamData.map((team) => (
-                    <div key={team.id}>{team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
-                ))}
-            </div>
-            <div>
-                <h3>League Standings</h3>
-                <div>Player ID - Wins - Draws - Losses - Pts For - Pts Against - Total Table Pts</div>
-                {standingsData.map((player) => (
-                    <div key={player.league_entry}>
-                        {getEntryName(player.league_entry)} - {player.matches_won} - {player.matches_drawn} - 
-                        {player.matches_lost} - {player.points_for} - {player.points_against} - {player.total}
-                    </div>
-                ))}
-            </div>
             <div>
                 <Link to="/fixtureHistory"></Link>
                 <button onClick={goToFixtures}>
@@ -104,6 +90,32 @@ const Homepage = () => {
                 <button onClick={goToDraft}>
                     See Draft Data
                 </button>
+            </div>
+            <div>
+                <Link to="/leagueLeaders"></Link>
+                <button onClick={goToLeaders}>
+                        League Leaders
+                </button>
+            </div>
+            <div>
+                <h1>FPL DRAFT 2022/23</h1>
+                <h2>{leagueData.name}</h2>
+            </div>
+            <div>
+                <h3>The participants</h3>
+                {teamData.map((team) => (
+                    <div key={team.id}>{team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
+                ))}
+            </div>
+            <div>
+                <h3>League Standings</h3>
+                <div>Player ID - Wins - Draws - Losses - Pts For - Pts Against - Total Table Pts</div>
+                {standingsData.map((player) => (
+                    <div key={player.league_entry}>
+                        {getEntryName(player.league_entry)} - {player.matches_won} - {player.matches_drawn} - 
+                        {player.matches_lost} - {player.points_for} - {player.points_against} - {player.total}
+                    </div>
+                ))}
             </div>
         </main>
     )
