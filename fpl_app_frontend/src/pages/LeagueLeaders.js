@@ -4,6 +4,7 @@ const axios = require('axios').default;
 
 const LeagueLeaders = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [displayArr, setDisplayArr] = useState([]);
 
     let fullLineupArr = [];
     let fullStatArr = [];
@@ -18,18 +19,27 @@ const LeagueLeaders = () => {
 
     const createStatArr = async (allLineups) => {
         for (var i = 0; i < allLineups.length; i++) {
-            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "goals": await getPlayerStats(allLineups[i].lineup)})
+            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "stats": await getPlayerStats(allLineups[i].lineup)})
         }
         console.log("allStats", fullStatArr);
+        setDisplayArr(fullStatArr);
     };
 
     const getPlayerStats = async (teamPlayers) => {
-        let statCounter = 0;
+        const statList = ["minutes", "goals_scored", "assists", "clean_sheets", "goals_conceded", "yellow_cards", "red_cards", "bonus"];
+        let statArr = [];
         const allPlayerStats = await getStats(currentGameweek);
-        for (var i = 0; i < teamPlayers.length; i++) {
-            statCounter += allPlayerStats[teamPlayers[i].element].stats["goals_scored"];
+        for (var y = 0; y < statList.length; y++) {
+            let statCounter = 0;
+            for (var i = 0; i < teamPlayers.length; i++) {
+                statCounter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
+            }
+            let key = statList[y];
+            let obj = {};
+            obj[key] = statCounter;
+            statArr.push(obj);
         }
-        return statCounter;
+        return statArr;
     };
 
     // need to get team lineups per gameweek
@@ -75,15 +85,29 @@ const LeagueLeaders = () => {
             </form>
 
             <h2>Leaders for Gameweek {currentGameweek}</h2>
-            <div>Goals Scored</div>
-            {fullStatArr.sort((a,b) => (
-                b.goals - a.goals
-            ))
-            .map((team) => (
-                <div key={team.teamId}>
-                    {team.person} - {team.goals} goals
+            <div>
+            {displayArr.map((team,index) => (
+                <div key={index}>
+                    <h3>Team: {team.person}</h3>
+                    {team.stats.map((stat,index) => {
+                        if (stat.minutes >= 0) {
+                            return (
+                            <div key={index}>
+                                <p>{stat.minutes} minutes</p>
+                            </div>
+                            )
+                        }
+                        if (stat.goals_scored >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.goals_scored} goals</p>
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
-            ))}
+                ))}
+            </div>
         </section>
     )
 
