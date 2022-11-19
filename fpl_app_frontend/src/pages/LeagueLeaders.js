@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
 const axios = require('axios').default;
 
@@ -19,19 +19,19 @@ const LeagueLeaders = () => {
 
     const createStatArr = async (allLineups) => {
         for (var i = 0; i < allLineups.length; i++) {
-            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "stats": await getPlayerStats(allLineups[i].lineup)})
+            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)})
         }
         console.log("allStats", fullStatArr);
         setDisplayArr(fullStatArr);
     };
 
-    const getPlayerStats = async (teamPlayers) => {
+    const getPlayerStats = async (teamPlayers, gameweek) => {
         const statList = ["minutes", "goals_scored", "assists", "clean_sheets", "goals_conceded", "yellow_cards", "red_cards", "bonus"];
         let statArr = [];
-        const allPlayerStats = await getStats(currentGameweek);
+        const allPlayerStats = await getStats(gameweek);
         for (var y = 0; y < statList.length; y++) {
             let statCounter = 0;
-            for (var i = 0; i < teamPlayers.length; i++) {
+            for (var i = 0; i < 11; i++) {
                 statCounter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
             }
             let key = statList[y];
@@ -62,6 +62,8 @@ const LeagueLeaders = () => {
         event.preventDefault();
         let gameweek = document.getElementById("gameweek").value;
         setCurrentGameweek(gameweek);
+        fullLineupArr = [];
+        fullStatArr = [];
         createLineupArr();
     };
 
@@ -84,7 +86,7 @@ const LeagueLeaders = () => {
                 <button type="submit">Submit</button>
             </form>
 
-            <h2>Leaders for Gameweek {currentGameweek}</h2>
+            <h2>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
             <div>
             {displayArr.map((team,index) => (
                 <div key={index}>
@@ -104,6 +106,51 @@ const LeagueLeaders = () => {
                                 </div>
                             )
                         }
+                        if (stat.assists >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.assists} assists</p>
+                                </div>
+                            )
+                        }
+                        if (stat.clean_sheets >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.clean_sheets} clean sheets</p>
+                                </div>
+                            )
+                        }
+                        if (stat.goals_conceded >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.goals_conceded} goals conceded</p>
+                                </div>
+                            )
+                        }
+                        if (stat.yellow_cards >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.yellow_cards} yellow cards</p>
+                                </div>
+                            )
+                        }
+                        if (stat.red_cards >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.red_cards} red cards</p>
+                                </div>
+                            )
+                        }
+                        if (stat.bonus >= 0) {
+                            return (
+                                <div key={index}>
+                                    <p>{stat.bonus} bonus</p>
+                                </div>
+                            )
+                        }
+                        return (
+                            <div>what?</div>
+                        )
                     })}
                 </div>
                 ))}
