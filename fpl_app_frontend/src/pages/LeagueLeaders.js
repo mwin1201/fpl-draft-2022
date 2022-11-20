@@ -22,7 +22,21 @@ const LeagueLeaders = () => {
             fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)})
         }
         console.log("allStats", fullStatArr);
-        setDisplayArr(fullStatArr);
+        modifyArr(fullStatArr);
+    };
+
+    const modifyArr = (allStatArr) => {
+        let newArr = [];
+        for (var i = 0; i < allStatArr.length; i++) {
+            let statObj = {};
+            for (var y = 0; y < allStatArr[i].stats.length; y++) {
+                Object.assign(statObj,allStatArr[i].stats[y]);
+            }
+            statObj.teamId = allStatArr[i].teamId;
+            statObj.person = allStatArr[i].person;
+            newArr.push(statObj);
+        }
+        setDisplayArr(newArr);
     };
 
     const getPlayerStats = async (teamPlayers, gameweek) => {
@@ -88,72 +102,78 @@ const LeagueLeaders = () => {
 
             <h2>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
             <div>
-            {displayArr.map((team,index) => (
+                <h3>Minutes Played</h3>
+            {displayArr.sort((a,b) => (
+                b.minutes - a.minutes
+            ))
+            .map((stat,index) => (
                 <div key={index}>
-                    <h3>Team: {team.person}</h3>
-                    {team.stats.map((stat,index) => {
-                        if (stat.minutes >= 0) {
-                            return (
-                            <div key={index}>
-                                <p>{stat.minutes} minutes</p>
-                            </div>
-                            )
-                        }
-                        if (stat.goals_scored >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.goals_scored} goals</p>
-                                </div>
-                            )
-                        }
-                        if (stat.assists >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.assists} assists</p>
-                                </div>
-                            )
-                        }
-                        if (stat.clean_sheets >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.clean_sheets} clean sheets</p>
-                                </div>
-                            )
-                        }
-                        if (stat.goals_conceded >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.goals_conceded} goals conceded</p>
-                                </div>
-                            )
-                        }
-                        if (stat.yellow_cards >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.yellow_cards} yellow cards</p>
-                                </div>
-                            )
-                        }
-                        if (stat.red_cards >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.red_cards} red cards</p>
-                                </div>
-                            )
-                        }
-                        if (stat.bonus >= 0) {
-                            return (
-                                <div key={index}>
-                                    <p>{stat.bonus} bonus</p>
-                                </div>
-                            )
-                        }
-                        return (
-                            <div>what?</div>
-                        )
-                    })}
+                    {stat.minutes} : {stat.person}
                 </div>
-                ))}
+            ))}
+                <h3>Goals Scored</h3>
+            {displayArr.sort((a,b) => (
+                b.goals_scored - a.goals_scored
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.goals_scored} : {stat.person}
+                </div>
+            ))}
+                <h3>Assists</h3>
+            {displayArr.sort((a,b) => (
+                b.assists - a.assists
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.assists} : {stat.person}
+                </div>
+            ))}
+                <h3>Bonus Points</h3>
+            {displayArr.sort((a,b) => (
+                b.bonus - a.bonus
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.bonus} : {stat.person}
+                </div>
+            ))}
+                <h3>Clean Sheets</h3>
+            {displayArr.sort((a,b) => (
+                b.clean_sheets - a.clean_sheets
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.clean_sheets} : {stat.person}
+                </div>
+            ))}
+                <h3>Goals Conceded</h3>
+            {displayArr.sort((a,b) => (
+                b.goals_conceded - a.goals_conceded
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.goals_conceded} : {stat.person}
+                </div>
+            ))}
+                <h3>Yellow Cards</h3>
+            {displayArr.sort((a,b) => (
+                b.yellow_cards - a.yellow_cards
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.yellow_cards} : {stat.person}
+                </div>
+            ))}
+                <h3>Red Cards</h3>
+            {displayArr.sort((a,b) => (
+                b.red_cards - a.red_cards
+            ))
+            .map((stat,index) => (
+                <div key={index}>
+                    {stat.red_cards} : {stat.person}
+                </div>
+            ))}
             </div>
         </section>
     )
