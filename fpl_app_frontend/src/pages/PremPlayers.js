@@ -3,10 +3,10 @@ import {Link, useNavigate} from "react-router-dom"
 
 const PremPlayers = () => {
     const [filterPoints, setFilterPoints] = useState(0);
-    const [filterTeam, setFilterTeam] = useState(1);
+    const [filterTeam, setFilterTeam] = useState(0);
+    const [players, setPlayers] = useState(JSON.parse(localStorage.getItem("elements")));
 
     let playerPositions = JSON.parse(localStorage.getItem("element_types"));
-    let players = JSON.parse(localStorage.getItem("elements"));
     let premTeams = JSON.parse(localStorage.getItem("teams"));
   
     const navigate = useNavigate();
@@ -52,6 +52,7 @@ const PremPlayers = () => {
                     <input type="number" id="points" name="points" min="0"></input>
                     <label htmlFor="team">Prem Team: </label>
                     <select name="team" id="team">
+                        <option value="">All Teams</option>
                         {premTeams.map((team) => (
                             <option key={team.id} value={team.id}>{team.name}</option>
                         ))}
@@ -62,15 +63,30 @@ const PremPlayers = () => {
 
 
             <h3>Filtered Players</h3>
-            {players.filter(player =>
-                (player.total_points >= filterPoints) && (player.team == filterTeam)
-            )
-            .sort((a, b) => b.total_points - a.total_points)
-            .map((filteredPlayer,i) => (
-                <div key={filteredPlayer.id}>
-                   #{i}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
+            {filterTeam ?
+                <div>
+                    {players.filter(player =>
+                        (player.total_points >= filterPoints) && (player.team == filterTeam)
+                    )
+                    .sort((a, b) => b.total_points - a.total_points)
+                    .map((filteredPlayer,i) => (
+                        <div key={filteredPlayer.id}>
+                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
+                        </div>
+                    ))}
+                </div> :
+                <div>
+                    {players.filter(player =>
+                        (player.total_points >= filterPoints)
+                    )
+                    .sort((a, b) => b.total_points - a.total_points)
+                    .map((filteredPlayer,i) => (
+                        <div key={filteredPlayer.id}>
+                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
+                        </div>
+                    ))}
                 </div>
-            ))}
+            }
 
         </div>
     )
