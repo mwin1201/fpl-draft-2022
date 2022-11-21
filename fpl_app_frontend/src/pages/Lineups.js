@@ -75,17 +75,6 @@ const Lineups = () => {
                         {filteredPlayer.first_name} {filteredPlayer.second_name} {filteredPlayer.total_points}
                     </div>
                 ))}
-                <h3>
-                    Teams
-                </h3>
-                <div>
-                    {leagueTeams.map((team) => (
-                        <div key={team.entry_id}>
-                            {team.entry_name} - {team.player_first_name} {team.player_last_name}
-                        </div>
-                    ))}
-                </div>
-
         </div>
     )
 
