@@ -8,7 +8,6 @@ const Draft = () => {
 
     const [draft, setDraft] = useState(JSON.parse(localStorage.getItem("draft_data")))
 
-    //let draftData = JSON.parse(localStorage.getItem("draft_data"));
     let players = JSON.parse(localStorage.getItem("elements"));
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
 
@@ -20,6 +19,17 @@ const Draft = () => {
     const getPlayerName = (element) => {
         let filteredPlayer = players.filter((player) => player.id === element);
         return filteredPlayer[0].first_name + " " + filteredPlayer[0].second_name + " " + filteredPlayer[0].total_points + "pts";
+    };
+
+    const getPlayerCurrentPointRank = (element) => {
+        let sortedPlayers = players.sort((a,b) => {
+            return b.total_points - a.total_points
+        });
+        for (var i = 0; i < sortedPlayers.length; i++) {
+            if (sortedPlayers[i].id === element) {
+                return i+1;
+            }
+        }
     };
 
     const handleRoundSubmit = (event) => {
@@ -70,7 +80,7 @@ const Draft = () => {
             {draft
             .map((pick,i) => (
                 <div key={i}>
-                    <strong>Round {pick.round}: </strong>{pick.entry_name} - {getPlayerName(pick.element)}
+                    <strong>Round {pick.round}: </strong>{pick.entry_name} - {getPlayerName(pick.element)} (#{getPlayerCurrentPointRank(pick.element)} rank in pts all players)
                 </div>
             ))}
         </div>
