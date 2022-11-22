@@ -89,5 +89,5 @@ app.get("/getGameweek", cors(corsOptions), async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`FPL app listening at http://localhost:${PORT}`);
+    console.log(`FPL app listening on port ${PORT}`);
 });
