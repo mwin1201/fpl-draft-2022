@@ -1,0 +1,21 @@
+{
+  "name": "fpl-draft-2022",
+  "version": "1.0.0",
+  "description": "# Summary Fun FPL Draft app to display league data",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "cd fpl_app_frontend && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwin1201/fpl-draft-2022.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mwin1201/fpl-draft-2022/issues"
+  },
+  "homepage": "https://github.com/mwin1201/fpl-draft-2022#readme"
+}
