@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const fetch = require("node-fetch");
 const bodyParser = require("body-parser");
 
@@ -11,6 +12,11 @@ app.use(cors());
 const corsOptions = {
     origin: "http://localhost:3000"
 };
+
+app.use(express.static(path.join(__dirname, "../fpl_app_frontend/build")));
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, "../fpl_app_frontend/build/index.html"));
+});
 
 // this section is the endpoint to gather the team names and players in the FPL Draft league
 const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";
