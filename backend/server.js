@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require("cors");
+//const cors = require("cors");
 const path = require("path");
 const fetch = require("node-fetch");
 const bodyParser = require("body-parser");
@@ -8,10 +8,10 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors());
-const corsOptions = {
-    origin: "http://localhost:3000"
-};
+//app.use(cors());
+// const corsOptions = {
+//     origin: "http://localhost:3000"
+// };
 
 app.use(express.static(path.join(__dirname, "../fpl_app_frontend/build")));
 app.get('/', function(req, res) {
@@ -21,7 +21,7 @@ app.get('/', function(req, res) {
 // this section is the endpoint to gather the team names and players in the FPL Draft league
 const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";
 
-app.get('/getTeams', cors(corsOptions), async (req, res) => {
+app.get('/getTeams', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
@@ -33,7 +33,7 @@ app.get('/getTeams', cors(corsOptions), async (req, res) => {
 // this section is the endpoint to get all the players in the Premier League
 const premPlayersEndpoint = "https://draft.premierleague.com/api/bootstrap-static";
 
-app.get('/getPremPlayers', cors(corsOptions), async (req, res) => {
+app.get('/getPremPlayers', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
@@ -44,7 +44,7 @@ app.get('/getPremPlayers', cors(corsOptions), async (req, res) => {
 
 // this section is the endpoint to grab each of the FPL league player team lineups
 
-app.get('/getLineups/:team/:event', cors(corsOptions), async (req, res) => {
+app.get('/getLineups/:team/:event', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
@@ -57,7 +57,7 @@ app.get('/getLineups/:team/:event', cors(corsOptions), async (req, res) => {
 // this section is the endpoint for draft data
 const draftDataEndpoint = "https://draft.premierleague.com/api/draft/18161/choices";
 
-app.get('/getDraftData', cors(corsOptions), async (req, res) => {
+app.get('/getDraftData', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
@@ -67,7 +67,7 @@ app.get('/getDraftData', cors(corsOptions), async (req, res) => {
 });
 
 // this section is the endpoint for player stats each gameweek
-app.get("/getStats/:event", cors(corsOptions), async (req, res) => {
+app.get("/getStats/:event", async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
@@ -79,7 +79,7 @@ app.get("/getStats/:event", cors(corsOptions), async (req, res) => {
 // this section is the endpoint to get the current gameweek
 const gameweekEndpoint = "https://draft.premierleague.com/api/game";
 
-app.get("/getGameweek", cors(corsOptions), async (req, res) => {
+app.get("/getGameweek", async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };

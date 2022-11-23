@@ -4,7 +4,7 @@
   "description": "# Summary Fun FPL Draft app to display league data",
   "main": "index.js",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "cd backend && npm start",
     "build": "cd fpl_app_frontend && npm run build"
   },
   "repository": {
@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/mwin1201/fpl-draft-2022/issues"
   },
-  "homepage": "https://github.com/mwin1201/fpl-draft-2022#readme"
+  "homepage": "https://github.com/mwin1201/fpl-draft-2022#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
+  }
 }
