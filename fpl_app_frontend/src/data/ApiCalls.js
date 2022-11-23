@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 
 const getLeagueData = () => {
-    axios.get('http://localhost:5000/getTeams')
+    axios.get('https://fpldraftapp.onrender.com/getTeams')
         .then((apiTeamResponse) => {
             console.log(apiTeamResponse);
             localStorage.setItem("league_data", JSON.stringify(apiTeamResponse.data.league));
