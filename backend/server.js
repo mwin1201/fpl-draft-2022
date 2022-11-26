@@ -88,7 +88,7 @@ app.get("/getGameweek", async (req, res) => {
     res.json(jsonResponse);
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', (err) => {
     if (err) throw err;
     console.log(`FPL app listening on port ${PORT}`);
 });
