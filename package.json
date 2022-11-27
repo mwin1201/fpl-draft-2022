@@ -4,7 +4,7 @@
   "description": "# Summary Fun FPL Draft app to display league data",
   "main": "index.js",
   "scripts": {
-    "start": "(cd fpl_app_frontend && npm install && npm run build) && (cd backend && npm install && npm start)"
+    "start": "(cd fpl_app_frontend && yarn build) && (cd backend && yarn start)"
   },
   "repository": {
     "type": "git",
