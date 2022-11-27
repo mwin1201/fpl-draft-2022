@@ -53,11 +53,11 @@ const Homepage = () => {
         return oneTeam[0].entry_name;
     };
 
-    if (!teamData || !leagueData || !standingsData) {
-        return (
-            <div>Loading...click refresh</div>
-        )
-    }
+    // if (!teamData || !leagueData || !standingsData) {
+    //     return (
+    //         <div>Loading...click refresh</div>
+    //     )
+    // }
 
     return (
         <main>
