@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "concurrently \"react-scripts build\" \"(cd ../backend node server.js)\"",
+    "build": "concurrently \"react-scripts build\" \"(cd ../backend yarn start)\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
