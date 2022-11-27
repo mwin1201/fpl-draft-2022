@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // };
 
 app.use(express.static(path.join(__dirname, "../fpl_app_frontend/build")));
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, "../fpl_app_frontend/build/index.html"));
 });
 
