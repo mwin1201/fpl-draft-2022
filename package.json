@@ -4,7 +4,7 @@
   "description": "# Summary Fun FPL Draft app to display league data",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"(cd fpl_app_frontend && npm i && yarn build)\"  \"(cd backend && yarn start)\""
+    "start": "concurrently \"(cd fpl_app_frontend && npm i && yarn build)\"  \"(cd backend && npm i && yarn start)\""
   },
   "repository": {
     "type": "git",
