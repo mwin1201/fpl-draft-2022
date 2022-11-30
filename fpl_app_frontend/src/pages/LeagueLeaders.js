@@ -92,6 +92,14 @@ const LeagueLeaders = () => {
         navigate("/");
     };
 
+    if (!displayArr) {
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
+
     return (
         <section>
             <div>
