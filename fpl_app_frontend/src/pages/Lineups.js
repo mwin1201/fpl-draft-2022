@@ -16,7 +16,7 @@ const Lineups = () => {
     };
 
     const getLineups = (team, gameweek) => {
-        axios.get("http://localhost:5000/getLineups/" + team + "/" + gameweek)
+        axios.get("https://fpldraftappbackend.onrender.com/getLineups/" + team + "/" + gameweek)
         .then((apiResponse) => {
             setTeamLineups(apiResponse.data.picks);
         })
