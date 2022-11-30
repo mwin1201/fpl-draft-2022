@@ -13,10 +13,10 @@ app.use(bodyParser.json());
 //     origin: "http://localhost:3000"
 // };
 
-app.use(express.static(path.join(__dirname, "../fpl_app_frontend/build")));
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, "../fpl_app_frontend/build/index.html"));
-});
+// app.use(express.static(path.join(__dirname, "../fpl_app_frontend/build")));
+// app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, "../fpl_app_frontend/build/index.html"));
+// });
 
 // this section is the endpoint to gather the team names and players in the FPL Draft league
 const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";

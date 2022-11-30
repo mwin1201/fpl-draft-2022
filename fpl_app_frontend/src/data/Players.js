@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 
 const getPlayers = () => {
-    axios.get("https://fpldraftapp.onrender.com/getPremPlayers")
+    axios.get("https://fpldraftappbackend.onrender.com/getPremPlayers")
         .then((apiResponse) => {
             console.log(apiResponse);
             localStorage.setItem("element_types", JSON.stringify(apiResponse.data.element_types));

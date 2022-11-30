@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 
 const getGameweek = () => {
-    axios.get("https://fpldraftapp.onrender.com/getGameweek")
+    axios.get("https://fpldraftappbackend.onrender.com/getGameweek")
         .then((apiResponse) => {
             localStorage.setItem("current_gameweek", JSON.stringify(apiResponse.data.current_event));
         })
