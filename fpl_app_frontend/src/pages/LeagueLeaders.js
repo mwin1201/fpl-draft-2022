@@ -92,14 +92,6 @@ const LeagueLeaders = () => {
         navigate("/");
     };
 
-    if (!displayArr) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
-    }
-
     return (
         <section>
             <div>
@@ -115,7 +107,7 @@ const LeagueLeaders = () => {
             </form>
 
             <div>
-                <strong>Refresh Screen when you first open the page to see accurate data</strong>
+                <strong>Wait 10 seconds for the data to load!</strong>
             </div>
 
             <h2>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
