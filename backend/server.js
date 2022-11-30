@@ -1,5 +1,5 @@
 const express = require("express");
-//const cors = require("cors");
+const cors = require("cors");
 const path = require("path");
 const fetch = require("node-fetch");
 const bodyParser = require("body-parser");
@@ -8,10 +8,10 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(bodyParser.json());
-//app.use(cors());
-// const corsOptions = {
-//     origin: "http://localhost:3000"
-// };
+app.use(cors());
+const corsOptions = {
+    origin: "https://fpldraftapp.onrender.com/"
+};
 
 // app.use(express.static(path.join(__dirname, "../fpl_app_frontend/build")));
 // app.get('*', function(req, res) {
