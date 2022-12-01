@@ -1,7 +1,8 @@
 const axios = require("axios").default;
 
 const getPlayers = () => {
-    axios.get("http://localhost:5000/getPremPlayers")
+    let currentOrigin = process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:5000"
+    axios.get(`${currentOrigin}/getPremPlayers`)
         .then((apiResponse) => {
             console.log(apiResponse);
             localStorage.setItem("element_types", JSON.stringify(apiResponse.data.element_types));

@@ -16,7 +16,8 @@ const Lineups = () => {
     };
 
     const getLineups = (team, gameweek) => {
-        axios.get("http://localhost:5000/getLineups/" + team + "/" + gameweek)
+        let currentOrigin = process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:5000"
+        axios.get(`${currentOrigin}/getLineups/` + team + "/" + gameweek)
         .then((apiResponse) => {
             setTeamLineups(apiResponse.data.picks);
         })
