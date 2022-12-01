@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 
 const getLeagueData = () => {
-    let currentOrigin = process.env.prodOrigin ? process.env.NODE_ENV === 'production' : "http://localhost:5000"
+    let currentOrigin = process.env.REACT_APP_prodOrigin ? process.env.NODE_ENV === 'production' : "http://localhost:5000"
     axios.get(`${currentOrigin}/getTeams`)
         .then((apiTeamResponse) => {
             console.log(apiTeamResponse);
@@ -13,7 +13,7 @@ const getLeagueData = () => {
 
     console.log(currentOrigin);
     console.log(process.env.NODE_ENV);
-    console.log(process.env.prodOrigin);
+    console.log(process.env.REACT_APP_prodOrigin);
 };
 
 export default getLeagueData;
