@@ -3,13 +3,13 @@ const cors = require("cors");
 const fetch = require("node-fetch");
 const bodyParser = require("body-parser");
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 const corsOptions = {
-    origin: "http://localhost:3000"
+    origin: process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:3000"
 };
 
 // this section is the endpoint to gather the team names and players in the FPL Draft league
@@ -82,6 +82,7 @@ app.get("/getGameweek", cors(corsOptions), async (req, res) => {
     res.json(jsonResponse);
 });
 
-app.listen(PORT, () => {
-    console.log(`FPL app listening at http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', (err) => {
+    if (err) throw err;
+    console.log(`FPL app listening at port: ${PORT}`);
 });

@@ -59,7 +59,8 @@ const LeagueLeaders = () => {
     
         // need to get team lineups per gameweek
         const getLineups = async (team,gameweek) => {
-            return axios.get("http://localhost:5000/getLineups/" + team + "/" + gameweek)
+            let currentOrigin = process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:5000"
+            return axios.get(`${currentOrigin}/getLineups/` + team + "/" + gameweek)
             .then((apiResponse) => {
                return apiResponse.data.picks;
             })
@@ -67,7 +68,8 @@ const LeagueLeaders = () => {
     
         // need to pull player stats per gameweek
         const getStats = async (gameweek) => {
-            return axios.get("http://localhost:5000/getStats/" + gameweek)
+            let currentOrigin = process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:5000"
+            return axios.get(`${currentOrigin}/getStats/` + gameweek)
                 .then((apiResponse) => {
                     return apiResponse.data.elements;
                 })

@@ -1,7 +1,8 @@
 const axios = require("axios").default;
 
 const getLeagueData = () => {
-    axios.get("http://localhost:5000/getTeams")
+    let currentOrigin = process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:5000"
+    axios.get(`${currentOrigin}/getTeams`)
         .then((apiTeamResponse) => {
             console.log(apiTeamResponse);
             localStorage.setItem("league_data", JSON.stringify(apiTeamResponse.data.league));
