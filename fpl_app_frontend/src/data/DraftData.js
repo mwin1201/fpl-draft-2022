@@ -1,7 +1,8 @@
 const axios = require("axios").default;
 
 const getDraftData = () => {
-    axios.get("http://localhost:5000/getDraftData")
+    let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+    axios.get(`${currentOrigin}/getDraftData`)
         .then((apiResponse) => {
             localStorage.setItem("draft_data", JSON.stringify(apiResponse.data.choices));
         });
