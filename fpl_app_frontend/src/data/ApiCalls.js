@@ -10,6 +10,8 @@ const getLeagueData = () => {
             localStorage.setItem("matches", JSON.stringify(apiTeamResponse.data.matches));
             localStorage.setItem("league_entries", JSON.stringify(apiTeamResponse.data.league_entries));
         })
+    
+    console.log(currentOrigin);
 };
 
 export default getLeagueData;

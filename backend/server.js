@@ -19,6 +19,7 @@ app.get('/getTeams', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
+    console.log("i am in API call");
     const response = await fetch(leagueDetailsEndpoint, fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
