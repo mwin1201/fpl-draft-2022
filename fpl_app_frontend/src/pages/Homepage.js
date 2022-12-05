@@ -1,24 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
-import getLeagueData from "../data/ApiCalls";
+import getLeagueData from "../data/LeagueData";
 import getPlayers from "../data/Players";
 import getDraftData from "../data/DraftData";
 import getGameweek from "../data/CurrentGameweek";
 
-
 const Homepage = () => {
+    const [teamData, setTeamData] = useState([]);
+    const [leagueData, setLeagueData] = useState([]);
+    const [standingsData, setStandingsData] = useState([]);
+    const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+
 
     useEffect(() => {
-        localStorage.clear();
-        getLeagueData();
-        getPlayers();
-        getDraftData();
-        getGameweek();
-    },[]);
+        setIsLoading(true);
 
-    let teamData = JSON.parse(localStorage.getItem("league_entries"));
-    let leagueData = JSON.parse(localStorage.getItem("league_data"));
-    let standingsData = JSON.parse(localStorage.getItem("standings"));
+        const collectData = async () => {
+            await Promise.allSettled([
+                getLeagueData(),
+                getPlayers(),
+                getDraftData(),
+            ]).then((results) => {
+                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+                setStandingsData(JSON.parse(localStorage.getItem("standings")));
+            }).catch(() => setIsError(true)).finally(() => setIsLoading(false));
+        }
+
+        const start = async () => {
+            const apiGW = await getGameweek();
+            if (currentGameweek == null || apiGW != currentGameweek) {
+                localStorage.clear();
+                localStorage.setItem("current_gameweek", apiGW);
+                collectData();
+            }
+            else {
+                setIsLoading(false);
+                console.log("No need to update data");
+                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+                setStandingsData(JSON.parse(localStorage.getItem("standings")));
+            }
+        };
+        start();
+
+    },[]);
 
     const navigate = useNavigate();
     const goToFixtures = () => {
@@ -53,9 +81,17 @@ const Homepage = () => {
         return oneTeam[0].entry_name;
     };
 
-    if (!teamData || !leagueData || !standingsData) {
+    if (isLoading) {
         return (
-            <div>Loading...click refresh</div>
+            <div>Loading...be patient</div>
+        )
+    }
+
+    if (isError) {
+        return (
+            <div>
+                There is an error, please refresh
+            </div>
         )
     }
 
