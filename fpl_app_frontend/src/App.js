@@ -10,6 +10,7 @@ import Lineups from './pages/Lineups';
 import Aggregate from './pages/Aggregate';
 import Draft from './pages/Draft';
 import LeagueLeaders from './pages/LeagueLeaders';
+import SeasonLeaders from './pages/SeasonLeaders';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/aggregate' element={<Aggregate/>}></Route>
         <Route path='/draft' element={<Draft/>}></Route>
         <Route path='/leagueLeaders' element={<LeagueLeaders/>}></Route>
+        <Route path='/seasonLeaders' element={<SeasonLeaders/>}></Route>
       </Routes>
     </Router>
   );

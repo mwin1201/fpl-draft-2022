@@ -22,7 +22,6 @@ const LeagueLeaders = () => {
             for (var i = 0; i < allLineups.length; i++) {
                 fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)})
             }
-            console.log("allStats", fullStatArr);
             modifyArr(fullStatArr);
         };
     
@@ -37,6 +36,7 @@ const LeagueLeaders = () => {
                 statObj.person = allStatArr[i].person;
                 newArr.push(statObj);
             }
+            console.log("stat arr", newArr);
             setDisplayArr(newArr);
         };
     
