@@ -22,7 +22,7 @@ const Homepage = () => {
                 getLeagueData(),
                 getPlayers(),
                 getDraftData(),
-            ]).then((results) => {
+            ]).then(() => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
@@ -46,7 +46,7 @@ const Homepage = () => {
         };
         start();
 
-    },[]);
+    },[currentGameweek]);
 
     const navigate = useNavigate();
     const goToFixtures = () => {
@@ -72,6 +72,10 @@ const Homepage = () => {
     const goToLeaders = () => {
         navigate("/leagueLeaders");
     };
+
+    const goToSeasonLeaders = () => {
+        navigate("/seasonLeaders");
+    }
 
 
     const getEntryName = (entry_id) => {
@@ -131,6 +135,12 @@ const Homepage = () => {
                 <Link to="/leagueLeaders"></Link>
                 <button onClick={goToLeaders}>
                         League Leaders
+                </button>
+            </div>
+            <div>
+                <Link to="/seasonLeaders"></Link>
+                <button onClick={goToSeasonLeaders}>
+                        Season Leaders
                 </button>
             </div>
             <div>
