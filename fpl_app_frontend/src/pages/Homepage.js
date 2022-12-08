@@ -1,24 +1,62 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom"
-import getLeagueData from "../data/ApiCalls";
+import getLeagueData from "../data/LeagueData";
 import getPlayers from "../data/Players";
 import getDraftData from "../data/DraftData";
 import getGameweek from "../data/CurrentGameweek";
-
+import seasonStats from "../data/GWStats";
 
 const Homepage = () => {
+    const [teamData, setTeamData] = useState([]);
+    const [leagueData, setLeagueData] = useState([]);
+    const [standingsData, setStandingsData] = useState([]);
+    const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [statCounter, setStatCounter] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+
 
     useEffect(() => {
-        localStorage.clear();
-        getLeagueData();
-        getPlayers();
-        getDraftData();
-        getGameweek();
-    },[]);
+        setIsLoading(true);
 
-    let teamData = JSON.parse(localStorage.getItem("league_entries"));
-    let leagueData = JSON.parse(localStorage.getItem("league_data"));
-    let standingsData = JSON.parse(localStorage.getItem("standings"));
+        const collectData = async (curGW) => {
+            await Promise.allSettled([
+                getLeagueData(),
+                getPlayers(),
+                getDraftData(),
+            ]).then(() => {
+                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+                setStandingsData(JSON.parse(localStorage.getItem("standings")));
+                getAllStats(curGW);
+            }).catch(() => setIsError(true));
+        }
+
+        const getAllStats = async (gw) => {
+            for (var index = 1; index <= gw; index++) {
+                setStatCounter(await seasonStats(index));
+            }
+            setIsLoading(false);
+        };
+
+        const start = async () => {
+            const apiGW = await getGameweek();
+            if (currentGameweek == null || apiGW != currentGameweek) {
+                localStorage.clear();
+                localStorage.setItem("current_gameweek", apiGW);
+                collectData(apiGW);
+            }
+            else {
+                setIsLoading(false);
+                console.log("No need to update data");
+                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+                setStandingsData(JSON.parse(localStorage.getItem("standings")));
+            }
+        };
+        start();
+
+    },[currentGameweek]);
 
     const navigate = useNavigate();
     const goToFixtures = () => {
@@ -45,6 +83,10 @@ const Homepage = () => {
         navigate("/leagueLeaders");
     };
 
+    const goToSeasonLeaders = () => {
+        navigate("/seasonLeaders");
+    }
+
 
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
@@ -53,9 +95,19 @@ const Homepage = () => {
         return oneTeam[0].entry_name;
     };
 
-    if (!teamData || !leagueData || !standingsData) {
+    if (isLoading) {
         return (
-            <div>Loading...click refresh</div>
+            <section>
+                <div>Loading all of the Gameweek stats, be patient. {statCounter}/{JSON.parse(localStorage.getItem("current_gameweek"))}</div>
+            </section>
+        )
+    }
+
+    if (isError) {
+        return (
+            <div>
+                There is an error, please refresh
+            </div>
         )
     }
 
@@ -95,6 +147,12 @@ const Homepage = () => {
                 <Link to="/leagueLeaders"></Link>
                 <button onClick={goToLeaders}>
                         League Leaders
+                </button>
+            </div>
+            <div>
+                <Link to="/seasonLeaders"></Link>
+                <button onClick={goToSeasonLeaders}>
+                        Season Leaders
                 </button>
             </div>
             <div>
