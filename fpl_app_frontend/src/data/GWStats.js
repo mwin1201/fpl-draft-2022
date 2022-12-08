@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const seasonStats = async (currentGW, getDataBool) => {
+const seasonStats = async (index) => {
     const createLineupArr = async (currentGameweek) => {
         const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
         let fullLineupArr = [];
@@ -67,34 +67,13 @@ const seasonStats = async (currentGW, getDataBool) => {
             })
     };
 
-    const statLoop = async (gameweek, dataBool) => {
-        let start;
-        if (dataBool) {
-            start = 1
-        }
-        else {
-            start = gameweek - 1
-        }
-        for (var i = start; i <= gameweek; i++) {
-            let gameweekStats = await createLineupArr(i);
-            localStorage.setItem(`gw_${i}_stats`, JSON.stringify(gameweekStats));
-            if (i == gameweek) {
-                return true;
-            }
-        }
+    const statLoop = async (index) => {
+        let gameweekStats = await createLineupArr(index);
+        localStorage.setItem(`gw_${index}_stats`, JSON.stringify(gameweekStats));
+        return index;
     };
 
-    const myPromise = new Promise((resolve, reject) => {
-        const writeData = statLoop(currentGW, getDataBool);
-        if (writeData) {
-            resolve("Data written in storage");
-        }
-        else {
-            reject("Something failed");
-        }
-    });
-
-    return myPromise;
+    return statLoop(index);
 };
 
 export default seasonStats;
