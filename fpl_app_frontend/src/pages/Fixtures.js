@@ -29,8 +29,6 @@ const Fixtures = () => {
         setFixtureData(fixtureArr.filter((fixture) => (fixture.league_entry_1 == teamSelected) || (fixture.league_entry_2 == teamSelected)));
     };
 
-    console.log("data", fixtureData);
-
     return (
         <div>
             <div>

@@ -4,12 +4,14 @@ import getLeagueData from "../data/LeagueData";
 import getPlayers from "../data/Players";
 import getDraftData from "../data/DraftData";
 import getGameweek from "../data/CurrentGameweek";
+import seasonStats from "../data/GWStats";
 
 const Homepage = () => {
     const [teamData, setTeamData] = useState([]);
     const [leagueData, setLeagueData] = useState([]);
     const [standingsData, setStandingsData] = useState([]);
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [statCounter, setStatCounter] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
 
@@ -17,7 +19,7 @@ const Homepage = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        const collectData = async () => {
+        const collectData = async (curGW) => {
             await Promise.allSettled([
                 getLeagueData(),
                 getPlayers(),
@@ -26,15 +28,23 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
-            }).catch(() => setIsError(true)).finally(() => setIsLoading(false));
+                getAllStats(curGW);
+            }).catch(() => setIsError(true));
         }
+
+        const getAllStats = async (gw) => {
+            for (var index = 1; index <= gw; index++) {
+                setStatCounter(await seasonStats(index));
+            }
+            setIsLoading(false);
+        };
 
         const start = async () => {
             const apiGW = await getGameweek();
             if (currentGameweek == null || apiGW != currentGameweek) {
                 localStorage.clear();
                 localStorage.setItem("current_gameweek", apiGW);
-                collectData();
+                collectData(apiGW);
             }
             else {
                 setIsLoading(false);
@@ -87,7 +97,9 @@ const Homepage = () => {
 
     if (isLoading) {
         return (
-            <div>Loading...be patient</div>
+            <section>
+                <div>Loading all of the Gameweek stats, be patient. {statCounter}/{JSON.parse(localStorage.getItem("current_gameweek"))}</div>
+            </section>
         )
     }
 
