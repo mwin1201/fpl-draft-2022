@@ -5,6 +5,7 @@ const getDraftData = async () => {
     return axios.get(`${currentOrigin}/getDraftData`)
         .then((apiResponse) => {
             localStorage.setItem("draft_data", JSON.stringify(apiResponse.data.choices));
+            localStorage.setItem("player_ownership", JSON.stringify(apiResponse.data.element_status));
         });
 };
 

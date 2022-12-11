@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {Link, useNavigate} from "react-router-dom"
 const axios = require('axios').default;
 
-const LeagueLeaders = () => {
+const GameweekStats = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [displayArr, setDisplayArr] = useState([]);
 
@@ -122,4 +122,4 @@ const LeagueLeaders = () => {
 
 };
 
-export default LeagueLeaders;
+export default GameweekStats;
