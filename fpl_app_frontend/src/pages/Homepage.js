@@ -79,8 +79,8 @@ const Homepage = () => {
         navigate("/draft");
     };
 
-    const goToLeaders = () => {
-        navigate("/leagueLeaders");
+    const goToStats = () => {
+        navigate("/gameweekStats");
     };
 
     const goToSeasonLeaders = () => {
@@ -144,9 +144,9 @@ const Homepage = () => {
                 </button>
             </div>
             <div>
-                <Link to="/leagueLeaders"></Link>
-                <button onClick={goToLeaders}>
-                        League Leaders
+                <Link to="/gameweekStats"></Link>
+                <button onClick={goToStats}>
+                        Gameweek Stats
                 </button>
             </div>
             <div>
