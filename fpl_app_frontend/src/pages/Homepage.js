@@ -167,7 +167,7 @@ const Homepage = () => {
             </div>
             <div>
                 <h3>League Standings</h3>
-                <div>Player ID - Wins - Draws - Losses - Pts For - Pts Against - Total Table Pts</div>
+                <div>League Team - Wins - Draws - Losses - Pts For - Pts Against - Total Table Pts</div>
                 {standingsData.map((player) => (
                     <div key={player.league_entry}>
                         {getEntryName(player.league_entry)} - {player.matches_won} - {player.matches_drawn} - 
