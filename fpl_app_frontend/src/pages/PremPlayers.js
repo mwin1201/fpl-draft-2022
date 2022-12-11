@@ -8,6 +8,8 @@ const PremPlayers = () => {
 
     let playerPositions = JSON.parse(localStorage.getItem("element_types"));
     let premTeams = JSON.parse(localStorage.getItem("teams"));
+    let playerOwnership = JSON.parse(localStorage.getItem("player_ownership"));
+    let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
   
     const navigate = useNavigate();
     const goToHomepage = () => {
@@ -20,6 +22,21 @@ const PremPlayers = () => {
         let teamId = document.getElementById("team").value;
         setFilterPoints(points);
         setFilterTeam(teamId);
+    };
+
+    const getOwner = (playerId) => {
+        let singlePlayer = playerOwnership.filter((player) => player.element === playerId);
+        if (singlePlayer[0].owner) {
+            let team = leagueTeams.filter((team) => team.entry_id === singlePlayer[0].owner);
+            return (
+                <em>Owned by {team[0].entry_name}</em>
+            );
+        }
+        else {
+            return (
+                <mark>Available!</mark>
+            );
+        }
     };
 
 
@@ -71,7 +88,7 @@ const PremPlayers = () => {
                     .sort((a, b) => b.total_points - a.total_points)
                     .map((filteredPlayer,i) => (
                         <div key={filteredPlayer.id}>
-                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
+                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
                         </div>
                     ))}
                 </div> :
@@ -82,7 +99,7 @@ const PremPlayers = () => {
                     .sort((a, b) => b.total_points - a.total_points)
                     .map((filteredPlayer,i) => (
                         <div key={filteredPlayer.id}>
-                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
+                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
                         </div>
                     ))}
                 </div>
