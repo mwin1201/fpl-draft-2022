@@ -6,6 +6,7 @@ const PremFixtures = () => {
     const [displayArr, setDisplayArr] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [sortStat, setSortStat] = useState("");
+    const [currentFixtures, setCurrentFixtures] = useState([]);
 
     const navigate = useNavigate();
     const goToHomepage = () => {
@@ -130,6 +131,10 @@ const PremFixtures = () => {
             return newArr;
         };
 
+        const getCurrentFixtures = async (event) => {
+            return await getFixtureData(event);
+        };
+
         const getGWHistory = async () => {
             let finalArr = [];
             const currentGW = JSON.parse(localStorage.getItem("current_gameweek"));
@@ -149,7 +154,8 @@ const PremFixtures = () => {
                 finalArr = mergeArrays(finalArr, awayArr, homeArr);
             }
             finalArr = (modifyArr(finalArr));
-            console.log(finalArr);
+            const upcomingFixtures = await getCurrentFixtures(currentGW + 1);
+            setCurrentFixtures(upcomingFixtures);
             setDisplayArr(finalArr);
             setIsLoading(false);
         };
@@ -194,6 +200,17 @@ const PremFixtures = () => {
                 <button onClick={goToHomepage}>
                     Homepage
                 </button>
+            </div>
+            <h2>
+                Upcoming Gameweek Fixtures
+            </h2>
+            <div>
+                <u><strong>AWAY vs HOME</strong></u>
+                {currentFixtures.map((fixture) => (
+                    <div key={fixture.id}>
+                        {getTeamName(fixture.team_a)} vs {getTeamName(fixture.team_h)}
+                    </div>
+                ))}
             </div>
             <h2>
                 Prem Team Data from past 4 Gameweeks
