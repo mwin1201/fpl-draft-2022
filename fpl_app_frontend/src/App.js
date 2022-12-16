@@ -11,6 +11,7 @@ import Aggregate from './pages/Aggregate';
 import Draft from './pages/Draft';
 import GameweekStats from './pages/GameweekStats';
 import SeasonLeaders from './pages/SeasonLeaders';
+import PremFixtures from './pages/PremFixtures';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/draft' element={<Draft/>}></Route>
         <Route path='/gameweekStats' element={<GameweekStats/>}></Route>
         <Route path='/seasonLeaders' element={<SeasonLeaders/>}></Route>
+        <Route path='/premFixtures' element={<PremFixtures/>}></Route>
       </Routes>
     </Router>
   );
