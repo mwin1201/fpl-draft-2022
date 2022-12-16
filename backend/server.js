@@ -82,6 +82,16 @@ app.get("/getGameweek", async (req, res) => {
     res.json(jsonResponse);
 });
 
+// this section is the endpoint to get the gameweek fixture outcomes
+app.get("/getFixtureData/:event", async (req, res) => {
+    const fetchOptions = {
+        method: "GET"
+    };
+    const response = await fetch("https://fantasy.premierleague.com/api/fixtures/?event=" + req.params.event);
+    const jsonResponse = await response.json();
+    res.json(jsonResponse);
+})
+
 app.listen(PORT, '0.0.0.0', (err) => {
     if (err) throw err;
     console.log(`FPL app listening at port: ${PORT}`);
