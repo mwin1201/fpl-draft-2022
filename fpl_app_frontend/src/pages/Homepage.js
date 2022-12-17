@@ -5,11 +5,13 @@ import getPlayers from "../data/Players";
 import getDraftData from "../data/DraftData";
 import getGameweek from "../data/CurrentGameweek";
 import seasonStats from "../data/GWStats";
+import ManagerOfTheMonth from "../data/ManagerOTM";
 
 const Homepage = () => {
     const [teamData, setTeamData] = useState([]);
     const [leagueData, setLeagueData] = useState([]);
     const [standingsData, setStandingsData] = useState([]);
+    const [MOTM, setMOTM] = useState([]);
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [statCounter, setStatCounter] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +31,7 @@ const Homepage = () => {
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
                 getAllStats(curGW);
+                setMOTM(ManagerOfTheMonth(currentGameweek));
             }).catch(() => setIsError(true));
         }
 
@@ -52,6 +55,7 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
+                setMOTM(ManagerOfTheMonth(currentGameweek));
             }
         };
         start();
@@ -96,6 +100,7 @@ const Homepage = () => {
         let oneTeam = teamData.filter((team) => {
             return team.id === entry_id;
         });
+
         return oneTeam[0].entry_name;
     };
 
@@ -166,8 +171,17 @@ const Homepage = () => {
                 </button>
             </div>
             <div>
-                <h1>FPL DRAFT 2022/23</h1>
-                <h2>{leagueData.name}</h2>
+                <h1>FPL DRAFT 2022/23: {leagueData.name}</h1>
+            </div>
+            <div>
+                <h2>
+                    Manager of the Month
+                    {MOTM.map((manager) => (
+                        <div key={manager.team}>
+                            <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
+                        </div>
+                    ))}
+                </h2>
             </div>
             <div>
                 <h3>The participants</h3>
