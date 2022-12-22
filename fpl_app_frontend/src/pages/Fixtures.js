@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import {Link, useNavigate} from "react-router-dom"
 
 const Fixtures = () => {
     const [filterTeam, setFilterTeam] = useState(0);
@@ -14,12 +13,6 @@ const Fixtures = () => {
         });
         return filterTeam[0].entry_name;
     };
-    
-
-    const navigate = useNavigate();
-    const goToHomepage = () => {
-        navigate("/");
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -31,12 +24,6 @@ const Fixtures = () => {
 
     return (
         <div>
-            <div>
-                <Link to="/"></Link>
-                <button onClick={goToHomepage}>
-                    Homepage
-                </button>
-            </div>
             <h3>Filters</h3>
             <div>
                 <form id="filters" onSubmit={handleSubmit}>

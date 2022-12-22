@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {Link, useNavigate} from "react-router-dom"
 import getLeagueData from "../data/LeagueData";
 import getPlayers from "../data/Players";
 import getDraftData from "../data/DraftData";
@@ -62,40 +61,6 @@ const Homepage = () => {
 
     },[currentGameweek]);
 
-    const navigate = useNavigate();
-    const goToFixtures = () => {
-        navigate("/fixtureHistory");
-    };
-
-    const goToPremPlayers = () => {
-        navigate("/premPlayers");
-    };
-
-    const goToLineups = () => {
-        navigate("/lineups");
-    };
-
-    const goToAggregate = () => {
-        navigate("/aggregate");
-    };
-
-    const goToDraft = () => {
-        navigate("/draft");
-    };
-
-    const goToStats = () => {
-        navigate("/gameweekStats");
-    };
-
-    const goToSeasonLeaders = () => {
-        navigate("/seasonLeaders");
-    }
-
-    const goToPremFixtures = () => {
-        navigate("/premFixtures");
-    };
-
-
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
             return team.id === entry_id;
@@ -123,55 +88,7 @@ const Homepage = () => {
     return (
         <main>
             <div>
-                <Link to="/fixtureHistory"></Link>
-                <button onClick={goToFixtures}>
-                        Fixture History
-                </button>
-            </div>
-            <div>
-                <Link to="/premPlayers"></Link>
-                <button onClick={goToPremPlayers}>
-                    See Players
-                </button>
-            </div>
-            <div>
-                <Link to="/lineups"></Link>
-                <button onClick={goToLineups}>
-                    See Team Lineups
-                </button>
-            </div>
-            <div>
-                <Link to="/aggregate"></Link>
-                <button onClick={goToAggregate}>
-                    See Aggregate Data
-                </button>
-            </div>
-            <div>
-                <Link to="/draft"></Link>
-                <button onClick={goToDraft}>
-                    See Draft Data
-                </button>
-            </div>
-            <div>
-                <Link to="/gameweekStats"></Link>
-                <button onClick={goToStats}>
-                        Gameweek Stats
-                </button>
-            </div>
-            <div>
-                <Link to="/seasonLeaders"></Link>
-                <button onClick={goToSeasonLeaders}>
-                        Season Leaders
-                </button>
-            </div>
-            <div>
-                <Link to="/premFixtures"></Link>
-                <button onClick={goToPremFixtures}>
-                        Prem Fixtures
-                </button>
-            </div>
-            <div>
-                <h1>FPL DRAFT 2022/23: {leagueData.name}</h1>
+                <h1>{leagueData.name}</h1>
             </div>
             <div>
                 <h2>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {Link, useNavigate} from "react-router-dom"
 const axios = require('axios').default;
 
 const GameweekStats = () => {
@@ -19,19 +18,8 @@ const GameweekStats = () => {
         setCurrentGameweek(gameweek);
     };
 
-    const navigate = useNavigate();
-    const goToHomepage = () => {
-        navigate("/");
-    };
-
     return (
         <section>
-            <div>
-                <Link to="/"></Link>
-                <button onClick={goToHomepage}>
-                    Homepage
-                </button>
-            </div>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="gameweek">Select a Gameweek:</label>
                 <input type="number" id="gameweek" name="gameweek" min="0" max="38"></input>

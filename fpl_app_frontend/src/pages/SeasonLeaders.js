@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {Link, useNavigate} from "react-router-dom"
 import getGameweek from "../data/CurrentGameweek";
 
 const SeasonLeaders = () => {
@@ -49,11 +48,6 @@ const SeasonLeaders = () => {
 
     },[])
 
-    const navigate = useNavigate();
-    const goToHomepage = () => {
-        navigate("/");
-    };
-
     if (isLoading) {
         return (
             <div>
@@ -64,12 +58,6 @@ const SeasonLeaders = () => {
 
     return (
         <section>
-            <div>
-                    <Link to="/"></Link>
-                    <button onClick={goToHomepage}>
-                        Homepage
-                    </button>
-                </div>
             <div>
                 <h3>Minutes Played</h3>
                 {allStats.sort((a,b) => (
