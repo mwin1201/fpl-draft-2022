@@ -1,0 +1,17 @@
+/* Mobile Responsiveness */
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 10px;
+    }
+    
+    header nav {
+        display: flex;
+        flex-flow: column wrap;
+        align-content: center;
+    }
+
+    header nav a {
+        margin: 2px;
+    }
+}
