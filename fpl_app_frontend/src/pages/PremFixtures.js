@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {Link, useNavigate} from "react-router-dom";
 const axios = require('axios').default;
 
 const PremFixtures = () => {
@@ -7,11 +6,6 @@ const PremFixtures = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [sortStat, setSortStat] = useState("");
     const [currentFixtures, setCurrentFixtures] = useState([]);
-
-    const navigate = useNavigate();
-    const goToHomepage = () => {
-        navigate("/");
-    };
 
     useEffect(() => {
         setIsLoading(true);
@@ -195,12 +189,6 @@ const PremFixtures = () => {
 
     return (
         <section>
-            <div>
-                <Link to="/"></Link>
-                <button onClick={goToHomepage}>
-                    Homepage
-                </button>
-            </div>
             <h2>
                 Upcoming Gameweek Fixtures
             </h2>
