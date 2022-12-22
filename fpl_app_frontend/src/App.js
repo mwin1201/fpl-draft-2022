@@ -13,9 +13,13 @@ import GameweekStats from './pages/GameweekStats';
 import SeasonLeaders from './pages/SeasonLeaders';
 import PremFixtures from './pages/PremFixtures';
 
+import Header from './components/Header';
+import Footer from './components/Footer';
+
 function App() {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path='/' element={<Homepage/>}></Route>
         <Route path='/fixtureHistory' element={<Fixtures/>}></Route>
@@ -27,6 +31,7 @@ function App() {
         <Route path='/seasonLeaders' element={<SeasonLeaders/>}></Route>
         <Route path='/premFixtures' element={<PremFixtures/>}></Route>
       </Routes>
+      <Footer />
     </Router>
   );
 }

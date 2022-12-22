@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {Link, useNavigate} from "react-router-dom"
 
 const Aggregate = () => {
     const [points, setPoints] = useState(0);
     const [teamPoints, setTeamPoints] = useState([]);
-
-    const navigate = useNavigate();
-    const goToHomepage = () => {
-        navigate("/");
-    };
 
     useEffect(() => {
         const calculateTotalPoints = () => {
@@ -61,12 +55,6 @@ const Aggregate = () => {
 
     return (
         <div>
-            <div>
-                <Link to="/"></Link>
-                <button onClick={goToHomepage}>
-                    Homepage
-                </button>
-            </div>
             <h1>Total Points in all of FPL: {points}</h1>
 
             <h2>Team Breakdown</h2>
