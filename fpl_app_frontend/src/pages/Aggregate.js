@@ -54,25 +54,24 @@ const Aggregate = () => {
     }
 
     return (
-        <div>
+        <main>
             <h1>Total Points in all of FPL: {points}</h1>
 
             <h2>Team Breakdown</h2>
-            {teamPoints.sort((a,b) => b.totalPoints - a.totalPoints)
-            .map((team, i) => (
-                <div key={team.teamId}>
-                    <h3>{i+1}. {team.premTeam}: {team.totalPoints} points - {doMath(team.totalPoints, points)}% of all points</h3>
-                    {team.players.sort((a,b) => b.total_points - a.total_points).map((player) => (
-                        <div key={player.id}>
-                            <strong>{getPosition(player.element_type)}</strong> {player.first_name} {player.second_name}: {player.total_points} points - {doMath(player.total_points,team.totalPoints)} % of team total points
-                        </div>
-                    ))}
-                </div>
-
-            ))}
-
-
-        </div>
+            <section id="aggregate">
+                {teamPoints.sort((a,b) => b.totalPoints - a.totalPoints)
+                .map((team, i) => (
+                    <div key={team.teamId}>
+                        <h3>{i+1}. {team.premTeam}: {team.totalPoints} points - {doMath(team.totalPoints, points)}% of all points</h3>
+                        {team.players.sort((a,b) => b.total_points - a.total_points).map((player) => (
+                            <div key={player.id} className="player-list">
+                                <strong>{getPosition(player.element_type)}</strong> {player.first_name} {player.second_name}: {player.total_points} points - {doMath(player.total_points,team.totalPoints)} % of team points
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </section>
+        </main>
     )
 
 };

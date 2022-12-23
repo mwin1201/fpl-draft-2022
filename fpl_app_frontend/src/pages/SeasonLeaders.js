@@ -50,14 +50,14 @@ const SeasonLeaders = () => {
 
     if (isLoading) {
         return (
-            <div>
+            <main>
                 LOADING ALL DATA, PLEASE BE PATIENT
-            </div>
+            </main>
         )
     }
 
     return (
-        <section>
+        <main>
             <div>
                 <h3>Minutes Played</h3>
                 {allStats.sort((a,b) => (
@@ -132,7 +132,7 @@ const SeasonLeaders = () => {
                     </div>
                 ))}
             </div>
-        </section>
+        </main>
     )
 };
 
