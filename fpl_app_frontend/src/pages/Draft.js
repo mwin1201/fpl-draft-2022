@@ -45,15 +45,15 @@ const Draft = () => {
 
 
     return (
-        <div>
-
-            <h2>Filters:</h2>
-            <div>
+        <main>
+            <section>
+                <h2>See Players Picked by Round</h2>
                 <form id="roundFilter" onSubmit={handleRoundSubmit}>
                     <label htmlFor="round">Round: </label>
                     <input type="number" id="round" name="round" min="1" max="15"></input>
                     <button type="submit">Submit</button>
                 </form>
+                <h2>See Players Picked by Team</h2>
                 <form id="teamFilter" onSubmit={handleTeamSubmit}>
                     <label htmlFor="team">Team: </label>
                     <select name="team" id="team">
@@ -63,16 +63,16 @@ const Draft = () => {
                     </select>
                     <button type="submit">Submit</button>
                 </form>
-            </div>
+            </section>
 
-            <h2>Draft Order</h2>
+            <h1>Draft Order</h1>
             {draft
             .map((pick,i) => (
-                <div key={i}>
+                <div key={i} className="player-list">
                     <strong>Round {pick.round}: </strong>{pick.entry_name} - {getPlayerName(pick.element)} (#{getPlayerCurrentPointRank(pick.element)} rank in pts all players)
                 </div>
             ))}
-        </div>
+        </main>
     )
 
 };
