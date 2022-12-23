@@ -1,6 +1,7 @@
 /* Mobile Responsiveness */
 
 @media screen and (max-width: 768px) {
+    /* Header Component */
     header {
         padding: 10px;
     }
@@ -13,5 +14,14 @@
 
     header nav a {
         margin: 2px;
+    }
+
+    /* Homepage */
+    #standings {
+        border-collapse: separate;
+    }
+
+    .player-list {
+        margin: 10px;
     }
 }

@@ -71,23 +71,9 @@ const PremPlayers = () => {
 
 
     return (
-        <div>
-            <h3>Player Positions</h3>
-            {playerPositions.map((position) => (
-                <div key={position.id}>
-                    {position.singular_name} - {position.element_count} FPL players
-                </div>
-            ))}
-
-            <h3>Premier Teams</h3>
-            {premTeams.map((team) => (
-                <div key={team.id}>
-                    ID:{team.id} - {team.name}
-                </div>
-            ))}
-
-            <h3>Filters</h3>
-            <div>
+        <main>
+            <section>
+                <h2>Filter Prem Players by Points and Team</h2>
                 <form id="filters" onSubmit={handleSubmit}>
                     <label htmlFor="points">Points: </label>
                     <input type="number" id="points" name="points" min="0"></input>
@@ -100,8 +86,10 @@ const PremPlayers = () => {
                     </select>
                     <button type="submit">Submit</button>
                 </form>
-            </div>
-            <div>
+            </section>
+
+            <section>
+                <h2>Filter Players by League Teams</h2>
                 <form id="ownerFilter" onSubmit={handleOwnerSubmit}>
                     <label htmlFor="owner">Team: </label>
                     <select name="owner" id="owner">
@@ -112,10 +100,10 @@ const PremPlayers = () => {
                     </select>
                     <button type="submit">Submit</button>
                 </form>
-            </div>
+            </section>
 
 
-            <h3>Filtered Players</h3>
+            <h2>Filtered Players</h2>
             {formSubmit ?
                 <div>
                     {plyerOwnership.filter((player) => (
@@ -123,7 +111,7 @@ const PremPlayers = () => {
                     ))
                     .sort((a,b) => a.element_type - b.element_type)
                     .map((filteredPlayer,i) => (
-                        <div key={filteredPlayer.element}>
+                        <div key={filteredPlayer.element} className="player-list">
                             #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
                         </div>
                     ))}
@@ -136,7 +124,7 @@ const PremPlayers = () => {
                             )
                             .sort((a, b) => b.total_points - a.total_points)
                             .map((filteredPlayer,i) => (
-                                <div key={filteredPlayer.id}>
+                                <div key={filteredPlayer.id} className="player-list">
                                 #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
                                 </div>
                             ))}
@@ -147,7 +135,7 @@ const PremPlayers = () => {
                             )
                             .sort((a, b) => b.total_points - a.total_points)
                             .map((filteredPlayer,i) => (
-                                <div key={filteredPlayer.id}>
+                                <div key={filteredPlayer.id} className="player-list">
                                 #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
                                 </div>
                             ))}
@@ -155,9 +143,8 @@ const PremPlayers = () => {
                     }
                 </div>
             }
-        </div>
+        </main>
     )
-
 };
 
 export default PremPlayers;

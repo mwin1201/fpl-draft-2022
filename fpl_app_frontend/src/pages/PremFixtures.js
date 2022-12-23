@@ -182,13 +182,13 @@ const PremFixtures = () => {
 
     if (isLoading) {
         return (
-            <div>Loading...</div>
+            <main>Loading...</main>
         );
     }
 
 
     return (
-        <section>
+        <main>
             <h2>
                 Upcoming Gameweek Fixtures
             </h2>
@@ -222,9 +222,9 @@ const PremFixtures = () => {
                 <button type="submit">Submit</button>
             </form>
             <div>
-                {displayArr.map((team) => (
+                {displayArr.map((team, i) => (
                     <div key={team.teamId}>
-                        <h3>{getTeamName(team.teamId)}</h3>
+                        <h3>#{i+1}: {getTeamName(team.teamId)}</h3>
                         <div>Goals Scored: {team.goals_scored}</div>
                         <div>Goals Against: {team.goalsAgainst}</div>
                         <div>Assists: {team.assists}</div>
@@ -238,7 +238,7 @@ const PremFixtures = () => {
                     </div>
                 ))}
             </div>
-        </section>
+        </main>
     )
 
 };

@@ -69,11 +69,15 @@ const Homepage = () => {
         return oneTeam[0].entry_name;
     };
 
+    const getDifference = (num1, num2) => {
+        return num1 - num2;
+    };
+
     if (isLoading) {
         return (
-            <section>
+            <main>
                 <div>Loading all of the Gameweek stats, be patient. {statCounter}/{JSON.parse(localStorage.getItem("current_gameweek"))}</div>
-            </section>
+            </main>
         )
     }
 
@@ -87,10 +91,11 @@ const Homepage = () => {
 
     return (
         <main>
-            <div>
-                <h1>{leagueData.name}</h1>
-            </div>
-            <div>
+            <section>
+                <u><h1>{leagueData.name}</h1></u>
+            </section>
+
+            <section>
                 <h2>
                     Manager of the Month
                     {MOTM.map((manager) => (
@@ -99,23 +104,43 @@ const Homepage = () => {
                         </div>
                     ))}
                 </h2>
-            </div>
-            <div>
-                <h3>The participants</h3>
-                {teamData.map((team) => (
-                    <div key={team.id}>{team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
+            </section>
+
+            <section className="participants">
+                <h3>The Participants</h3>
+                {teamData.map((team, i) => (
+                    <div key={team.id}>{i+1}. {team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
                 ))}
-            </div>
-            <div>
+            </section>
+
+            <section>
                 <h3>League Standings</h3>
-                <div>League Team - Wins - Draws - Losses - Pts For - Pts Against - Total Table Pts</div>
-                {standingsData.map((player) => (
-                    <div key={player.league_entry}>
-                        {getEntryName(player.league_entry)} - {player.matches_won} - {player.matches_drawn} - 
-                        {player.matches_lost} - {player.points_for} - {player.points_against} - {player.total}
-                    </div>
-                ))}
-            </div>
+                <table id="standings">
+                    <tr>
+                        <th>League Team</th>
+                        <th>Wins</th>
+                        <th>Draws</th>
+                        <th>Losses</th>
+                        <th>Pts For</th>
+                        <th>Pts Against</th>
+                        <th>Pts Diff</th>
+                        <th>Total Table Points</th>
+                    </tr>
+                    {standingsData.map((player) => (
+                        <tr key={player.league_entry}>
+                            <td>{getEntryName(player.league_entry)}</td>
+                            <td>{player.matches_won}</td>
+                            <td>{player.matches_drawn}</td>
+                            <td>{player.matches_lost}</td>
+                            <td>{player.points_for}</td>
+                            <td>{player.points_against}</td>
+                            <td>{getDifference(player.points_for, player.points_against)}</td>
+                            <td>{player.total}</td>
+                        </tr>
+                    ))}
+                </table>
+            </section>
+
         </main>
     )
 };
