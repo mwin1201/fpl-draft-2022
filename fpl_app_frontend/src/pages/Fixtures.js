@@ -23,8 +23,8 @@ const Fixtures = () => {
     };
 
     return (
-        <div>
-            <h3>Filters</h3>
+        <main>
+            <h3>Search Fixtures by League Team</h3>
             <div>
                 <form id="filters" onSubmit={handleSubmit}>
                     <label htmlFor="leagueTeam">Select team: </label>
@@ -45,9 +45,8 @@ const Fixtures = () => {
                 </div>
             ))}
             </div>
-        </div>
+        </main>
     );
-
 };
 
 export default Fixtures;

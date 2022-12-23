@@ -19,16 +19,13 @@ const GameweekStats = () => {
     };
 
     return (
-        <section>
+        <main>
             <form onSubmit={handleSubmit}>
+                <h2>Search Stats by Gameweek</h2>
                 <label htmlFor="gameweek">Select a Gameweek:</label>
                 <input type="number" id="gameweek" name="gameweek" min="0" max="38"></input>
                 <button type="submit">Submit</button>
             </form>
-
-            <div>
-                <strong>Refresh Screen when you first open the page to see accurate data</strong>
-            </div>
 
             <h2>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
             <div>
@@ -105,7 +102,7 @@ const GameweekStats = () => {
                 </div>
             ))}
             </div>
-        </section>
+        </main>
     )
 
 };
