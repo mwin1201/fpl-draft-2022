@@ -106,7 +106,7 @@ const Homepage = () => {
                 </h2>
             </section>
 
-            <section className="participants">
+            <section>
                 <h3>The Participants</h3>
                 {teamData.map((team, i) => (
                     <div key={team.id}>{i+1}. {team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
