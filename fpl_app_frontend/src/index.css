@@ -75,6 +75,11 @@ footer {
   color: var(--fpl-green);
 }
 
+/* Prem Players Page */
+.current-filter {
+  color: #00ff87;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
