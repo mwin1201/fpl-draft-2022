@@ -64,11 +64,31 @@ const PremFixtures = () => {
             let awayArr = [];
             for (var y = 0; y < fixtureData.length; y++) {
                 let obj = {};
-                obj.teamId = fixtureData[y].team_a;
-                obj.goalsScored = fixtureData[y].team_a_score;
-                obj.goalsAgainst = fixtureData[y].team_h_score;
-                obj.stats = breakdownStats(fixtureData[y].stats,"a");
-                awayArr.push(obj);
+                if (fixtureData[y].finished == true) {
+                    obj.teamId = fixtureData[y].team_a;
+                    obj.goalsScored = fixtureData[y].team_a_score;
+                    obj.goalsAgainst = fixtureData[y].team_h_score;
+                    obj.stats = breakdownStats(fixtureData[y].stats,"a");
+                    awayArr.push(obj);
+                }
+                else {
+                    obj.teamId = fixtureData[y].team_a;
+                    obj.goalsScored = 0;
+                    obj.goalsAgainst = 0;
+                    obj.stats = [
+                        {"goals_scored": 0},
+                        {"assists": 0},
+                        {"own_goals": 0},
+                        {"penalties_saved": 0},
+                        {"penalties_missed": 0},
+                        {"yellow_cards": 0},
+                        {"red_cards": 0},
+                        {"saves": 0},
+                        {"bonus": 0},
+                        {"bps": 0}
+                    ];
+                    awayArr.push(obj);
+                }
             }
             return awayArr;
         };
@@ -77,16 +97,37 @@ const PremFixtures = () => {
             let homeArr = [];
             for (var y = 0; y < fixtureData.length; y++) {
                 let obj = {};
-                obj.teamId = fixtureData[y].team_h;
-                obj.goalsScored = fixtureData[y].team_h_score;
-                obj.goalsAgainst = fixtureData[y].team_a_score;
-                obj.stats = breakdownStats(fixtureData[y].stats,"h");
-                homeArr.push(obj);
+                if (fixtureData[y].finished == true) {
+                    obj.teamId = fixtureData[y].team_h;
+                    obj.goalsScored = fixtureData[y].team_h_score;
+                    obj.goalsAgainst = fixtureData[y].team_a_score;
+                    obj.stats = breakdownStats(fixtureData[y].stats,"h");
+                    homeArr.push(obj);
+                }
+                else {
+                    obj.teamId = fixtureData[y].team_h;
+                    obj.goalsScored = 0;
+                    obj.goalsAgainst = 0;
+                    obj.stats = [
+                        {"goals_scored": 0},
+                        {"assists": 0},
+                        {"own_goals": 0},
+                        {"penalties_saved": 0},
+                        {"penalties_missed": 0},
+                        {"yellow_cards": 0},
+                        {"red_cards": 0},
+                        {"saves": 0},
+                        {"bonus": 0},
+                        {"bps": 0}
+                    ];
+                    homeArr.push(obj);
+                }
             }
             return homeArr;
         };
 
         const mergeArrays = (final, away, home) => {
+            console.log(final);
             if (final.length == 0) {
                 final = away.concat(home).sort((a,b) => a.teamId - b.teamId);
                 return final;
