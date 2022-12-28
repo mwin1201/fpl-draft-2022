@@ -29,8 +29,8 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                getAllStats(curGW);
                 setMOTM(ManagerOfTheMonth(currentGameweek));
+                getAllStats(curGW);
             }).catch(() => setIsError(true));
         }
 
