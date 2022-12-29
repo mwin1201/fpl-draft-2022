@@ -60,7 +60,7 @@ const PremPlayers = () => {
         else {
             positionElement.className = "current-filter";
             ownerElement.classList.remove("current-filter");
-            ownerElement.classList.remove("current-filter");
+            teamElement.classList.remove("current-filter");
         }
     };
 
