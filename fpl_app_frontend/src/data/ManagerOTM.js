@@ -1,5 +1,5 @@
 
-const ManagerOfTheMonth = (gameweek) => {
+const ManagerOfTheMonth = async (gameweek) => {
 
     const getEventScores = (premEvent) => {
         const matches = JSON.parse(localStorage.getItem("matches"));
@@ -49,7 +49,7 @@ const ManagerOfTheMonth = (gameweek) => {
         return [allScores[0]];
     };
 
-    const gameweekLoop = (currentGW) => {
+    const gameweekLoop = async (currentGW) => {
         let finalArr = [];
         let start;
         

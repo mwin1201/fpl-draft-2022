@@ -141,7 +141,7 @@ const PremPlayers = () => {
                 <form id="positionFilter" onSubmit={handlePositionSubmit}>
                     <label htmlFor="position">Position: </label>
                     <select name="position" id="position">
-                        <option value="">All Positions</option>
+                        <option value="">No Position Selected</option>
                         {playerPositions.map((position) => (
                             <option key={position.id} value={position.id}>{position.singular_name_short}</option>
                         ))}
