@@ -29,7 +29,6 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                setMOTM(ManagerOfTheMonth(currentGameweek));
                 getAllStats(curGW);
             }).catch(() => setIsError(true));
         }
@@ -38,6 +37,11 @@ const Homepage = () => {
             for (var index = 1; index <= gw; index++) {
                 setStatCounter(await seasonStats(index));
             }
+            getManagerOfTheMonth(gw);
+        };
+
+        const getManagerOfTheMonth = async (gw) => {
+            setMOTM(await ManagerOfTheMonth(gw));
             setIsLoading(false);
         };
 
@@ -51,10 +55,10 @@ const Homepage = () => {
             else {
                 setIsLoading(false);
                 console.log("No need to update data");
+                setMOTM(await ManagerOfTheMonth(apiGW));
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                setMOTM(ManagerOfTheMonth(currentGameweek));
             }
         };
         start();
@@ -116,6 +120,7 @@ const Homepage = () => {
             <section>
                 <h3>League Standings</h3>
                 <table id="standings">
+                    <thead>
                     <tr>
                         <th>League Team</th>
                         <th>Wins</th>
@@ -126,6 +131,8 @@ const Homepage = () => {
                         <th>Pts Diff</th>
                         <th>Total Table Points</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {standingsData.map((player) => (
                         <tr key={player.league_entry}>
                             <td>{getEntryName(player.league_entry)}</td>
@@ -138,6 +145,7 @@ const Homepage = () => {
                             <td>{player.total}</td>
                         </tr>
                     ))}
+                    </tbody>
                 </table>
             </section>
 
