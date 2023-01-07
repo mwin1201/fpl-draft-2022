@@ -4,7 +4,6 @@ const axios = require('axios').default;
 const PremFixtures = () => {
     const [displayArr, setDisplayArr] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [sortStat, setSortStat] = useState("");
     const [currentFixtures, setCurrentFixtures] = useState([]);
 
     useEffect(() => {
@@ -47,8 +46,8 @@ const PremFixtures = () => {
                     }
                 } else {
                     if (singleStat[0].h.length > 0) {
-                        for (var y = 0; y < singleStat[0].h.length; y++) {
-                            statCount += singleStat[0].h[y].value;
+                        for (var z = 0; z < singleStat[0].h.length; z++) {
+                            statCount += singleStat[0].h[z].value;
                         }
                     }
                 }
@@ -126,14 +125,76 @@ const PremFixtures = () => {
             return homeArr;
         };
 
+        const checkForDuplicates = (incomingArr) => {
+            let outgoingArr = [];
+            for (var i = 1; i <= 20; i++) {
+                let teamArr = incomingArr.filter((team) => team.teamId === i);
+                if (teamArr.length > 1) {
+                    let tempObj = {};
+                    tempObj.teamId = i;
+                    tempObj.stats = [
+                        {"goals_scored": 0},
+                        {"assists": 0},
+                        {"own_goals": 0},
+                        {"penalties_saved": 0},
+                        {"penalties_missed": 0},
+                        {"yellow_cards": 0},
+                        {"red_cards": 0},
+                        {"saves": 0},
+                        {"bonus": 0},
+                        {"bps": 0}
+                    ];
+                    for (var y = 0; y < teamArr.length; y++) {
+                        tempObj.goalsScored += teamArr[y].goalsScored;
+                        tempObj.goalsAgainst += teamArr[y].goalsAgainst;
+                        tempObj.stats[0].goals_scored += teamArr[y].stats[0].goals_scored;
+                        tempObj.stats[1].assists += teamArr[y].stats[1].assists;
+                        tempObj.stats[2].own_goals += teamArr[y].stats[2].own_goals;
+                        tempObj.stats[3].penalties_saved += teamArr[y].stats[3].penalties_saved;
+                        tempObj.stats[4].penalties_missed += teamArr[y].stats[4].penalties_missed;
+                        tempObj.stats[5].yellow_cards += teamArr[y].stats[5].yellow_cards;
+                        tempObj.stats[6].red_cards += teamArr[y].stats[6].red_cards;
+                        tempObj.stats[7].saves += teamArr[y].stats[7].saves;
+                        tempObj.stats[8].bonus += teamArr[y].stats[8].bonus;
+                        tempObj.stats[9].bps += teamArr[y].stats[9].bps;
+                    }
+                    outgoingArr.push(tempObj);
+                }
+                else if (teamArr.length == 0) {
+                    let tempObj = {};
+                    tempObj.teamId = i;
+                    tempObj.goalsScored = 0;
+                    tempObj.goalsAgainst = 0;
+                    tempObj.stats = [
+                        {"goals_scored": 0},
+                        {"assists": 0},
+                        {"own_goals": 0},
+                        {"penalties_saved": 0},
+                        {"penalties_missed": 0},
+                        {"yellow_cards": 0},
+                        {"red_cards": 0},
+                        {"saves": 0},
+                        {"bonus": 0},
+                        {"bps": 0}
+                    ];
+                    outgoingArr.push(tempObj);
+                }
+                else {
+                    outgoingArr.push(teamArr[0]);
+                }
+            }
+            return outgoingArr;
+        };
+
         const mergeArrays = (final, away, home) => {
-            console.log(final);
             if (final.length == 0) {
                 final = away.concat(home).sort((a,b) => a.teamId - b.teamId);
+                final = checkForDuplicates(final);
                 return final;
             } else {
                 let tempArr = [];
                 tempArr = away.concat(home).sort((a,b) => a.teamId - b.teamId);
+                tempArr = checkForDuplicates(tempArr);
                 for (var i = 0; i < tempArr.length; i++) {
                     final[i].goalsScored += tempArr[i].goalsScored;
                     final[i].goalsAgainst += tempArr[i].goalsAgainst;
