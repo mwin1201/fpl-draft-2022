@@ -103,6 +103,14 @@ const PremPlayers = () => {
         return playerObj;
     };
 
+    const getNews = (playerId) => {
+        let singlePlayer = players.filter((player) => player.id === playerId);
+        let playerObj = singlePlayer[0];
+        return (
+            <span className="news">{playerObj.news}</span>
+        );
+    };
+
 
     return (
         <main>
@@ -160,7 +168,7 @@ const PremPlayers = () => {
                     .sort((a,b) => b.total_points - a.total_points)
                     .map((filteredPlayer, i) => (
                         <div key={filteredPlayer.id} className="player-list">
-                            #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
+                            #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
                         </div>
                     ))}
                 </div>:
@@ -173,7 +181,7 @@ const PremPlayers = () => {
                             .sort((a,b) => a.element_type - b.element_type)
                             .map((filteredPlayer,i) => (
                                 <div key={filteredPlayer.element} className="player-list">
-                                    #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points
+                                    #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points {getNews(filteredPlayer.id)}
                                 </div>
                             ))}
                         </div> :
@@ -186,7 +194,7 @@ const PremPlayers = () => {
                                     .sort((a, b) => b.total_points - a.total_points)
                                     .map((filteredPlayer,i) => (
                                         <div key={filteredPlayer.id} className="player-list">
-                                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
+                                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
                                         </div>
                                     ))}
                                 </div> :
@@ -197,7 +205,7 @@ const PremPlayers = () => {
                                     .sort((a, b) => b.total_points - a.total_points)
                                     .map((filteredPlayer,i) => (
                                         <div key={filteredPlayer.id} className="player-list">
-                                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)})
+                                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
                                         </div>
                                     ))}
                                 </div>
