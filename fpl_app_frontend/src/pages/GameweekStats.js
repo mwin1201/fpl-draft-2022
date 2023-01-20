@@ -11,6 +11,34 @@ const GameweekStats = () => {
 
     },[currentGameweek]);
 
+    const checkWinLoss = (teamEntry) => {
+        let matches = JSON.parse(localStorage.getItem("matches"));
+        let eventMatch = matches.filter((match) => match.event == currentGameweek).filter((eventMatch) => (eventMatch.league_entry_1 === teamEntry) || (eventMatch.league_entry_2 === teamEntry));
+        if (eventMatch[0].league_entry_1 === teamEntry) {
+            if (eventMatch[0].league_entry_1_points > eventMatch[0].league_entry_2_points) {
+                return (
+                    <span className="win">W</span>
+                );
+            }
+            else {
+                return (
+                    <span className="loss">L</span>
+                );
+            }
+        }
+        else {
+            if (eventMatch[0].league_entry_2_points > eventMatch[0].league_entry_1_points) {
+                return (
+                    <span className="win">W</span>
+                );
+            }
+            else {
+                return (
+                    <span className="loss">L</span>
+                );
+            }
+        }
+    };
 
     const getTableRank = (teamEntry) => {
         let standings = JSON.parse(localStorage.getItem("standings"));
@@ -84,6 +112,7 @@ const GameweekStats = () => {
         event.preventDefault();
         let gameweek = document.getElementById("gameweek").value;
         setCurrentGameweek(gameweek);
+        setToggleStat(0);
     };
 
     const handleToggle = async (event) => {
@@ -116,6 +145,7 @@ const GameweekStats = () => {
                         <div className="team-cards" key={stat.teamId}>
                             <h3>{stat.person}</h3>
                             <h4>Overall: {getTableRank(stat.league_entry)}</h4>
+                            <h4>{checkWinLoss(stat.league_entry)}</h4>
                             <div>{stat.minutes} Minutes ({getLeagueRank(stat.teamId, "minutes")})</div>
                             <div>{stat.goals_scored} Goals ({getLeagueRank(stat.teamId, "goals")})</div>
                             <div>{stat.assists} Assists ({getLeagueRank(stat.teamId, "assists")})</div>
