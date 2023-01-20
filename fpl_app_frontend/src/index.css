@@ -77,12 +77,33 @@ footer {
 
 /* Prem Players Page */
 .current-filter {
-  color: #00ff87;
+  color: var(--fpl-green);
 }
 
 .news {
   color: red;
 }
+
+/* Season Leaders */
+.card-content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.team-cards, .stat-cards {
+  border: 2px solid black;
+  border-radius: 5px;
+  height: 300px;
+  width: 250px;
+}
+
+.team-cards:hover, .stat-cards:hover {
+  background-color: var(--fpl-green);
+}
+
 
 body {
   margin: 0;

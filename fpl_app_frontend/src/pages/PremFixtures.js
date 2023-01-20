@@ -132,6 +132,8 @@ const PremFixtures = () => {
                 if (teamArr.length > 1) {
                     let tempObj = {};
                     tempObj.teamId = i;
+                    tempObj.goalsScored = 0;
+                    tempObj.goalsAgainst = 0;
                     tempObj.stats = [
                         {"goals_scored": 0},
                         {"assists": 0},
