@@ -5,7 +5,7 @@ const seasonStats = async (index) => {
         const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
         let fullLineupArr = [];
         for (var i = 0; i < leagueTeams.length; i++) {
-            fullLineupArr.push({"teamId": leagueTeams[i].entry_id, "person": leagueTeams[i].entry_name, "lineup": await getLineups(leagueTeams[i].entry_id, currentGameweek)});
+            fullLineupArr.push({"teamId": leagueTeams[i].entry_id, "person": leagueTeams[i].entry_name, "league_entry": leagueTeams[i].id, "lineup": await getLineups(leagueTeams[i].entry_id, currentGameweek)});
         }
         return createStatArr(fullLineupArr, currentGameweek);
     };
@@ -13,7 +13,7 @@ const seasonStats = async (index) => {
     const createStatArr = async (allLineups, currentGameweek) => {
         let fullStatArr = [];
         for (var i = 0; i < allLineups.length; i++) {
-            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)})
+            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "league_entry": allLineups[i].league_entry, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)})
         }
         return modifyArr(fullStatArr, currentGameweek);
     };
@@ -27,6 +27,7 @@ const seasonStats = async (index) => {
             }
             statObj.teamId = allStatArr[i].teamId;
             statObj.person = allStatArr[i].person;
+            statObj.league_entry = allStatArr[i].league_entry;
             newArr.push(statObj);
         }
         return newArr;
