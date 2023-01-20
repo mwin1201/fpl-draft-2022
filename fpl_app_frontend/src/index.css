@@ -101,7 +101,28 @@ footer {
 }
 
 .team-cards:hover, .stat-cards:hover {
+  background-color: var(--fpl-purple);
+  color: var(--fpl-green);
+}
+
+.win {
   background-color: var(--fpl-green);
+  color: black;
+  border-radius: 100%;
+  text-align: center;
+  width: 34px;
+  height: 34px;
+  padding: 10px;
+}
+
+.loss {
+  background-color: red;
+  color: black;
+  border-radius: 100%;
+  text-align: center;
+  width: 34px;
+  height: 34px;
+  padding: 10px 15px 10px 15px;
 }
 
 
