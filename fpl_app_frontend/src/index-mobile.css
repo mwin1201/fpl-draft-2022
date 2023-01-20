@@ -24,4 +24,12 @@
     .player-list {
         margin: 10px;
     }
+
+    /* Gameweek Stats */
+    .team-cards {
+        border: 2px solid black;
+        border-radius: 5px;
+        height: 325px;
+        width: 250px;
+      }
 }
