@@ -4,6 +4,7 @@ import getGameweek from "../data/CurrentGameweek";
 const SeasonLeaders = () => {
     const [allStats, setAllStats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [statToggle, setStatToggle] = useState(0);
 
     useEffect(() => {
         setIsLoading(true);
@@ -48,6 +49,84 @@ const SeasonLeaders = () => {
 
     },[])
 
+    const getTableRank = (teamEntry) => {
+        let standings = JSON.parse(localStorage.getItem("standings"));
+        let teamRank = standings.filter((team) => team.league_entry === teamEntry)[0].rank;
+
+        if (teamRank === 1) {
+            return "1st";
+        }
+        else if (teamRank === 2) {
+            return "2nd";
+        }
+        else if (teamRank === 3) {
+            return "3rd";
+        }
+        else {
+            return teamRank + "th";
+        }
+    };
+
+    const getLeagueRank = (teamId, stat) => {
+        let sortStats, index;
+        if (stat === "minutes") {
+            sortStats = allStats.sort((a,b) => b.minutes - a.minutes);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "goals") {
+            sortStats = allStats.sort((a,b) => b.goals_scored - a.goals_scored);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "assists") {
+            sortStats = allStats.sort((a,b) => b.assists - a.assists);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "bonus") {
+            sortStats = allStats.sort((a,b) => b.bonus - a.bonus);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "shutouts") {
+            sortStats = allStats.sort((a,b) => b.clean_sheets - a.clean_sheets);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "goals against") {
+            sortStats = allStats.sort((a,b) => b.goals_conceded - a.goals_conceded);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "yellows") {
+            sortStats = allStats.sort((a,b) => b.yellow_cards - a.yellow_cards);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "reds") {
+            sortStats = allStats.sort((a,b) => b.red_cards - a.red_cards);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+
+
+        if (index === 1) {
+            return "1st";
+        }
+        else if (index === 2) {
+            return "2nd";
+        }
+        else if (index === 3) {
+            return "3rd";
+        }
+        else {
+            return index + "th";
+        }
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (statToggle === 0) {
+            setStatToggle(1);
+        }
+        else {
+            setStatToggle(0);
+        }
+    };
+
     if (isLoading) {
         return (
             <main>
@@ -58,82 +137,120 @@ const SeasonLeaders = () => {
 
     return (
         <main>
-            <div>
-                <h3>Minutes Played</h3>
-                {allStats.sort((a,b) => (
-                    b.minutes - a.minutes
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.minutes} : {stat.person}
+            <form id="stat-toggle" onSubmit={handleSubmit}>
+                <button type="submit">Toggle View</button>
+            </form>
+            {statToggle ? 
+                <div className="card-content">
+                    {allStats.map((stat) => (
+                        <div className="team-cards" key={stat.teamId}>
+                            <h3>{stat.person}</h3>
+                            <h4>Overall: {getTableRank(stat.league_entry)}</h4>
+                            <div>{stat.minutes} Minutes ({getLeagueRank(stat.teamId, "minutes")})</div>
+                            <div>{stat.goals_scored} Goals ({getLeagueRank(stat.teamId, "goals")})</div>
+                            <div>{stat.assists} Assists ({getLeagueRank(stat.teamId, "assists")})</div>
+                            <div>{stat.bonus} Bonus ({getLeagueRank(stat.teamId, "bonus")})</div>
+                            <div>{stat.clean_sheets} Shutouts ({getLeagueRank(stat.teamId, "shutouts")})</div>
+                            <div>{stat.goals_conceded} Goals Against ({getLeagueRank(stat.teamId, "goals against")})</div>
+                            <div>{stat.yellow_cards} Yellow Cards ({getLeagueRank(stat.teamId, "yellows")})</div>
+                            <div>{stat.red_cards} Red Cards ({getLeagueRank(stat.teamId, "reds")})</div>
+                        </div>
+                    ))}
+                </div>
+                :
+                <div className="card-content">
+                    <div className="stat-cards">
+                        <h3>Minutes Played</h3>
+                        {allStats.sort((a,b) => (
+                            b.minutes - a.minutes
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.minutes} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Goals Scored</h3>
-                {allStats.sort((a,b) => (
-                    b.goals_scored - a.goals_scored
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.goals_scored} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Goals Scored</h3>
+                        {allStats.sort((a,b) => (
+                            b.goals_scored - a.goals_scored
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.goals_scored} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Assists</h3>
-                {allStats.sort((a,b) => (
-                    b.assists - a.assists
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.assists} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Assists</h3>
+                        {allStats.sort((a,b) => (
+                            b.assists - a.assists
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.assists} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Bonus Points</h3>
-                {allStats.sort((a,b) => (
-                    b.bonus - a.bonus
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.bonus} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Bonus Points</h3>
+                        {allStats.sort((a,b) => (
+                            b.bonus - a.bonus
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.bonus} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Clean Sheets</h3>
-                {allStats.sort((a,b) => (
-                    b.clean_sheets - a.clean_sheets
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.clean_sheets} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Clean Sheets</h3>
+                        {allStats.sort((a,b) => (
+                            b.clean_sheets - a.clean_sheets
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.clean_sheets} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Goals Conceded</h3>
-                {allStats.sort((a,b) => (
-                    b.goals_conceded - a.goals_conceded
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.goals_conceded} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Goals Conceded</h3>
+                        {allStats.sort((a,b) => (
+                            b.goals_conceded - a.goals_conceded
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.goals_conceded} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Yellow Cards</h3>
-                {allStats.sort((a,b) => (
-                    b.yellow_cards - a.yellow_cards
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.yellow_cards} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Yellow Cards</h3>
+                        {allStats.sort((a,b) => (
+                            b.yellow_cards - a.yellow_cards
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.yellow_cards} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
-                    <h3>Red Cards</h3>
-                {allStats.sort((a,b) => (
-                    b.red_cards - a.red_cards
-                ))
-                .map((stat,index) => (
-                    <div key={index}>
-                        {stat.red_cards} : {stat.person}
+                    <div className="stat-cards">
+                        <h3>Red Cards</h3>
+                        {allStats.sort((a,b) => (
+                            b.red_cards - a.red_cards
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.red_cards} : {stat.person}
+                            </div>
+                        ))}
                     </div>
-                ))}
             </div>
+            }
         </main>
-    )
+    );
 };
 
 export default SeasonLeaders;
