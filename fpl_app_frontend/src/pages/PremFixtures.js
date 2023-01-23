@@ -325,9 +325,9 @@ const PremFixtures = () => {
                 </select>
                 <button type="submit">Submit</button>
             </form>
-            <div>
+            <div className="card-content">
                 {displayArr.map((team, i) => (
-                    <div key={team.teamId}>
+                    <div key={team.teamId} className="team-cards">
                         <h3>#{i+1}: {getTeamName(team.teamId)}</h3>
                         <div>Goals Scored: {team.goals_scored}</div>
                         <div>Goals Against: {team.goalsAgainst}</div>
