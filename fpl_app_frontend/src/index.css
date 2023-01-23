@@ -84,6 +84,12 @@ footer {
   color: red;
 }
 
+/* Gameweek stats */
+.fpl-link, .fpl-link:hover, .fpl-link:visited, .fpl-link:active {
+  color: inherit;
+  text-decoration: none;
+ }
+
 /* Season Leaders */
 .card-content {
   display: flex;
