@@ -8,6 +8,7 @@ const PremPlayers = () => {
     const [players, setPlayers] = useState(JSON.parse(localStorage.getItem("elements")));
     const [formSubmit, setFormSubmit] = useState(0);
     const [plyerOwnership, setPlyerOwnership] = useState([]);
+    const [showStat, setShowStat] = useState("total_points");
 
     let playerPositions = JSON.parse(localStorage.getItem("element_types"));
     let premTeams = JSON.parse(localStorage.getItem("teams"));
@@ -16,7 +17,7 @@ const PremPlayers = () => {
 
     const handleTeamSubmit = async (event) => {
         event.preventDefault();
-        let points = document.getElementById("points").value;
+        let points = document.getElementById("statistics").value;
         let teamId = document.getElementById("team").value;
         setFilterPoints(points);
         setFilterTeam(teamId);
@@ -41,6 +42,13 @@ const PremPlayers = () => {
         setFilterPosition(position);
         styleCurrentFilter("position");
     };
+
+    const handleStatToggle = async (event) => {
+        event.preventDefault();
+        let stat = document.getElementById("stats").value;
+        setShowStat(stat);
+
+    }
 
     const styleCurrentFilter = (curFilter) => {
         const teamElement = document.getElementById("teamTitle");
@@ -115,10 +123,10 @@ const PremPlayers = () => {
     return (
         <main>
             <section>
-                <h2 id="teamTitle">Filter Prem Players by Points and Team</h2>
+                <h2 id="teamTitle">Filter Prem Players by Stat and Team</h2>
                 <form id="teamFilter" onSubmit={handleTeamSubmit}>
-                    <label htmlFor="points">Points: </label>
-                    <input type="number" id="points" name="points" min="0"></input>
+                    <label htmlFor="statistics">{showStat == "total_points" ? "POINTS" : showStat.toUpperCase()}: </label>
+                    <input type="number" id="statistics" name="statistics" min="0"></input>
                     <label htmlFor="team">Prem Team: </label>
                     <select name="team" id="team">
                         <option value="">All Teams</option>
@@ -158,62 +166,74 @@ const PremPlayers = () => {
                 </form>
             </section>
 
+            <section>
+                <h2>Toggle Stats</h2>
+                <form id="showMin" onSubmit={handleStatToggle}>
+                    <select name="stats" id="stats">
+                        <option value="total_points">Points</option>
+                        <option value="minutes">Minutes Played</option>
+                        <option value="form">Form</option>
+                    </select>
+                    <button type="submit">Toggle Stats</button>
+                </form>
+            </section>
+
 
             <h2>Filtered Players</h2>
-            {filterPosition ?
-                <div>
-                    {players.filter((player) => (
-                        player.element_type == filterPosition
-                    ))
-                    .sort((a,b) => b.total_points - a.total_points)
-                    .map((filteredPlayer, i) => (
-                        <div key={filteredPlayer.id} className="player-list">
-                            #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
-                        </div>
-                    ))}
-                </div>:
-                <div>
-                    {formSubmit ?
-                        <div>
-                            {plyerOwnership.filter((player) => (
-                                player.owner == filterOwner
-                            ))
-                            .sort((a,b) => a.element_type - b.element_type)
-                            .map((filteredPlayer,i) => (
-                                <div key={filteredPlayer.element} className="player-list">
-                                    #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points {getNews(filteredPlayer.id)}
-                                </div>
-                            ))}
-                        </div> :
-                        <div>
-                            {filterTeam ?
-                                <div>
-                                    {players.filter(player =>
-                                        (player.total_points >= filterPoints) && (player.team == filterTeam)
-                                    )
-                                    .sort((a, b) => b.total_points - a.total_points)
-                                    .map((filteredPlayer,i) => (
-                                        <div key={filteredPlayer.id} className="player-list">
-                                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
-                                        </div>
-                                    ))}
-                                </div> :
-                                <div>
-                                    {players.filter(player =>
-                                        (player.total_points >= filterPoints)
-                                    )
-                                    .sort((a, b) => b.total_points - a.total_points)
-                                    .map((filteredPlayer,i) => (
-                                        <div key={filteredPlayer.id} className="player-list">
-                                        #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer.total_points} points ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
-                                        </div>
-                                    ))}
-                                </div>
-                            }
-                        </div>
-                    }
-                </div>
-            }
+                {filterPosition ?
+                    <div>
+                        {players.filter((player) => (
+                            player.element_type == filterPosition
+                        ))
+                        .sort((a,b) => b[showStat] - a[showStat])
+                        .map((filteredPlayer, i) => (
+                            <div key={filteredPlayer.id} className="player-list">
+                                #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
+                            </div>
+                        ))}
+                    </div>:
+                    <div>
+                        {formSubmit ?
+                            <div>
+                                {plyerOwnership.filter((player) => (
+                                    player.owner == filterOwner
+                                ))
+                                .sort((a,b) => a.element_type - b.element_type)
+                                .map((filteredPlayer,i) => (
+                                    <div key={filteredPlayer.element} className="player-list">
+                                        #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} {getNews(filteredPlayer.id)}
+                                    </div>
+                                ))}
+                            </div> :
+                            <div>
+                                {filterTeam ?
+                                    <div>
+                                        {players.filter(player =>
+                                            (player[showStat] >= filterPoints) && (player.team == filterTeam)
+                                        )
+                                        .sort((a, b) => b[showStat] - a[showStat])
+                                        .map((filteredPlayer,i) => (
+                                            <div key={filteredPlayer.id} className="player-list">
+                                            #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
+                                            </div>
+                                        ))}
+                                    </div> :
+                                    <div>
+                                        {players.filter(player =>
+                                            (player[showStat] >= filterPoints)
+                                        )
+                                        .sort((a, b) => b[showStat] - a[showStat])
+                                        .map((filteredPlayer,i) => (
+                                            <div key={filteredPlayer.id} className="player-list">
+                                            #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
+                                            </div>
+                                        ))}
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
         </main>
     )
 };
