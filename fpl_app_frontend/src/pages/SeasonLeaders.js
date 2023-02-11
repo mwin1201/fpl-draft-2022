@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import getGameweek from "../data/CurrentGameweek";
+const axios = require('axios').default;
 
 const SeasonLeaders = () => {
     const [allStats, setAllStats] = useState([]);
@@ -28,6 +29,7 @@ const SeasonLeaders = () => {
                         team.yellow_cards = team.yellow_cards + startArr[y].yellow_cards;
                         team.red_cards = team.red_cards + startArr[y].red_cards;
                         team.bonus = team.bonus + startArr[y].bonus;
+                        team.total_points = team.total_points + startArr[y].total_points;
                         teamArr.push(team);
 
                         if (y === startArr.length) {
@@ -36,13 +38,39 @@ const SeasonLeaders = () => {
                     }
                 }
             }
-            setIsLoading(false);
-            setAllStats(buildArr);
+            return buildArr;
+        };
+
+        const getTransactionData = async (teamId) => {
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            return axios.get(`${currentOrigin}/getTransactions/` + teamId)
+            .then((apiResponse) => {
+                return apiResponse.data;
+            })
+        };
+
+        const createTransactionArray = async () => {
+            let transactionArr = [];
+            const leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
+            for (var i = 0; i < leagueEntries.length; i++) {
+                let data = await getTransactionData(leagueEntries[i].entry_id);
+                transactionArr.push({total_count: data.entry.transactions_total, id: data.entry.id});
+            }
+            return transactionArr;
         };
 
         const start = async () => {
             const currentGameweek = await getGameweek();
-            createFullStatArray(currentGameweek);
+            let allStats = createFullStatArray(currentGameweek);
+            let transactionArray = await createTransactionArray();
+            let newStatArr = [];
+            for (var i = 0; i < transactionArray.length; i++) {
+                let teamStats = allStats.filter((team) => team.teamId === transactionArray[i].id);
+                teamStats[0]["total_transactions"] = transactionArray[i].total_count;
+                newStatArr.push(teamStats[0]);
+            }
+            setAllStats(newStatArr);
+            setIsLoading(false);
         };
 
         start();
@@ -69,6 +97,10 @@ const SeasonLeaders = () => {
 
     const getLeagueRank = (teamId, stat) => {
         let sortStats, index;
+        if (stat === "points") {
+            sortStats = allStats.sort((a,b) => b.total_points - a.total_points);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
         if (stat === "minutes") {
             sortStats = allStats.sort((a,b) => b.minutes - a.minutes);
             index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
@@ -99,6 +131,10 @@ const SeasonLeaders = () => {
         }
         if (stat === "reds") {
             sortStats = allStats.sort((a,b) => b.red_cards - a.red_cards);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
+        if (stat === "transactions") {
+            sortStats = allStats.sort((a,b) => b.total_transactions - a.total_transactions);
             index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
         }
 
@@ -146,6 +182,7 @@ const SeasonLeaders = () => {
                         <div className="team-cards" key={stat.teamId}>
                             <h3>{stat.person}</h3>
                             <h4>Overall: {getTableRank(stat.league_entry)}</h4>
+                            <div>{stat.total_points} Points ({getLeagueRank(stat.teamId, "points")})</div>
                             <div>{stat.minutes} Minutes ({getLeagueRank(stat.teamId, "minutes")})</div>
                             <div>{stat.goals_scored} Goals ({getLeagueRank(stat.teamId, "goals")})</div>
                             <div>{stat.assists} Assists ({getLeagueRank(stat.teamId, "assists")})</div>
@@ -154,11 +191,23 @@ const SeasonLeaders = () => {
                             <div>{stat.goals_conceded} Goals Against ({getLeagueRank(stat.teamId, "goals against")})</div>
                             <div>{stat.yellow_cards} Yellow Cards ({getLeagueRank(stat.teamId, "yellows")})</div>
                             <div>{stat.red_cards} Red Cards ({getLeagueRank(stat.teamId, "reds")})</div>
+                            <div>{stat.total_transactions} Transactions ({getLeagueRank(stat.teamId, "transactions")})</div>
                         </div>
                     ))}
                 </div>
                 :
                 <div className="card-content">
+                    <div className="stat-cards">
+                        <h3>Total Points</h3>
+                        {allStats.sort((a,b) => (
+                            b.total_points - a.total_points
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.total_points} : {stat.person}
+                            </div>
+                        ))}
+                    </div>
                     <div className="stat-cards">
                         <h3>Minutes Played</h3>
                         {allStats.sort((a,b) => (
@@ -244,6 +293,17 @@ const SeasonLeaders = () => {
                         .map((stat,index) => (
                             <div key={index}>
                                 {stat.red_cards} : {stat.person}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="stat-cards">
+                        <h3>Transactions</h3>
+                        {allStats.sort((a,b) => (
+                            b.total_transactions - a.total_transactions
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.total_transactions} : {stat.person}
                             </div>
                         ))}
                     </div>

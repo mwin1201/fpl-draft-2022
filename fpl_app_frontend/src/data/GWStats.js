@@ -34,7 +34,7 @@ const seasonStats = async (index) => {
     };
 
     const getPlayerStats = async (teamPlayers, gameweek) => {
-        const statList = ["minutes", "goals_scored", "assists", "clean_sheets", "goals_conceded", "yellow_cards", "red_cards", "bonus"];
+        const statList = ["minutes", "goals_scored", "assists", "clean_sheets", "goals_conceded", "yellow_cards", "red_cards", "bonus", "total_points"];
         let statArr = [];
         const allPlayerStats = await getStats(gameweek);
         for (var y = 0; y < statList.length; y++) {
