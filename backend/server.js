@@ -90,7 +90,17 @@ app.get("/getFixtureData/:event", async (req, res) => {
     const response = await fetch("https://fantasy.premierleague.com/api/fixtures/?event=" + req.params.event);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
-})
+});
+
+// this section is the endpoint to get team transaction stats
+app.get("/getTransactions/:teamId", async (req, res) => {
+    const fetchOptions = {
+        method: "GET"
+    };
+    const response = await fetch("https://draft.premierleague.com/api/entry/" + req.params.teamId + "/public");
+    const jsonResponse = await response.json();
+    res.json(jsonResponse);
+});
 
 app.listen(PORT, '0.0.0.0', (err) => {
     if (err) throw err;
