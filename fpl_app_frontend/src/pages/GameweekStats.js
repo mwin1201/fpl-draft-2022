@@ -60,6 +60,10 @@ const GameweekStats = () => {
     
     const getLeagueRank = (teamId, stat) => {
         let sortStats, index;
+        if (stat === "points") {
+            sortStats = displayArr.sort((a,b) => b.total_points - a.total_points);
+            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+        }
         if (stat === "minutes") {
             sortStats = displayArr.sort((a,b) => b.minutes - a.minutes);
             index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
@@ -146,6 +150,7 @@ const GameweekStats = () => {
                             <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
                             <h4>Overall: {getTableRank(stat.league_entry)}</h4>
                             <h4>{checkWinLoss(stat.league_entry)}</h4>
+                            <div>{stat.total_points} Points ({getLeagueRank(stat.teamId, "points")})</div>
                             <div>{stat.minutes} Minutes ({getLeagueRank(stat.teamId, "minutes")})</div>
                             <div>{stat.goals_scored} Goals ({getLeagueRank(stat.teamId, "goals")})</div>
                             <div>{stat.assists} Assists ({getLeagueRank(stat.teamId, "assists")})</div>
@@ -159,6 +164,17 @@ const GameweekStats = () => {
                 </div>
                 :
                 <div className="card-content">
+                    <div className="stat-cards">
+                        <h3>Total Points</h3>
+                        {displayArr.sort((a,b) => (
+                            b.total_points - a.total_points
+                        ))
+                        .map((stat,index) => (
+                            <div key={index}>
+                                {stat.total_points} : {stat.person}
+                            </div>
+                        ))}
+                    </div>
                     <div className="stat-cards">
                         <h3>Minutes Played</h3>
                         {displayArr.sort((a,b) => (
