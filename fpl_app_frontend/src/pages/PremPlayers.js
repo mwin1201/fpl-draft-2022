@@ -119,6 +119,11 @@ const PremPlayers = () => {
         );
     };
 
+    const getTeam = (teamId) => {
+        let singleTeam = premTeams.filter((team) => team.id === teamId);
+        let teamObj = singleTeam[0];
+        return teamObj.short_name;
+    };
 
     return (
         <main>
@@ -188,7 +193,7 @@ const PremPlayers = () => {
                         .sort((a,b) => b[showStat] - a[showStat])
                         .map((filteredPlayer, i) => (
                             <div key={filteredPlayer.id} className="player-list">
-                                #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
+                                #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> ({getTeam(filteredPlayer.team)}) {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
                             </div>
                         ))}
                     </div>:
@@ -201,7 +206,7 @@ const PremPlayers = () => {
                                 .sort((a,b) => a.element_type - b.element_type)
                                 .map((filteredPlayer,i) => (
                                     <div key={filteredPlayer.element} className="player-list">
-                                        #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} {getNews(filteredPlayer.id)}
+                                        #{i+1}: <strong>{filteredPlayer.elementType}</strong> ({getTeam(filteredPlayer.team)}) {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} {getNews(filteredPlayer.id)}
                                     </div>
                                 ))}
                             </div> :
@@ -214,7 +219,7 @@ const PremPlayers = () => {
                                         .sort((a, b) => b[showStat] - a[showStat])
                                         .map((filteredPlayer,i) => (
                                             <div key={filteredPlayer.id} className="player-list">
-                                            #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
+                                            #{i+1}: ({getTeam(filteredPlayer.team)}) {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
                                             </div>
                                         ))}
                                     </div> :
@@ -225,7 +230,7 @@ const PremPlayers = () => {
                                         .sort((a, b) => b[showStat] - a[showStat])
                                         .map((filteredPlayer,i) => (
                                             <div key={filteredPlayer.id} className="player-list">
-                                            #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
+                                            #{i+1}: ({getTeam(filteredPlayer.team)}) {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
                                             </div>
                                         ))}
                                     </div>
