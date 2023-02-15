@@ -13,7 +13,12 @@ const Draft = () => {
 
     const getPlayerName = (element) => {
         let filteredPlayer = players.filter((player) => player.id === element);
-        return filteredPlayer[0].first_name + " " + filteredPlayer[0].second_name + " " + filteredPlayer[0].total_points + "pts";
+        return filteredPlayer[0].first_name + " " + filteredPlayer[0].second_name;
+    };
+
+    const getPlayerPoints = (element) => {
+        let filteredPlayer = players.filter((player) => player.id === element);
+        return filteredPlayer[0].total_points;
     };
 
     const getPlayerCurrentPointRank = (element) => {
@@ -66,12 +71,28 @@ const Draft = () => {
             </section>
 
             <h1>Draft Order</h1>
-            {draft
-            .map((pick,i) => (
-                <div key={i} className="player-list">
-                    <strong>Round {pick.round}: </strong>{pick.entry_name} - {getPlayerName(pick.element)} (#{getPlayerCurrentPointRank(pick.element)} rank in pts all players)
-                </div>
-            ))}
+            <table className="table-data">
+                <thead>
+                    <tr>
+                        <th>Round</th>
+                        <th>Selected By</th>
+                        <th>Player Name</th>
+                        <th>Points</th>
+                        <th>Points Rank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {draft.map((pick,i) => (
+                    <tr key={i}>
+                        <td>{pick.round}</td>
+                        <td>{pick.entry_name}</td>
+                        <td>{getPlayerName(pick.element)}</td>
+                        <td>{getPlayerPoints(pick.element)}</td>
+                        <td>#{getPlayerCurrentPointRank(pick.element)}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
         </main>
     )
 

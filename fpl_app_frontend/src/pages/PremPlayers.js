@@ -186,7 +186,7 @@ const PremPlayers = () => {
 
             <h2>Filtered Players</h2>
                 {filterPosition ?
-                    <table class="table-data">
+                    <table className="table-data">
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -218,7 +218,7 @@ const PremPlayers = () => {
                     </table>:
                     <div>
                         {formSubmit ?
-                            <table class="table-data">
+                            <table className="table-data">
                                 <thead>
                                     <tr>
                                         <th>Rank</th>
@@ -250,7 +250,7 @@ const PremPlayers = () => {
                             </table> :
                             <div>
                                 {filterTeam ?
-                                    <table class="table-data">
+                                    <table className="table-data">
                                         <thead>
                                             <tr>
                                                 <th>Rank</th>
@@ -280,7 +280,7 @@ const PremPlayers = () => {
                                             ))}
                                         </tbody>
                                     </table> :
-                                    <table class="table-data">
+                                    <table className="table-data">
                                         <thead>
                                             <tr>
                                                 <th>Rank</th>
