@@ -119,6 +119,11 @@ const PremPlayers = () => {
         );
     };
 
+    const getTeam = (teamId) => {
+        let singleTeam = premTeams.filter((team) => team.id === teamId);
+        let teamObj = singleTeam[0];
+        return teamObj.short_name;
+    };
 
     return (
         <main>
@@ -181,54 +186,130 @@ const PremPlayers = () => {
 
             <h2>Filtered Players</h2>
                 {filterPosition ?
-                    <div>
+                    <table className="table-data">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Position</th>
+                                <th>Team</th>
+                                <th>Name</th>
+                                <th>Stat</th>
+                                <th>Owner</th>
+                                <th>News</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {players.filter((player) => (
                             player.element_type == filterPosition
                         ))
                         .sort((a,b) => b[showStat] - a[showStat])
                         .map((filteredPlayer, i) => (
-                            <div key={filteredPlayer.id} className="player-list">
-                                #{i+1}: <strong>{getType(filteredPlayer.element_type)}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
-                            </div>
+                            <tr key={filteredPlayer.id}>
+                                <td>#{i+1}</td>
+                                <td>{getType(filteredPlayer.element_type)}</td>
+                                <td>{getTeam(filteredPlayer.team)}</td>
+                                <td>{filteredPlayer.first_name} {filteredPlayer.second_name}</td>
+                                <td>{filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat}</td>
+                                <td>{getOwner(filteredPlayer.id)}</td>
+                                <td>{getNews(filteredPlayer.id)}</td>
+                            </tr>
                         ))}
-                    </div>:
+                        </tbody>
+                    </table>:
                     <div>
                         {formSubmit ?
-                            <div>
-                                {plyerOwnership.filter((player) => (
-                                    player.owner == filterOwner
-                                ))
-                                .sort((a,b) => a.element_type - b.element_type)
-                                .map((filteredPlayer,i) => (
-                                    <div key={filteredPlayer.element} className="player-list">
-                                        #{i+1}: <strong>{filteredPlayer.elementType}</strong> {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} {getNews(filteredPlayer.id)}
-                                    </div>
-                                ))}
-                            </div> :
+                            <table className="table-data">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Position</th>
+                                        <th>Team</th>
+                                        <th>Name</th>
+                                        <th>Stat</th>
+                                        <th>Owner</th>
+                                        <th>News</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {plyerOwnership.filter((player) => (
+                                        player.owner == filterOwner
+                                    ))
+                                    .sort((a,b) => a.element_type - b.element_type)
+                                    .map((filteredPlayer,i) => (
+                                        <tr key={filteredPlayer.element}>
+                                            <td>#{i+1}</td>
+                                            <td>{getType(filteredPlayer.element_type)}</td>
+                                            <td>{getTeam(filteredPlayer.team)}</td>
+                                            <td>{filteredPlayer.first_name} {filteredPlayer.second_name}</td>
+                                            <td>{filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat}</td>
+                                            <td>{getOwner(filteredPlayer.id)}</td>
+                                            <td>{getNews(filteredPlayer.id)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table> :
                             <div>
                                 {filterTeam ?
-                                    <div>
-                                        {players.filter(player =>
-                                            (player[showStat] >= filterPoints) && (player.team == filterTeam)
-                                        )
-                                        .sort((a, b) => b[showStat] - a[showStat])
-                                        .map((filteredPlayer,i) => (
-                                            <div key={filteredPlayer.id} className="player-list">
-                                            #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
-                                            </div>
-                                        ))}
-                                    </div> :
-                                    <div>
-                                        {players.filter(player =>
-                                            (player[showStat] >= filterPoints)
-                                        )
-                                        .sort((a, b) => b[showStat] - a[showStat])
-                                        .map((filteredPlayer,i) => (
-                                            <div key={filteredPlayer.id} className="player-list">
-                                            #{i+1}: {filteredPlayer.first_name} {filteredPlayer.second_name} - {filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat} ({getOwner(filteredPlayer.id)}) {getNews(filteredPlayer.id)}
-                                            </div>
-                                        ))}
-                                    </div>
+                                    <table className="table-data">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Position</th>
+                                                <th>Team</th>
+                                                <th>Name</th>
+                                                <th>Stat</th>
+                                                <th>Owner</th>
+                                                <th>News</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {players.filter(player =>
+                                                (player[showStat] >= filterPoints) && (player.team == filterTeam)
+                                            )
+                                            .sort((a, b) => b[showStat] - a[showStat])
+                                            .map((filteredPlayer,i) => (
+                                                <tr key={filteredPlayer.id}>
+                                                    <td>#{i+1}</td>
+                                                    <td>{getType(filteredPlayer.element_type)}</td>
+                                                    <td>{getTeam(filteredPlayer.team)}</td>
+                                                    <td>{filteredPlayer.first_name} {filteredPlayer.second_name}</td>
+                                                    <td>{filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat}</td>
+                                                    <td>{getOwner(filteredPlayer.id)}</td>
+                                                    <td>{getNews(filteredPlayer.id)}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table> :
+                                    <table className="table-data">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Position</th>
+                                                <th>Team</th>
+                                                <th>Name</th>
+                                                <th>Stat</th>
+                                                <th>Owner</th>
+                                                <th>News</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {players.filter(player =>
+                                                (player[showStat] >= filterPoints)
+                                            )
+                                            .sort((a, b) => b[showStat] - a[showStat])
+                                            .map((filteredPlayer,i) => (
+                                                <tr key={filteredPlayer.id}>
+                                                    <td>#{i+1}</td>
+                                                    <td>{getType(filteredPlayer.element_type)}</td>
+                                                    <td>{getTeam(filteredPlayer.team)}</td>
+                                                    <td>{filteredPlayer.first_name} {filteredPlayer.second_name}</td>
+                                                    <td>{filteredPlayer[showStat]} {showStat == "total_points" ? "points" : showStat}</td>
+                                                    <td>{getOwner(filteredPlayer.id)}</td>
+                                                    <td>{getNews(filteredPlayer.id)}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
                                 }
                             </div>
                         }
