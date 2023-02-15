@@ -119,7 +119,7 @@ const Homepage = () => {
 
             <section>
                 <h3>League Standings</h3>
-                <table id="standings">
+                <table class="table-data">
                     <thead>
                     <tr>
                         <th>League Team</th>
