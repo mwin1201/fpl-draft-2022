@@ -51,20 +51,20 @@ footer {
 
 /* Homepage */
 
-#standings {
+.table-data {
   width: 100%;
   border-collapse: collapse;
 }
 
-#standings tr:nth-child(even){
+.table-data tr:nth-child(even){
   background-color: #f2f2f2;
 }
 
-#standings tr:hover {
+.table-data tr:hover {
   background-color: #ddd;
 }
 
-#standings th {
+.table-data th {
   background-color: var(--fpl-purple);
   color: white;
 }
