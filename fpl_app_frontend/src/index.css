@@ -52,8 +52,13 @@ footer {
 /* Homepage */
 
 .table-data {
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
+  border-style: solid;
+  border-color: var(--fpl-purple);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .table-data tr:nth-child(even){
@@ -67,12 +72,6 @@ footer {
 .table-data th {
   background-color: var(--fpl-purple);
   color: white;
-}
-
-/* Aggregate Data */
-#aggregate h3 {
-  background-color: var(--fpl-purple);
-  color: var(--fpl-green);
 }
 
 /* Prem Players Page */

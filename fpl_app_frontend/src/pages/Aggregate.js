@@ -62,12 +62,27 @@ const Aggregate = () => {
                 {teamPoints.sort((a,b) => b.totalPoints - a.totalPoints)
                 .map((team, i) => (
                     <div key={team.teamId}>
-                        <h3>{i+1}. {team.premTeam}: {team.totalPoints} points - {doMath(team.totalPoints, points)}% of all points</h3>
+                        <h2>#{i+1}: {team.premTeam}: {team.totalPoints} points - {doMath(team.totalPoints, points)}% of all points</h2>
+                        <table className="table-data">
+                                <thead>
+                                    <tr>
+                                        <th>Position</th>
+                                        <th>Player</th>
+                                        <th>Points</th>
+                                        <th>Percentage of Team</th>
+                                    </tr>
+                                </thead>
                         {team.players.sort((a,b) => b.total_points - a.total_points).map((player) => (
-                            <div key={player.id} className="player-list">
-                                <strong>{getPosition(player.element_type)}</strong> {player.first_name} {player.second_name}: {player.total_points} points - {doMath(player.total_points,team.totalPoints)} % of team points
-                            </div>
-                        ))}
+                             <tbody key={player.id}>
+                                        <tr>
+                                            <td>{getPosition(player.element_type)}</td>
+                                            <td>{player.first_name} {player.second_name}</td>
+                                            <td>{player.total_points}</td>
+                                            <td>{doMath(player.total_points,team.totalPoints)}%</td>
+                                        </tr>
+                                    </tbody>
+                            ))}
+                        </table>
                     </div>
                 ))}
             </section>
