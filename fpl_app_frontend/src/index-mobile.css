@@ -25,6 +25,10 @@
         margin: 10px;
     }
 
+    .table-data {
+        width: 100%;
+    }
+
     /* Gameweek Stats */
     .team-cards {
         border: 2px solid black;

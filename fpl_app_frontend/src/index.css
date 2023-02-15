@@ -51,28 +51,27 @@ footer {
 
 /* Homepage */
 
-#standings {
-  width: 100%;
+.table-data {
+  width: 80%;
   border-collapse: collapse;
+  border-style: solid;
+  border-color: var(--fpl-purple);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
-#standings tr:nth-child(even){
+.table-data tr:nth-child(even){
   background-color: #f2f2f2;
 }
 
-#standings tr:hover {
+.table-data tr:hover {
   background-color: #ddd;
 }
 
-#standings th {
+.table-data th {
   background-color: var(--fpl-purple);
   color: white;
-}
-
-/* Aggregate Data */
-#aggregate h3 {
-  background-color: var(--fpl-purple);
-  color: var(--fpl-green);
 }
 
 /* Prem Players Page */
