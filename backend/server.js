@@ -12,6 +12,25 @@ app.use(cors());
 //     origin: process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:3000"
 // };
 
+const fetchRetry = (url, options, retries = 3, backoff = 300) => {
+    const retryCodes = [502];
+    return fetch (url, options)
+        .then(response => {
+            if (response.ok) {
+                const jsonResponse = response.json();
+                return jsonResponse;
+            }
+            if (retries > 0 && retryCodes.includes(response.status)) {
+                setTimeout(() => {
+                    return fetchRetry(url, options, retries - 1, backoff * 2)
+                }, backoff)
+            } else {
+                throw new Error(response);
+            }
+        })
+        .catch(console.error);
+};
+
 // this section is the endpoint to gather the team names and players in the FPL Draft league
 const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";
 
@@ -42,9 +61,21 @@ app.get('/getLineups/:team/:event', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
-    const response = await fetch("https://draft.premierleague.com/api/entry/"+ req.params.team +"/event/"+ req.params.event)
-    const jsonResponse = await response.json();
-    res.json(jsonResponse);
+    let response;
+    try {
+        response = await fetch("https://draft.premierleague.com/api/entry/"+ req.params.team +"/event/"+ req.params.event, fetchOptions);
+    } catch (error) {
+        console.log("Error: ", error);
+    }
+
+    if (response?.ok) {
+        const jsonResponse = await response.json();
+        res.json(jsonResponse);
+    } else {
+        console.log(`Response code: ${response?.status}`);
+        const response = fetchRetry("https://draft.premierleague.com/api/entry/"+ req.params.team +"/event/"+ req.params.event, fetchOptions);
+        res.json(response);
+    }
 
 });
 
@@ -65,7 +96,7 @@ app.get("/getStats/:event", async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
-    const response = await fetch("https://draft.premierleague.com/api/event/" + req.params.event + "/live");
+    const response = await fetch("https://draft.premierleague.com/api/event/" + req.params.event + "/live", fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
 });
@@ -87,7 +118,7 @@ app.get("/getFixtureData/:event", async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
-    const response = await fetch("https://fantasy.premierleague.com/api/fixtures/?event=" + req.params.event);
+    const response = await fetch("https://fantasy.premierleague.com/api/fixtures/?event=" + req.params.event, fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
 });
@@ -97,7 +128,7 @@ app.get("/getTransactions/:teamId", async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
-    const response = await fetch("https://draft.premierleague.com/api/entry/" + req.params.teamId + "/public");
+    const response = await fetch("https://draft.premierleague.com/api/entry/" + req.params.teamId + "/public", fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
 });

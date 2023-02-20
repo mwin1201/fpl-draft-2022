@@ -5,7 +5,7 @@ const seasonStats = async (index) => {
         const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
         let fullLineupArr = [];
         for (var i = 0; i < leagueTeams.length; i++) {
-            fullLineupArr.push({"teamId": leagueTeams[i].entry_id, "person": leagueTeams[i].entry_name, "league_entry": leagueTeams[i].id, "lineup": await getLineups(leagueTeams[i].entry_id, currentGameweek)});
+            fullLineupArr.push({"teamId": leagueTeams[i].entry_id, "person": leagueTeams[i].entry_name, "league_entry": leagueTeams[i].id, "lineup": await Promise.all([getLineups(leagueTeams[i].entry_id, currentGameweek), apiTimeout(1000)]).then((values) => values[0])});
         }
         return createStatArr(fullLineupArr, currentGameweek);
     };
@@ -13,7 +13,7 @@ const seasonStats = async (index) => {
     const createStatArr = async (allLineups, currentGameweek) => {
         let fullStatArr = [];
         for (var i = 0; i < allLineups.length; i++) {
-            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "league_entry": allLineups[i].league_entry, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)})
+            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "league_entry": allLineups[i].league_entry, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)});
         }
         return modifyArr(fullStatArr, currentGameweek);
     };
@@ -36,7 +36,7 @@ const seasonStats = async (index) => {
     const getPlayerStats = async (teamPlayers, gameweek) => {
         const statList = ["minutes", "goals_scored", "assists", "clean_sheets", "goals_conceded", "yellow_cards", "red_cards", "bonus", "total_points"];
         let statArr = [];
-        const allPlayerStats = await getStats(gameweek);
+        const allPlayerStats = await Promise.all([getStats(gameweek), apiTimeout(1000)]).then((values) => values[0]);
         for (var y = 0; y < statList.length; y++) {
             let statCounter = 0;
             for (var i = 0; i < 11; i++) {
@@ -48,6 +48,11 @@ const seasonStats = async (index) => {
             statArr.push(obj);
         }
         return statArr;
+    };
+
+    // timeout function to prevent overwhelming the FPL API
+    const apiTimeout = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
     };
 
     // need to get team lineups per gameweek
