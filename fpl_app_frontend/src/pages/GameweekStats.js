@@ -8,7 +8,6 @@ const GameweekStats = () => {
 
     useEffect(() => {
         setDisplayArr(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)));
-        console.log(currentGameweek);
 
     },[currentGameweek]);
 
