@@ -18,9 +18,10 @@ const SeasonLeaders = () => {
                 for (var y = 0; y < startArr.length; y++) {
                     if (buildArr.length === 0) {
                         buildArr = startArr;
+                        break;
                     }
                     else {
-                        const team = buildArr.find(obj => obj.teamId === startArr[y].teamId);
+                        let team = buildArr.find(obj => obj.teamId === startArr[y].teamId);
                         team.minutes = team.minutes + startArr[y].minutes;
                         team.goals_scored = team.goals_scored + startArr[y].goals_scored;
                         team.assists = team.assists + startArr[y].assists;
@@ -56,13 +57,20 @@ const SeasonLeaders = () => {
                 let data = await getTransactionData(leagueEntries[i].entry_id);
                 transactionArr.push({total_count: data.entry.transactions_total, id: data.entry.id});
             }
+            localStorage.setItem("transactions", JSON.stringify(transactionArr));
             return transactionArr;
         };
 
         const start = async () => {
-            const currentGameweek = await getGameweek();
+            let transactionArray;
+            const currentGameweek = JSON.parse(localStorage.getItem("current_gameweek"));
             let allStats = createFullStatArray(currentGameweek);
-            let transactionArray = await createTransactionArray();
+            if (JSON.parse(localStorage.getItem("transactions"))) {
+                transactionArray = JSON.parse(localStorage.getItem("transactions"));
+            }
+            else {
+                transactionArray = await createTransactionArray();
+            }
             let newStatArr = [];
             for (var i = 0; i < transactionArray.length; i++) {
                 let teamStats = allStats.filter((team) => team.teamId === transactionArray[i].id);
