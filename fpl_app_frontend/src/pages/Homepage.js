@@ -6,6 +6,7 @@ import getGameweek from "../data/CurrentGameweek";
 import seasonStats from "../data/GWStats";
 import ManagerOfTheMonth from "../data/ManagerOTM";
 
+
 const Homepage = () => {
     const [teamData, setTeamData] = useState([]);
     const [leagueData, setLeagueData] = useState([]);
@@ -20,7 +21,7 @@ const Homepage = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        const collectData = async (curGW) => {
+        const collectData = async () => {
             await Promise.allSettled([
                 getLeagueData(),
                 getPlayers(),
@@ -29,15 +30,25 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                getAllStats(curGW);
+                getAllStats();
             }).catch(() => setIsError(true));
         }
 
-        const getAllStats = async (gw) => {
-            for (var index = 1; index <= gw; index++) {
-                setStatCounter(await seasonStats(index));
+        const getAllStats = async () => {
+            const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
+            const gwComplete = JSON.parse(localStorage.getItem("current_gameweek_complete"));
+            for (var index = apiGW; index >= 1; index--) {
+                if (index === apiGW && gwComplete === false) {
+                    setStatCounter(await seasonStats(index));
+                }
+                else if (localStorage.getItem(`gw_${index}_stats`)) {
+                    continue;
+                }
+                else {
+                    setStatCounter(await seasonStats(index));
+                }
             }
-            getManagerOfTheMonth(gw);
+            getManagerOfTheMonth(apiGW);
         };
 
         const getManagerOfTheMonth = async (gw) => {
@@ -46,20 +57,23 @@ const Homepage = () => {
         };
 
         const start = async () => {
-            const apiGW = await getGameweek();
-            if (currentGameweek == null || apiGW != currentGameweek) {
-                localStorage.clear();
-                localStorage.setItem("current_gameweek", apiGW);
-                collectData(apiGW);
-            }
-            else {
-                setIsLoading(false);
-                console.log("No need to update data");
-                setMOTM(await ManagerOfTheMonth(apiGW));
-                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
-                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-                setStandingsData(JSON.parse(localStorage.getItem("standings")));
-            }
+            const [apiGW, gwComplete] = await getGameweek();
+            localStorage.removeItem("draft_data");
+            localStorage.removeItem("player_ownership");
+            localStorage.removeItem("element_types");
+            localStorage.removeItem("elements");
+            localStorage.removeItem("teams");
+            localStorage.removeItem("league_data");
+            localStorage.removeItem("standings");
+            localStorage.removeItem("matches");
+            localStorage.removeItem("league_entries");
+            localStorage.removeItem("current_gameweek");
+            localStorage.removeItem("transactions");
+            localStorage.removeItem("current_fixtures");
+            localStorage.removeItem("current_gameweek_complete");
+            localStorage.setItem("current_gameweek", apiGW);
+            localStorage.setItem("current_gameweek_complete", gwComplete)
+            collectData();
         };
         start();
 
@@ -80,7 +94,7 @@ const Homepage = () => {
     if (isLoading) {
         return (
             <main>
-                <div>Loading all of the Gameweek stats, be patient. {statCounter}/{JSON.parse(localStorage.getItem("current_gameweek"))}</div>
+                <div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
             </main>
         )
     }
@@ -119,7 +133,7 @@ const Homepage = () => {
 
             <section>
                 <h3>League Standings</h3>
-                <table class="table-data">
+                <table className="table-data">
                     <thead>
                     <tr>
                         <th>League Team</th>
