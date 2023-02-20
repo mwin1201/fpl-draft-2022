@@ -6,8 +6,9 @@ const getGameweek = async () => {
     let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
     return axios.get(`${currentOrigin}/getGameweek`)
         .then((apiResponse) => {
-            //localStorage.setItem("current_gameweek", JSON.stringify(apiResponse.data.current_event));
-            return apiResponse.data.current_event;
+            const currentGameweek = apiResponse.data.current_event;
+            const currentGameweekStatus = apiResponse.data.current_event_finished;
+            return [currentGameweek, currentGameweekStatus];
         })
 };
 

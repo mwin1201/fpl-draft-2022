@@ -230,11 +230,14 @@ const PremFixtures = () => {
         };
 
         const getCurrentFixtures = async (event) => {
-            return await getFixtureData(event);
+            const fixtureArr = await getFixtureData(event);
+            localStorage.setItem("current_fixtures", JSON.stringify(fixtureArr));
+            return fixtureArr;
         };
 
         const getGWHistory = async () => {
             let finalArr = [];
+            let upcomingFixtures;
             const currentGW = JSON.parse(localStorage.getItem("current_gameweek"));
             let start;
 
@@ -252,7 +255,12 @@ const PremFixtures = () => {
                 finalArr = mergeArrays(finalArr, awayArr, homeArr);
             }
             finalArr = (modifyArr(finalArr));
-            const upcomingFixtures = await getCurrentFixtures(currentGW + 1);
+            if (JSON.parse(localStorage.getItem("current_fixtures"))) {
+                upcomingFixtures = JSON.parse(localStorage.getItem("current_fixtures"));
+            }
+            else {
+                upcomingFixtures = await getCurrentFixtures(currentGW + 1);
+            }
             setCurrentFixtures(upcomingFixtures);
             setDisplayArr(finalArr);
             setIsLoading(false);

@@ -39,6 +39,10 @@ header nav a:hover {
   color: var(--fpl-green);
 }
 
+header nav a:focus {
+  color: var(--fpl-green);
+}
+
 /* Footer Component */
 footer {
   background-color: black;
