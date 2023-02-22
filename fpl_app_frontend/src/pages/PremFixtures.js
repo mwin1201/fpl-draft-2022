@@ -292,6 +292,20 @@ const PremFixtures = () => {
         setDisplayArr(sortedArr);
     };
 
+    const getKickoffTime = (isoTime) => {
+        const kickOffTime = new Date(isoTime);
+        return kickOffTime.toString();
+    };
+
+    const getFixtureDifficulty = (difficulty) => {
+        if (difficulty < 6 && difficulty > 3) {
+            return "red-highlight";
+        }
+        else if (difficulty < 3 && difficulty > 0) {
+            return "green-highlight";
+        }
+    };
+
     if (isLoading) {
         return (
             <main>Loading...</main>
@@ -304,14 +318,28 @@ const PremFixtures = () => {
             <h2>
                 Upcoming Gameweek Fixtures
             </h2>
-            <div>
-                <u><strong>AWAY vs HOME</strong></u>
-                {currentFixtures.map((fixture) => (
-                    <div key={fixture.id}>
-                        {getTeamName(fixture.team_a)} vs {getTeamName(fixture.team_h)}
-                    </div>
-                ))}
-            </div>
+            <section>
+                <table className="table-data">
+                    <thead>
+                        <tr>
+                            <th>Match #</th>
+                            <th>AWAY</th>
+                            <th>HOME</th>
+                            <th>Kickoff</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentFixtures.map((fixture, index) => (
+                            <tr key={fixture.id}>
+                                <td>{index + 1}</td>
+                                <td className={getFixtureDifficulty(fixture.team_a_difficulty)}>{getTeamName(fixture.team_a)}</td>
+                                <td className={getFixtureDifficulty(fixture.team_h_difficulty)}>{getTeamName(fixture.team_h)}</td>
+                                <td>{getKickoffTime(fixture.kickoff_time)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </section>
             <h2>
                 Prem Team Data from past 4 Gameweeks
             </h2>

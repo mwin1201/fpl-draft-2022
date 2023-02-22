@@ -134,6 +134,14 @@ footer {
   padding: 10px 15px 10px 15px;
 }
 
+/* Prem Fixtures + Fixtures */
+.red-highlight {
+  background-color: #FF1751;
+}
+
+.green-highlight {
+  background-color: #01FC7A;
+}
 
 body {
   margin: 0;
