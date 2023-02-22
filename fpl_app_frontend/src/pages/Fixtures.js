@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const Fixtures = () => {
     const [fixtureData, setFixtureData] = useState(JSON.parse(localStorage.getItem("matches")));
+    const [filterTeam, setFilterTeam] = useState();
 
     //let fixtureData = JSON.parse(localStorage.getItem("matches"));
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
@@ -17,6 +18,7 @@ const Fixtures = () => {
         event.preventDefault();
         let fixtureArr = JSON.parse(localStorage.getItem("matches"));
         let teamSelected = document.getElementById("leagueTeam").value;
+        setFilterTeam(teamSelected);
         setFixtureData(fixtureArr.filter((fixture) => (fixture.league_entry_1 == teamSelected) || (fixture.league_entry_2 == teamSelected)));
     };
 
@@ -25,6 +27,24 @@ const Fixtures = () => {
         let fixtureArr = JSON.parse(localStorage.getItem("matches"));
         let gameweek = document.getElementById("gameweek").value;
         setFixtureData(fixtureArr.filter((fixture) => (fixture.event == gameweek)));
+    };
+
+    const checkWinorLoss = (team, entry, score1, score2) => {
+        if (team == filterTeam && entry === "1" && score1 > score2) {
+            return "green-highlight";
+        }
+        else if (team == filterTeam && entry === "1" && score1 < score2) {
+            return "red-highlight";
+        }
+        else if (team == filterTeam && entry === "2" && score2 < score1) {
+            return "red-highlight";
+        }
+        else if (team == filterTeam && entry === "2" && score2 > score1) {
+            return "green-highlight";
+        }
+        else {
+            return "";
+        }
     };
 
     return (
@@ -49,14 +69,30 @@ const Fixtures = () => {
                 </form>
             </div>
             <h1>Fixture History</h1>
-            <div>
-            {fixtureData.map((fixture,i) => (
-                <div key={i}>
-                    <h3>Week {fixture.event}</h3>
-                    {getTeamName(fixture.league_entry_1)}: {fixture.league_entry_1_points}pts vs {getTeamName(fixture.league_entry_2)}: {fixture.league_entry_2_points}pts
-                </div>
-            ))}
-            </div>
+            <section>
+                <table className="table-data">
+                    <thead>
+                        <tr>
+                            <th>Gameweek</th>
+                            <th>Team 1</th>
+                            <th>Points</th>
+                            <th>Points</th>
+                            <th>Team 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {fixtureData.map((fixture,i) => (
+                            <tr key={i}>
+                                <td>{fixture.event}</td>
+                                <td>{getTeamName(fixture.league_entry_1)}</td>
+                                <td className={checkWinorLoss(fixture.league_entry_1, "1", fixture.league_entry_1_points, fixture.league_entry_2_points)}>{fixture.league_entry_1_points}</td>
+                                <td className={checkWinorLoss(fixture.league_entry_2, "2", fixture.league_entry_1_points, fixture.league_entry_2_points)}>{fixture.league_entry_2_points}</td>
+                                <td>{getTeamName(fixture.league_entry_2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </section>
         </main>
     );
 };
