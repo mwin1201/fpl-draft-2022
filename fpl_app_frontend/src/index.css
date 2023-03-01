@@ -78,6 +78,22 @@ footer {
   color: white;
 }
 
+/* Head to Head Page */
+.flex-table {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.table-item {
+  width: 48%;
+  margin-bottom: 2%;
+}
+
+.flex-table > h2 {
+  width: 100%;
+}
+
 /* Prem Players Page */
 .current-filter {
   color: var(--fpl-green);
@@ -141,6 +157,14 @@ footer {
 
 .green-highlight {
   background-color: #01FC7A;
+}
+
+.grey-highlight {
+  background-color: grey;
+}
+
+.yellow-highlight {
+  background-color: yellow;
 }
 
 body {
