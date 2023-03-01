@@ -6,7 +6,8 @@ import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Homepage from './pages/Homepage';
 import Fixtures from './pages/Fixtures';
 import PremPlayers from './pages/PremPlayers';
-import Lineups from './pages/Lineups';
+//import Lineups from './pages/Lineups';
+import HeadtoHead from './pages/HeadtoHead';
 import Aggregate from './pages/Aggregate';
 import Draft from './pages/Draft';
 import GameweekStats from './pages/GameweekStats';
@@ -24,7 +25,7 @@ function App() {
         <Route path='/' element={<Homepage/>}></Route>
         <Route path='/fixtureHistory' element={<Fixtures/>}></Route>
         <Route path='/premPlayers' element={<PremPlayers/>}></Route>
-        <Route path='/lineups' element={<Lineups/>}></Route>
+        <Route path='/matchups' element={<HeadtoHead/>}></Route>
         <Route path='/aggregate' element={<Aggregate/>}></Route>
         <Route path='/draft' element={<Draft/>}></Route>
         <Route path='/gameweekStats' element={<GameweekStats/>}></Route>
