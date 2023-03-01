@@ -12,7 +12,7 @@ const Header = () => {
                     <Link to="/">Homepage</Link>
                     <Link to="/fixtureHistory">Fixture History</Link>
                     <Link to="/premPlayers">Prem Players</Link>
-                    <Link to="/lineups">Team Lineups</Link>
+                    <Link to="/matchups">Head to Head</Link>
                     <Link to="/aggregate">Aggregate Data</Link>
                     <Link to="/draft">Draft Data</Link>
                     <Link to="/gameweekStats">Gameweek Stats</Link>
