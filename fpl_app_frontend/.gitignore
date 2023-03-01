@@ -11,6 +11,9 @@
 # production
 /build
 
+# stats
+/src/gwStats
+
 # misc
 .DS_Store
 .env.local

@@ -91,7 +91,7 @@ app.get('/getDraftData', async (req, res) => {
     res.json(jsonResponse);
 });
 
-// this section is the endpoint for player stats each gameweek
+// this section is the endpoint for player stats and fixture data each gameweek
 app.get("/getStats/:event", async (req, res) => {
     const fetchOptions = {
         method: "GET"

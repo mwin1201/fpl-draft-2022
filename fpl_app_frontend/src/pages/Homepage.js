@@ -13,6 +13,7 @@ const Homepage = () => {
     const [standingsData, setStandingsData] = useState([]);
     const [MOTM, setMOTM] = useState([]);
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [currentGWStatus, setCurrentGWStatus] = useState("");
     const [statCounter, setStatCounter] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -30,15 +31,15 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
+                console.log(JSON.parse(localStorage.getItem("current_gameweek_complete")));
                 getAllStats();
             }).catch(() => setIsError(true));
         }
 
         const getAllStats = async () => {
             const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
-            const gwComplete = JSON.parse(localStorage.getItem("current_gameweek_complete"));
             for (var index = apiGW; index >= 1; index--) {
-                if (index === apiGW && gwComplete === false) {
+                if (index === apiGW) {
                     setStatCounter(await seasonStats(index));
                 }
                 else if (localStorage.getItem(`gw_${index}_stats`)) {
@@ -53,6 +54,12 @@ const Homepage = () => {
 
         const getManagerOfTheMonth = async (gw) => {
             setMOTM(await ManagerOfTheMonth(gw));
+            if (JSON.parse(localStorage.getItem("current_gameweek_complete")) === false) {
+                setCurrentGWStatus("Incomplete");
+            }
+            else {
+                setCurrentGWStatus("Complete");
+            }
             setIsLoading(false);
         };
 
@@ -129,6 +136,12 @@ const Homepage = () => {
                 {teamData.map((team, i) => (
                     <div key={team.id}>{i+1}. {team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
                 ))}
+            </section>
+
+            <section>
+                <h3>
+                    Current Gameweek: {currentGameweek} - Status: {currentGWStatus}
+                </h3>
             </section>
 
             <section>
