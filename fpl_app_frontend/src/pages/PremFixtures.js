@@ -373,6 +373,7 @@ const PremFixtures = () => {
                         <div>Penalties Missed: {team.penalties_missed}</div>
                         <div>Saves: {team.saves}</div>
                         <div>Yellow Cards: {team.yellow_cards}</div>
+                        <div>Red Cards: {team.red_cards}</div>
                         <div>Bonus: {team.bonus}</div>
                         <div>BPS: {team.bps}</div>
                     </div>
