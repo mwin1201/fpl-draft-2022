@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const Aggregate = () => {
     const [points, setPoints] = useState(0);
     const [teamPoints, setTeamPoints] = useState([]);
+    const [showPlayers, setShowPlayers] = useState(1);
 
     useEffect(() => {
         const calculateTotalPoints = () => {
@@ -47,6 +48,24 @@ const Aggregate = () => {
         return type[0].singular_name_short;
     };
 
+    const handlePlayerButton = async (event) => {
+        event.preventDefault();
+        if (showPlayers) {
+            setShowPlayers(0);
+            let tables = document.getElementsByClassName("table-data");
+            for (var i = 0; i < tables.length; i++) {
+                tables[i].classList.add("hide-players");
+            }
+        }
+        else {
+            setShowPlayers(1);
+            let tables = document.getElementsByClassName("table-data");
+            for (var i = 0; i < tables.length; i++) {
+                tables[i].classList.remove("hide-players");
+            }
+        }
+    };
+
     if (points < 1) { 
         return (
             <div>Loading...</div>
@@ -58,6 +77,9 @@ const Aggregate = () => {
             <h1>Total Points in all of FPL: {points}</h1>
 
             <h2>Team Breakdown</h2>
+            <form id="player-toggle" onSubmit={handlePlayerButton}>
+                <button type="submit">{showPlayers ? "Hide Players" : "Show Players"}</button>
+            </form>
             <section id="aggregate">
                 {teamPoints.sort((a,b) => b.totalPoints - a.totalPoints)
                 .map((team, i) => (

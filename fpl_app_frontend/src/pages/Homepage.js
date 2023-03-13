@@ -31,7 +31,6 @@ const Homepage = () => {
                 setTeamData(JSON.parse(localStorage.getItem("league_entries")));
                 setLeagueData(JSON.parse(localStorage.getItem("league_data")));
                 setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                console.log(JSON.parse(localStorage.getItem("current_gameweek_complete")));
                 getAllStats();
             }).catch(() => setIsError(true));
         }
