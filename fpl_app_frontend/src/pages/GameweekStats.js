@@ -147,7 +147,7 @@ const GameweekStats = () => {
                 <div className="card-content">
                     {displayArr.map((stat) => (
                         <div className="team-cards" key={stat.teamId}>
-                            <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
+                            <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} rel="noreferrer" target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
                             <h4>Overall: {getTableRank(stat.league_entry)}</h4>
                             <h4>{checkWinLoss(stat.league_entry)}</h4>
                             <div>{stat.total_points} Points ({getLeagueRank(stat.teamId, "points")})</div>
