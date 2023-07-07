@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 
 const Standings = ({standings, teams}) => {
-    const [standingsData, setStandingsData] = useState([standings]);
-    const [teamData, setTeamData] = useState([teams]);
+    const [standingsData, setStandingsData] = useState(standings);
+    const [teamData, setTeamData] = useState(teams);
 
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {

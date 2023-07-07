@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 const axios = require('axios').default;
 
-const TeamStats = ({ owner_id }) => {
+const TeamStats = ({ owner_entry_id }) => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [isLoading, setIsLoading] = useState(true);
     const [gameweekStats, setGameweekStats] = useState([]);
@@ -17,9 +17,9 @@ const TeamStats = ({ owner_id }) => {
 
     // useEffect(() => {
     //     setIsLoading(true);
-    //     setLeagueStats(displayArr.filter((stat) => stat.teamId == owner_id));
+    //     setLeagueStats(displayArr.filter((stat) => stat.teamId == owner_entry_id));
 
-    // }, [displayArr, owner_id]);
+    // }, [displayArr, owner_entry_id]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -56,53 +56,51 @@ const TeamStats = ({ owner_id }) => {
             return buildArr;
         };
 
-        const getTransactionData = async (teamId) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getTransactions/` + teamId)
-            .then((apiResponse) => {
-                return apiResponse.data;
-            })
-        };
+        // const getTransactionData = async (teamId) => {
+        //     let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        //     return axios.get(`${currentOrigin}/getTransactions/` + teamId)
+        //     .then((apiResponse) => {
+        //         return apiResponse.data;
+        //     })
+        // };
 
-        const createTransactionArray = async () => {
-            let transactionArr = [];
-            const leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
-            for (var i = 0; i < leagueEntries.length; i++) {
-                let data = await getTransactionData(leagueEntries[i].entry_id);
-                transactionArr.push({total_count: data.entry.transactions_total, id: data.entry.id});
-            }
-            localStorage.setItem("transactions", JSON.stringify(transactionArr));
-            return transactionArr;
-        };
+        // const createTransactionArray = async () => {
+        //     let transactionArr = [];
+        //     const leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
+        //     for (var i = 0; i < leagueEntries.length; i++) {
+        //         let data = await getTransactionData(leagueEntries[i].entry_id);
+        //         transactionArr.push({total_count: data.entry.transactions_total, id: data.entry.id});
+        //     }
+        //     localStorage.setItem("transactions", JSON.stringify(transactionArr));
+        //     return transactionArr;
+        // };
 
         const start = async () => {
-            console.log("here!");
             let transactionArray;
             const currentGameweek = JSON.parse(localStorage.getItem("current_gameweek"));
             setGameweekStats(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)));
             let allStats = createFullStatArray(currentGameweek);
-            console.log(allStats);
             if (JSON.parse(localStorage.getItem("transactions"))) {
                 transactionArray = JSON.parse(localStorage.getItem("transactions"));
             }
-            else {
-                transactionArray = await createTransactionArray();
-            }
+            // else {
+            //     transactionArray = await createTransactionArray();
+            // }
             let newStatArr = [];
             for (var i = 0; i < transactionArray.length; i++) {
                 let teamStats = allStats.filter((team) => team.teamId === transactionArray[i].id);
                 teamStats[0]["total_transactions"] = transactionArray[i].total_count;
                 newStatArr.push(teamStats[0]);
             }
-            setMyGameweekStats(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)).filter((stat) => stat.teamId == owner_id));
+            setMyGameweekStats(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)).filter((stat) => stat.teamId == owner_entry_id));
             setSeasonStats(newStatArr);
-            setMySeasonStats(newStatArr.filter((stat) => stat.teamId == owner_id));
+            setMySeasonStats(newStatArr.filter((stat) => stat.teamId == owner_entry_id));
             setIsLoading(false);
         };
 
         start();
 
-    },[owner_id]);
+    },[owner_entry_id]);
 
     const checkWinLoss = (teamEntry) => {
         let matches = JSON.parse(localStorage.getItem("matches"));

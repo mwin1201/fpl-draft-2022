@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import TeamStats from "../components/TeamStats";
 import Standings from "../components/Standings";
+import FixtureHistory from "../components/FixtureHistory";
+import UpcomingFixtures from "../components/UpcomingFixtures";
 
 const Dashboard = () => {
 
@@ -17,13 +19,19 @@ const Dashboard = () => {
     return (
         <section>
             <h2>[TEAM NAME]</h2>
-            <TeamStats owner_id={217515}/>
+            <TeamStats owner_entry_id={217515}/>
 
             <h2>Standings</h2>
             <Standings 
                 standings={JSON.parse(localStorage.getItem("standings"))}
                 teams = {JSON.parse(localStorage.getItem("league_entries"))}
             />
+
+            <h2>Recent Fixtures</h2>
+            <FixtureHistory owner_id={217931}/>
+
+            <h2>Upcoming Fixtures</h2>
+            <UpcomingFixtures owner_id={217931} />
         </section>
     )
 };

@@ -6,6 +6,9 @@ import getGameweek from "../data/CurrentGameweek";
 import seasonStats from "../data/GWStats";
 import ManagerOfTheMonth from "../data/ManagerOTM";
 
+// seed data for testing
+import Seeds from "../data/LocalStorage_seeds";
+
 
 const Homepage = () => {
     const [teamData, setTeamData] = useState([]);
@@ -22,34 +25,34 @@ const Homepage = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        const collectData = async () => {
-            await Promise.allSettled([
-                getLeagueData(),
-                getPlayers(),
-                getDraftData(),
-            ]).then(() => {
-                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
-                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-                setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                getAllStats();
-            }).catch(() => setIsError(true));
-        }
+        // const collectData = async () => {
+        //     await Promise.allSettled([
+        //         getLeagueData(),
+        //         getPlayers(),
+        //         getDraftData(),
+        //     ]).then(() => {
+        //         setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+        //         setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+        //         setStandingsData(JSON.parse(localStorage.getItem("standings")));
+        //         getAllStats();
+        //     }).catch(() => setIsError(true));
+        // }
 
-        const getAllStats = async () => {
-            const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
-            for (var index = apiGW; index >= 1; index--) {
-                if (index === apiGW) {
-                    setStatCounter(await seasonStats(index));
-                }
-                else if (localStorage.getItem(`gw_${index}_stats`)) {
-                    continue;
-                }
-                else {
-                    setStatCounter(await seasonStats(index));
-                }
-            }
-            getManagerOfTheMonth(apiGW);
-        };
+        // const getAllStats = async () => {
+        //     const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
+        //     for (var index = apiGW; index >= 1; index--) {
+        //         if (index === apiGW) {
+        //             setStatCounter(await seasonStats(index));
+        //         }
+        //         else if (localStorage.getItem(`gw_${index}_stats`)) {
+        //             continue;
+        //         }
+        //         else {
+        //             setStatCounter(await seasonStats(index));
+        //         }
+        //     }
+        //     getManagerOfTheMonth(apiGW);
+        // };
 
         const getManagerOfTheMonth = async (gw) => {
             setMOTM(await ManagerOfTheMonth(gw));
@@ -62,25 +65,33 @@ const Homepage = () => {
             setIsLoading(false);
         };
 
-        const start = async () => {
-            const [apiGW, gwComplete] = await getGameweek();
-            localStorage.removeItem("draft_data");
-            localStorage.removeItem("player_ownership");
-            localStorage.removeItem("element_types");
-            localStorage.removeItem("elements");
-            localStorage.removeItem("teams");
-            localStorage.removeItem("league_data");
-            localStorage.removeItem("standings");
-            localStorage.removeItem("matches");
-            localStorage.removeItem("league_entries");
-            localStorage.removeItem("current_gameweek");
-            localStorage.removeItem("transactions");
-            localStorage.removeItem("current_fixtures");
-            localStorage.removeItem("current_gameweek_complete");
-            localStorage.setItem("current_gameweek", apiGW);
-            localStorage.setItem("current_gameweek_complete", gwComplete)
-            collectData();
-        };
+        // const start = async () => {
+        //     const [apiGW, gwComplete] = await getGameweek();
+        //     localStorage.removeItem("draft_data");
+        //     localStorage.removeItem("player_ownership");
+        //     localStorage.removeItem("element_types");
+        //     localStorage.removeItem("elements");
+        //     localStorage.removeItem("teams");
+        //     localStorage.removeItem("league_data");
+        //     localStorage.removeItem("standings");
+        //     localStorage.removeItem("matches");
+        //     localStorage.removeItem("league_entries");
+        //     localStorage.removeItem("current_gameweek");
+        //     localStorage.removeItem("transactions");
+        //     localStorage.removeItem("current_fixtures");
+        //     localStorage.removeItem("current_gameweek_complete");
+        //     localStorage.setItem("current_gameweek", apiGW);
+        //     localStorage.setItem("current_gameweek_complete", gwComplete)
+        //     collectData();
+        // };
+
+        const start = () => {
+            Seeds();
+            setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+            setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+            setStandingsData(JSON.parse(localStorage.getItem("standings")));
+            getManagerOfTheMonth(localStorage.getItem("current_gameweek"));
+        }
         start();
 
     },[currentGameweek]);
