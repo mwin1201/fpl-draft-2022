@@ -6,6 +6,8 @@ import getGameweek from "../data/CurrentGameweek";
 import seasonStats from "../data/GWStats";
 import ManagerOfTheMonth from "../data/ManagerOTM";
 
+import Spinner from 'react-bootstrap/Spinner';
+
 // seed data for testing
 import Seeds from "../data/LocalStorage_seeds";
 
@@ -109,9 +111,10 @@ const Homepage = () => {
     };
 
     if (isLoading) {
+        //<div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
         return (
             <main>
-                <div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
+                <span>Loading...<Spinner animation="border" variant="success" /></span>
             </main>
         )
     }
