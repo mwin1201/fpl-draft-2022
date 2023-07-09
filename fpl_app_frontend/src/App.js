@@ -14,6 +14,7 @@ import GameweekStats from './pages/GameweekStats';
 import SeasonLeaders from './pages/SeasonLeaders';
 import PremFixtures from './pages/PremFixtures';
 import Dashboard from './pages/Dashboard';
+import SignUp from './pages/SignUp';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -24,6 +25,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Homepage/>}></Route>
+        <Route path='/signup' element={<SignUp/>}></Route>
         <Route path='/dashboard' element={<Dashboard/>}></Route>
         <Route path='/fixtureHistory' element={<Fixtures/>}></Route>
         <Route path='/premPlayers' element={<PremPlayers/>}></Route>

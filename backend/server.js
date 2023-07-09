@@ -32,13 +32,13 @@ const fetchRetry = (url, options, retries = 3, backoff = 300) => {
 };
 
 // this section is the endpoint to gather the team names and players in the FPL Draft league
-const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";
 
-app.get('/getTeams', async (req, res) => {
+app.get('/getTeams/:leagueID', async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
-    const response = await fetch(leagueDetailsEndpoint, fetchOptions);
+    //const leagueDetailsEndpoint = "https://draft.premierleague.com/api/league/18161/details";
+    const response = await fetch("https://draft.premierleague.com/api/league/" + req.params.leagueID + "/details", fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
 });
