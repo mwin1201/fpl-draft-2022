@@ -6,6 +6,7 @@
 
 
 import React, { useState } from 'react';
+import Alert from 'react-bootstrap/Alert';
 // will need to remove comments when league is created
 //import getLeagueData from '../data/LeagueData';
 
@@ -23,7 +24,8 @@ const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState("");
     //const [leagueTeams, setLeagueTeams] = useState();
     const [success, setSuccess] = useState("");
-    const [pageState, setPageState] = useState(1);
+    const [errorMessage2, setErrorMessage2] = useState("");
+    const [success2, setSuccess2] = useState("");
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -52,8 +54,11 @@ const SignUp = () => {
         const leaguePlayer = leagueTeams.filter((team) => team.entry_name == teamName);
         let entryID, fplID;
 
-        if (!leaguePlayer) {
+        console.log(leaguePlayer);
+
+        if (leaguePlayer.length === 0) {
             setErrorMessage("Could not find team with provided information");
+            setSuccess("");
         }
         else {
             entryID = leaguePlayer[0].entry_id;
@@ -63,9 +68,9 @@ const SignUp = () => {
                 entryID: entryID,
                 fplID: fplID
             });
+            setSuccess(`We found your team and have associated ids ${entryID} and ${fplID} to your user.`)
+            setErrorMessage("");
         }
-
-        setSuccess(`We found your team and have associated ids ${entryID} and ${fplID} to your user.`)
     };
 
     const handleOwnerSignUp = async (event) => {
@@ -76,15 +81,15 @@ const SignUp = () => {
         const leagueID = document.getElementById("leagueID").value.length;
 
         if (!teamName || !leagueID) {
-            setPageState(1);
             setErrorMessage("You are missing a required field");
+            setSuccess("");
         } else if (!password) {
-            setPageState(2);
-            setErrorMessage("Your password is required");
+            setErrorMessage2("Your password is required");
+            setSuccess2("");
         } else {
-                    // need to build Owner service under utils folder that will contain endpoint calls to push new owner to DB
-        setPageState(2);
-        setSuccess(`Your data as follows: ${formState.teamName} ${formState.password} ${formState.leagueID} ${formState.entryID} ${formState.fplID} ${formState.secondaryLeagueID}`);
+            // need to build Owner service under utils folder that will contain endpoint calls to push new owner to DB
+            setSuccess2(`Your data as follows: ${formState.teamName} ${formState.password} ${formState.leagueID} ${formState.entryID} ${formState.fplID} ${formState.secondaryLeagueID}`);
+            setErrorMessage2("");
         }
     };
 
@@ -93,11 +98,12 @@ const SignUp = () => {
             <form onSubmit={handleOwnerSearch} autoComplete="off">
                 <div>
                     <h1>Join in the FPL Fun!</h1>
-                    {pageState === 1 && errorMessage && <p>{errorMessage}</p>}
-                    { pageState === 1 && success && <p>{success}</p>}
 
                     <h2>First, enter your FPL Draft League ID and your team name in that League.</h2>
                     <p>This is so we can search for you and pre-populate data relative to your team.</p>
+
+                    {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
+                    {success && <Alert variant='success'>{success}</Alert>}
 
                     <label htmlFor="leagueID">League ID:</label>
                     <input id="leagueID" name="leagueID" type="number" onBlur={handleChange}></input>
@@ -111,8 +117,8 @@ const SignUp = () => {
 
             <form onSubmit={handleOwnerSignUp} autoComplete="off">
                 <h2>Last Step, enter a password</h2>
-                {pageState === 2 && errorMessage && <p>{errorMessage}</p>}
-                {pageState === 2 && success && <p>{success}</p>}
+                {errorMessage2 && <Alert variant='danger'>{errorMessage2}</Alert>}
+                {success2 && <Alert variant='success'>{success2}</Alert>}
 
                 <label htmlFor="password">Password:</label>
                 <input id="password" name="password" type="password" onBlur={handleChange}></input>
