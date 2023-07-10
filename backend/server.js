@@ -1,16 +1,39 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
-const bodyParser = require("body-parser");
+const sequelize = require("./config/connection");
+//const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(cors());
-// const corsOptions = {
-//     origin: process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:3000"
-// };
+const corsOptions = {
+    origin: process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:3000"
+};
+
+const session = require("express-session");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+
+const sess = {
+    secret: "FPL Secret",
+    cookie: {},
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
+
+app.use(session(sess));
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(require("./controllers"));
+
+const db = require("./models");
+sequelize.sync();
 
 const fetchRetry = (url, options, retries = 3, backoff = 300) => {
     const retryCodes = [502];
