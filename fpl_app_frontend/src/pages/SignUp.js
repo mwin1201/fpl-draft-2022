@@ -88,8 +88,19 @@ const SignUp = () => {
             setSuccess2("");
         } else {
             // need to build Owner service under utils folder that will contain endpoint calls to push new owner to DB
-            setSuccess2(`Your data as follows: ${formState.teamName} ${formState.password} ${formState.leagueID} ${formState.entryID} ${formState.fplID} ${formState.secondaryLeagueID}`);
-            setErrorMessage2("");
+            const response = await fetch("/api/owners", {
+                method: "post",
+                body: JSON.stringify(formState),
+                headers: { "Content-Type": "application/json"}
+            })
+
+            if (response.ok) {
+                setSuccess2(`Your data as follows: ${formState.teamName} ${formState.password} ${formState.leagueID} ${formState.entryID} ${formState.fplID} ${formState.secondaryLeagueID}`);
+                setErrorMessage2("");
+            }
+            else {
+                alert(response.statusText);
+            }
         }
     };
 
