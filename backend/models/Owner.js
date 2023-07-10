@@ -41,7 +41,8 @@ Owner.init(
             allowNull: false
         },
         secondaryLeagueID: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: true
         }
     },
     {

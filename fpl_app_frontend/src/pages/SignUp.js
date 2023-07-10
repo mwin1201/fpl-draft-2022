@@ -15,7 +15,7 @@ const SignUp = () => {
         {
             teamName: "",
             password: "",
-            leagueID: "",
+            primaryLeagueID: "",
             entryID: "",
             fplID: "",
             secondaryLeagueID: ""
@@ -30,22 +30,31 @@ const SignUp = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        setFormState({
-            ...formState,
-            [name]: value
-        });
+        if (name === "primaryLeagueID") {
+            const primaryLeagueID = parseInt(value);
+            setFormState({
+                ...formState,
+                [name]: primaryLeagueID
+            })
+        }
+        else {
+            setFormState({
+                ...formState,
+                [name]: value
+            });
+        }
     };
 
     const handleOwnerSearch = async (event) => {
         event.preventDefault();
 
-        const leagueID = document.getElementById("leagueID").value;
+        const primaryLeagueID = document.getElementById("primaryLeagueID").value;
         const teamName = document.getElementById("teamName").value;
 
         // this official endpoint call will need to wait until the league for new season is officially created
 
         // await Promise.allSettled([
-        //     getLeagueData(leagueID),
+        //     getLeagueData(primaryLeagueID),
         // ]).then(() => {
         //     setLeagueTeams(JSON.parse(localStorage.getItem("league_entries")));
         // }).catch(() => setErrorMessage("Issue Finding Team in League Search"));
@@ -78,9 +87,9 @@ const SignUp = () => {
 
         const teamName = document.getElementById("teamName").value.length;
         const password = document.getElementById("password").value.length;
-        const leagueID = document.getElementById("leagueID").value.length;
+        const primaryLeagueID = document.getElementById("primaryLeagueID").value.length;
 
-        if (!teamName || !leagueID) {
+        if (!teamName || !primaryLeagueID) {
             setErrorMessage("You are missing a required field");
             setSuccess("");
         } else if (!password) {
@@ -88,7 +97,7 @@ const SignUp = () => {
             setSuccess2("");
         } else {
             // need to build Owner service under utils folder that will contain endpoint calls to push new owner to DB
-            const response = await fetch("/api/owners", {
+            const response = await fetch("http://localhost:5000/api/owners", {
                 method: "post",
                 body: JSON.stringify(formState),
                 headers: { "Content-Type": "application/json"}
@@ -116,8 +125,8 @@ const SignUp = () => {
                     {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                     {success && <Alert variant='success'>{success}</Alert>}
 
-                    <label htmlFor="leagueID">League ID:</label>
-                    <input id="leagueID" name="leagueID" type="number" onBlur={handleChange}></input>
+                    <label htmlFor="primaryLeagueID">League ID:</label>
+                    <input id="primaryLeagueID" name="primaryLeagueID" type="number" onBlur={handleChange}></input>
 
                     <label htmlFor="teamName">Team Name: </label>
                     <input id="teamName" name="teamName" type="text" onBlur={handleChange}></input>
