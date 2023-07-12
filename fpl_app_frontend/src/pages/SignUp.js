@@ -13,12 +13,12 @@ import Alert from 'react-bootstrap/Alert';
 const SignUp = () => {
     const [formState, setFormState] = useState(
         {
-            teamName: "",
+            team_name: "",
             password: "",
-            primaryLeagueID: "",
-            entryID: "",
-            fplID: "",
-            secondaryLeagueID: ""
+            primary_league_id: "",
+            entry_id: "",
+            fpl_id: "",
+            secondary_league_id: ""
         }
     );
     const [errorMessage, setErrorMessage] = useState("");
@@ -30,11 +30,11 @@ const SignUp = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        if (name === "primaryLeagueID") {
-            const primaryLeagueID = parseInt(value);
+        if (name === "primary_league_id") {
+            const primary_league_id = parseInt(value);
             setFormState({
                 ...formState,
-                [name]: primaryLeagueID
+                [name]: primary_league_id
             })
         }
         else {
@@ -48,20 +48,20 @@ const SignUp = () => {
     const handleOwnerSearch = async (event) => {
         event.preventDefault();
 
-        const primaryLeagueID = document.getElementById("primaryLeagueID").value;
-        const teamName = document.getElementById("teamName").value;
+        const primary_league_id = document.getElementById("primary_league_id").value;
+        const team_name = document.getElementById("team_name").value;
 
         // this official endpoint call will need to wait until the league for new season is officially created
 
         // await Promise.allSettled([
-        //     getLeagueData(primaryLeagueID),
+        //     getLeagueData(primary_league_id),
         // ]).then(() => {
         //     setLeagueTeams(JSON.parse(localStorage.getItem("league_entries")));
         // }).catch(() => setErrorMessage("Issue Finding Team in League Search"));
 
         const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
-        const leaguePlayer = leagueTeams.filter((team) => team.entry_name == teamName);
-        let entryID, fplID;
+        const leaguePlayer = leagueTeams.filter((team) => team.entry_name == team_name);
+        let entry_id, fpl_id;
 
         console.log(leaguePlayer);
 
@@ -70,14 +70,14 @@ const SignUp = () => {
             setSuccess("");
         }
         else {
-            entryID = leaguePlayer[0].entry_id;
-            fplID = leaguePlayer[0].id;
+            entry_id = leaguePlayer[0].entry_id;
+            fpl_id = leaguePlayer[0].id;
             setFormState({
                 ...formState,
-                entryID: entryID,
-                fplID: fplID
+                entry_id: entry_id,
+                fpl_id: fpl_id
             });
-            setSuccess(`We found your team and have associated ids ${entryID} and ${fplID} to your user.`)
+            setSuccess(`We found your team and have associated ids ${entry_id} and ${fpl_id} to your user.`)
             setErrorMessage("");
         }
     };
@@ -85,11 +85,11 @@ const SignUp = () => {
     const handleOwnerSignUp = async (event) => {
         event.preventDefault();
 
-        const teamName = document.getElementById("teamName").value.length;
+        const team_name = document.getElementById("team_name").value.length;
         const password = document.getElementById("password").value.length;
-        const primaryLeagueID = document.getElementById("primaryLeagueID").value.length;
+        const primary_league_id = document.getElementById("primary_league_id").value.length;
 
-        if (!teamName || !primaryLeagueID) {
+        if (!team_name || !primary_league_id) {
             setErrorMessage("You are missing a required field");
             setSuccess("");
         } else if (!password) {
@@ -101,11 +101,13 @@ const SignUp = () => {
                 method: "post",
                 body: JSON.stringify(formState),
                 headers: { "Content-Type": "application/json"}
-            })
+            });
+
+            const data = await response.json();
+            localStorage.setItem("current_user", JSON.stringify(data));
 
             if (response.ok) {
-                setSuccess2(`Your data as follows: ${formState.teamName} ${formState.password} ${formState.leagueID} ${formState.entryID} ${formState.fplID} ${formState.secondaryLeagueID}`);
-                setErrorMessage2("");
+                document.location.replace('/dashboard');
             }
             else {
                 alert(response.statusText);
@@ -125,11 +127,11 @@ const SignUp = () => {
                     {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                     {success && <Alert variant='success'>{success}</Alert>}
 
-                    <label htmlFor="primaryLeagueID">League ID:</label>
-                    <input id="primaryLeagueID" name="primaryLeagueID" type="number" onBlur={handleChange}></input>
+                    <label htmlFor="primary_league_id">League ID:</label>
+                    <input id="primary_league_id" name="primary_league_id" type="number" onBlur={handleChange}></input>
 
-                    <label htmlFor="teamName">Team Name: </label>
-                    <input id="teamName" name="teamName" type="text" onBlur={handleChange}></input>
+                    <label htmlFor="team_name">Team Name: </label>
+                    <input id="team_name" name="team_name" type="text" onBlur={handleChange}></input>
 
                     <button>Search</button>
                 </div>
@@ -144,8 +146,8 @@ const SignUp = () => {
                 <input id="password" name="password" type="password" onBlur={handleChange}></input>
 
                 <h3>Enter a Secondary League ID (optional)</h3>
-                <label htmlFor="secondaryLeagueID">Secondary League ID:</label>
-                <input id="secondaryLeagueID" name="secondaryLeagueID" type="number" onBlur={handleChange}></input>
+                <label htmlFor="secondary_league_id">Secondary League ID:</label>
+                <input id="secondary_league_id" name="secondary_league_id" type="number" onBlur={handleChange}></input>
 
                 <button>Submit</button>
             </form>

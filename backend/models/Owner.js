@@ -17,9 +17,10 @@ Owner.init(
             primaryKey: true,
             autoIncrement: true,
           },
-        teamName: {
+        team_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         password: {
             type: DataTypes.STRING,
@@ -28,19 +29,21 @@ Owner.init(
                 len: [8]
             },
         },
-        primaryLeagueID: {
+        primary_league_id: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        entryID: {
+        entry_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
-        fplID: {
+        fpl_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
-        secondaryLeagueID: {
+        secondary_league_id: {
             type: DataTypes.INTEGER,
             allowNull: true
         }

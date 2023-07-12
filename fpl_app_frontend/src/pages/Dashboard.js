@@ -16,10 +16,12 @@ const Dashboard = () => {
     // 6. Bet History
     // 7. Possible Place to Make Bets
 
+    const { fpl_id, entry_id, team_name } = JSON.parse(localStorage.getItem("current_user"));
+
     return (
         <section>
-            <h2>[TEAM NAME]</h2>
-            <TeamStats owner_entry_id={217515}/>
+            <h2>{ team_name }</h2>
+            <TeamStats owner_entry_id={entry_id}/>
 
             <h2>Standings</h2>
             <Standings 
@@ -28,10 +30,10 @@ const Dashboard = () => {
             />
 
             <h2>Recent Fixtures</h2>
-            <FixtureHistory owner_id={217931}/>
+            <FixtureHistory owner_id={fpl_id}/>
 
             <h2>Upcoming Fixtures</h2>
-            <UpcomingFixtures owner_id={217931} />
+            <UpcomingFixtures owner_id={fpl_id} />
         </section>
     )
 };
