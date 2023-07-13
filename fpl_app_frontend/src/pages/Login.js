@@ -23,7 +23,8 @@ const Login = () => {
         const password = document.getElementById("password").value.trim();
 
         if (team_name && password) {
-            const response = await fetch("http://localhost:5000/api/owners/login", {
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            const response = await fetch(`${currentOrigin}/api/owners/login`, {
                 method: "post",
                 body: JSON.stringify(formState),
                 headers: { "Content-Type": "application/json"}

@@ -96,8 +96,8 @@ const SignUp = () => {
             setErrorMessage2("Your password is required");
             setSuccess2("");
         } else {
-            // need to build Owner service under utils folder that will contain endpoint calls to push new owner to DB
-            const response = await fetch("http://localhost:5000/api/owners", {
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            const response = await fetch(`${currentOrigin}/api/owners`, {
                 method: "post",
                 body: JSON.stringify(formState),
                 headers: { "Content-Type": "application/json"}

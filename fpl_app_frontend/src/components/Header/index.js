@@ -14,7 +14,8 @@ const Header = () => {
     };
 
     const serverCall = async () => {
-        const response = await fetch("http://localhost:5000/api/owners/logout", {
+        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        const response = await fetch(`${currentOrigin}/api/owners/logout`, {
             method: "post",
             headers: { "Content-Type": "application/json" }
         });
