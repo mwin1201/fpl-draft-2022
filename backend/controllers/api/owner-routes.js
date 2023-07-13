@@ -12,22 +12,51 @@ router.post("/", (req, res) => {
         secondary_league_id: req.body.secondary_league_id
     })
     .then(dbOwnerData => {
-        console.log(dbOwnerData);
         req.session.save(() => {
-            req.session.owner_id = dbOwnerData.id;
-            req.session.team_name = dbOwnerData.team_name;
-            req.session.primary_league_id = dbOwnerData.primary_league_id;
-            req.session.entry_id = dbOwnerData.entry_id;
-            req.session.fpl_id = dbOwnerData.fpl_id;
-            req.session.secondary_league_id = dbOwnerData.secondary_league_id;
             req.session.loggedIn = true;
-        })
-        res.status(201).send(dbOwnerData);
+            res.status(201).send(dbOwnerData);
+        });
     })
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
     });
+});
+
+// POST login a user
+router.post("/login", (req, res) => {
+    Owner.findOne({
+        where: {
+            team_name: req.body.team_name
+        }
+    })
+    .then(dbOwnerData => {
+        if (!dbOwnerData) {
+            res.status(400).send({message: "No user found with that team name."});
+            return;
+        }
+        const validPassword = dbOwnerData.checkPassword(req.body.password);
+        if (!validPassword) {
+            res.status(400).send({message: "Incorrect password!"});
+            return;
+        }
+        req.session.save(() => {
+            req.session.loggedIn = true;
+            res.status(200).send(dbOwnerData);
+        });
+    });
+});
+
+// POST user logout
+router.post("/logout", (req, res) => {
+    if (req.session.loggedIn) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        });
+    }
+    else {
+        res.status(200).end();
+    }
 });
 
 module.exports = router;

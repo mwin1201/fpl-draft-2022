@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import {Link} from "react-router-dom";
 
 const Header = () => {
+    const [loggedIn, setLoggedIn] = useState(localStorage.getItem("current_user") !== null);
+
+    const logout = () => {
+        removeLocalStorage();
+        serverCall();
+    };
+
+    const removeLocalStorage = () => {
+        localStorage.removeItem("current_user");
+    };
+
+    const serverCall = async () => {
+        const response = await fetch("http://localhost:5000/api/owners/logout", {
+            method: "post",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (response.ok) {
+            document.location.replace("/");
+        }
+        else {
+            alert(response.statusText);
+        }
+    };
+
 
     return (
         <header>
             <h1>
                 FPL DRAFT 2022/23
             </h1>
-            <nav>
+            {loggedIn ?
+                <nav>
+                    <Link to="/dashboard">Dashboard</Link>
                     <Link to="/">Homepage</Link>
                     <Link to="/fixtureHistory">Fixture History</Link>
                     <Link to="/premPlayers">Prem Players</Link>
@@ -18,7 +45,15 @@ const Header = () => {
                     <Link to="/gameweekStats">Gameweek Stats</Link>
                     <Link to="/seasonLeaders">Season Leaders</Link>
                     <Link to="/premFixtures">Prem Fixtures</Link>
-            </nav>
+                    <a href="/" onClick={logout}>Logout</a>
+                </nav>
+                :
+                <nav>
+                    <Link to="/">Homepage</Link>
+                    <Link to="/signup">SignUp</Link>
+                    <Link to="/login">Login</Link>
+                </nav>
+            }
         </header>
     );
 };

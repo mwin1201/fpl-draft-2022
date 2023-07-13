@@ -18,7 +18,7 @@ const SignUp = () => {
             primary_league_id: "",
             entry_id: "",
             fpl_id: "",
-            secondary_league_id: ""
+            secondary_league_id: null
         }
     );
     const [errorMessage, setErrorMessage] = useState("");
