@@ -13,7 +13,7 @@ const app = express();
 //app.use(bodyParser.json());
 app.use(cors());
 const corsOptions = {
-    origin: process.env.prodOrigin ? process.env.NODE_ENV == 'production' : "http://localhost:3000"
+    origin: process.env.NODE_ENV == 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:3000"
 };
 
 const session = require("express-session");
