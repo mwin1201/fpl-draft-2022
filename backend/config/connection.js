@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const dotenv = require("dotenv").config();
 
 let dbConfig,sequelize;
 
@@ -49,5 +50,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 
 };
+
+sequelize.authenticate().then(() => console.log('connection established successfully!')).catch(err => console.log(err));
 
 module.exports = sequelize;
