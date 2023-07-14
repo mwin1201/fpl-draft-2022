@@ -17,7 +17,9 @@ if (process.env.NODE_ENV === 'production') {
     }
   };
 
-  sequelize = new Sequelize(process.env.FPL_DB_URI, {
+  const postgresqlURI = process.env.DB_URI;
+
+  sequelize = new Sequelize(postgresqlURI, {
     dialect: "postgres"
   });
 
