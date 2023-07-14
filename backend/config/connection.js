@@ -4,10 +4,10 @@ let dbConfig;
 
 if (process.env.NODE_ENV === 'production') {
   dbConfig = {
-    HOST: extHOST,
-    USER: extUSER,
-    PASSWORD: extPASSWORD,
-    DB: extDB,
+    HOST: process.env.extHOST,
+    USER: process.env.extUSER,
+    PASSWORD: process.env.extPASSWORD,
+    DB: process.env.extDB,
     dialect: "postgres",
     pool: {
       max: 5,
