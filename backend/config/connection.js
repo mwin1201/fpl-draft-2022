@@ -17,7 +17,9 @@ if (process.env.NODE_ENV === 'production') {
     }
   };
 
-  sequelize = new Sequelize(process.env.POSTGRESQL_DB_URI);
+  sequelize = new Sequelize(process.env.POSTGRESQL_DB_URI, {
+    dialect: "postgres"
+  });
 
 } else {
 
