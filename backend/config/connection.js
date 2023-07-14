@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-let dbConfig;
+let dbConfig,sequelize;
 
 if (process.env.NODE_ENV === 'production') {
   dbConfig = {
@@ -16,7 +16,11 @@ if (process.env.NODE_ENV === 'production') {
       idle: 10000
     }
   };
+
+  sequelize = new Sequelize(process.env.POSTGRESQL_DB_URI);
+
 } else {
+
   dbConfig = {
     HOST: "localhost",
     USER: "postgres",
@@ -30,18 +34,18 @@ if (process.env.NODE_ENV === 'production') {
       idle: 10000
     }
   };
-}
 
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
+  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
+  });
 
-  pool: {
-      max: dbConfig.pool.max,
-      min: dbConfig.pool.min,
-      acquire: dbConfig.pool.acquire,
-      idle: dbConfig.pool.idle
-  }
-});
+};
 
 module.exports = sequelize;
