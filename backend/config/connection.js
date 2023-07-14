@@ -1,6 +1,23 @@
 const Sequelize = require("sequelize");
 
-dbConfig = {
+let dbConfig;
+
+if (process.env.NODE_ENV === 'production') {
+  dbConfig = {
+    HOST: extHOST,
+    USER: extUSER,
+    PASSWORD: extPASSWORD,
+    DB: extDB,
+    dialect: "postgres",
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  };
+} else {
+  dbConfig = {
     HOST: "localhost",
     USER: "postgres",
     PASSWORD: "AnewSQLsoftware#101",
@@ -12,7 +29,8 @@ dbConfig = {
       acquire: 30000,
       idle: 10000
     }
-};
+  };
+}
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,

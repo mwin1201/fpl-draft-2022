@@ -1,6 +1,17 @@
 const router = require("express").Router();
 const { Owner } = require("../../models");
 
+// GET all users
+router.get("/", (req, res) => {
+    Owner.findAll({
+        attributes: ["id", "team_name", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id"]
+    })
+    .then((dbOwnerdata) => res.status(200).json(dbOwnerdata))
+    .catch(err => {
+        res.status(500).json(err);
+    });
+});
+
 // POST create an owner /api/owners
 router.post("/", (req, res) => {
     Owner.create({
