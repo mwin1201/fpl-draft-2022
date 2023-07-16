@@ -2,7 +2,6 @@
 :root {
   --fpl-purple: #37003c;
   --fpl-green: #00ff87;
-
 }
 
 a {
@@ -11,6 +10,7 @@ a {
 
 main {
   text-align: center;
+  font-family: "Lexend";
 }
 
 /* Header Component */
@@ -22,13 +22,17 @@ header {
 
 header h1 {
   text-align: center;
-  color: var(--fpl-green)
+  color: var(--fpl-green);
+  font-family: "Bebas Neue";
+  font-size: 8em
 }
 
 header nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: "Bebas Neue";
+  font-size: 1.1em;
 }
 
 header nav a {
@@ -41,6 +45,10 @@ header nav a:hover {
 
 header nav a:focus {
   color: var(--fpl-green);
+}
+
+.link {
+  padding: 1px
 }
 
 /* Footer Component */

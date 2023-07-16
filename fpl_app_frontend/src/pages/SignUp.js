@@ -96,7 +96,7 @@ const SignUp = () => {
             setErrorMessage2("Your password is required");
             setSuccess2("");
         } else {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
             const response = await fetch(`${currentOrigin}/api/owners`, {
                 method: "post",
                 body: JSON.stringify(formState),

@@ -32,7 +32,7 @@ const Header = () => {
     return (
         <header>
             <h1>
-                FPL DRAFT 2022/23
+                FPL DRAFT 2023/24
             </h1>
             {loggedIn ?
                 <nav>
