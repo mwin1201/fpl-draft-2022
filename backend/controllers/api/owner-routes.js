@@ -34,7 +34,7 @@ router.post("/", (req, res) => {
     });
 });
 
-// POST login a user
+// POST login an owner
 router.post("/login", (req, res) => {
     Owner.findOne({
         where: {
@@ -58,7 +58,34 @@ router.post("/login", (req, res) => {
     });
 });
 
-// POST user logout
+//PUT update owner password
+router.put("/", (req, res) => {
+    Owner.update(
+        {
+            password: req.body.password
+        },
+        {
+            where: {
+                team_name: req.body.team_name
+            },
+            attributes: ["id", "team_name", "password", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id"],
+            individualHooks: true
+        }
+    )
+    .then(dbOwnerData => {
+        if (!dbOwnerData) {
+            res.status(404).send({message: "No Owner found with this team name."});
+            return;
+        }
+        res.status(200).send(dbOwnerData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+    })
+})
+
+// POST owner logout
 router.post("/logout", (req, res) => {
     if (req.session.loggedIn) {
         req.session.destroy(() => {
