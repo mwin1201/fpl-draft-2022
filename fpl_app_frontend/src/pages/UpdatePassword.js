@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-const Login = () => {
+const UpdatePassword = () => {
+    const [errorMessage, setErrorMessage] = useState("");
     const [formState, setFormState] = useState({
-        team_name: "",
+        team_name:"",
         password: ""
     });
-    const [errorMessage, setErrorMessage] = useState("");
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -14,9 +14,10 @@ const Login = () => {
             ...formState,
             [name]: value
         });
+
     };
 
-    const handleLogin = async (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
 
         const team_name = document.getElementById("team_name").value.trim();
@@ -24,14 +25,15 @@ const Login = () => {
 
         if (team_name && password) {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            const response = await fetch(`${currentOrigin}/api/owners/login`, {
-                method: "post",
+            const response = await fetch(`${currentOrigin}/api/owners`, {
+                method: "put",
                 body: JSON.stringify(formState),
                 headers: { "Content-Type": "application/json"}
             })
 
             const data = await response.json();
-            localStorage.setItem("current_user", JSON.stringify(data));
+            const ownerData = data[1][0];
+            localStorage.setItem("current_user", JSON.stringify(ownerData));
 
             if (response.ok) {
                 document.location.replace("/dashboard");
@@ -48,21 +50,21 @@ const Login = () => {
 
     return (
         <section>
-            <form onSubmit={handleLogin} autoComplete='off'>
-                <h2>Welcome back to FPL Madness</h2>
+            <form onSubmit={handleUpdate} autoComplete='off'>
+                <h2>Update password below</h2>
                 {errorMessage && <p>{errorMessage}</p>}
-
+                
                 <label htmlFor='team_name'>Team Name:</label>
                 <input id="team_name" name="team_name" type='text' onChange={handleChange} />
 
                 <label htmlFor='password'>Password:</label>
                 <input id='password' name="password" type='password' onChange={handleChange} />
-                <a href='/update'>Forgot your password?</a>
 
                 <button type='submit'>Submit</button>
             </form>
         </section>
     )
+
 };
 
-export default Login;
+export default UpdatePassword;

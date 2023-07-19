@@ -4,10 +4,10 @@ let dbConfig,sequelize;
 
 if (process.env.NODE_ENV === 'production') {
   dbConfig = {
-    HOST: process.env.extHOST,
-    USER: process.env.extUSER,
-    PASSWORD: process.env.extPASSWORD,
-    DB: process.env.extDB,
+    HOST: process.env.intHOST,
+    USER: process.env.intUSER,
+    PASSWORD: process.env.intPASSWORD,
+    DB: process.env.intDB,
     dialect: "postgres",
     pool: {
       max: 5,
@@ -17,9 +17,25 @@ if (process.env.NODE_ENV === 'production') {
     }
   };
 
-  sequelize = new Sequelize(process.env.DB_URI, {
-    url: process.env.DB_URI,
-    dialect: "postgres"
+  // sequelize = new Sequelize(`${process.env.DB_URI_INTERNAL}`, {
+  //   dialect: "postgres",
+  //   dialectOptions: {
+  //     ssl: true
+  //   }
+  // });
+
+  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    dialetOptions: {
+      ssl: true
+    },
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
   });
 
 } else {

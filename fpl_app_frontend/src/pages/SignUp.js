@@ -8,7 +8,7 @@
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 // will need to remove comments when league is created
-//import getLeagueData from '../data/LeagueData';
+import getLeagueData from '../data/LeagueData';
 
 const SignUp = () => {
     const [formState, setFormState] = useState(
@@ -22,7 +22,6 @@ const SignUp = () => {
         }
     );
     const [errorMessage, setErrorMessage] = useState("");
-    //const [leagueTeams, setLeagueTeams] = useState();
     const [success, setSuccess] = useState("");
     const [errorMessage2, setErrorMessage2] = useState("");
     const [success2, setSuccess2] = useState("");
@@ -53,33 +52,33 @@ const SignUp = () => {
 
         // this official endpoint call will need to wait until the league for new season is officially created
 
-        // await Promise.allSettled([
-        //     getLeagueData(primary_league_id),
-        // ]).then(() => {
-        //     setLeagueTeams(JSON.parse(localStorage.getItem("league_entries")));
-        // }).catch(() => setErrorMessage("Issue Finding Team in League Search"));
+        await Promise.allSettled([
+            getLeagueData(primary_league_id),
+        ]).then((data) => {
+            console.log(data);
 
-        const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
-        const leaguePlayer = leagueTeams.filter((team) => team.entry_name == team_name);
-        let entry_id, fpl_id;
+            const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
+            const leaguePlayer = leagueTeams.filter((team) => team.entry_name === team_name);
+            let entry_id, fpl_id;
 
-        console.log(leaguePlayer);
+            console.log(leaguePlayer);
 
-        if (leaguePlayer.length === 0) {
-            setErrorMessage("Could not find team with provided information");
-            setSuccess("");
-        }
-        else {
-            entry_id = leaguePlayer[0].entry_id;
-            fpl_id = leaguePlayer[0].id;
-            setFormState({
-                ...formState,
-                entry_id: entry_id,
-                fpl_id: fpl_id
-            });
-            setSuccess(`We found your team and have associated ids ${entry_id} and ${fpl_id} to your user.`)
-            setErrorMessage("");
-        }
+            if (leaguePlayer.length === 0) {
+                setErrorMessage("Could not find team with provided information");
+                setSuccess("");
+            }
+            else {
+                entry_id = leaguePlayer[0].entry_id;
+                fpl_id = leaguePlayer[0].id;
+                setFormState({
+                    ...formState,
+                    entry_id: entry_id,
+                    fpl_id: fpl_id
+                });
+                setSuccess(`We found your team and have associated ids ${entry_id} and ${fpl_id} to your user.`)
+                setErrorMessage("");
+            }
+            }).catch(() => setErrorMessage("Issue Finding Team in League Search"));
     };
 
     const handleOwnerSignUp = async (event) => {
