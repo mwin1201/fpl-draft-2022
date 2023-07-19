@@ -56,24 +56,24 @@ const TeamStats = ({ owner_entry_id }) => {
             return buildArr;
         };
 
-        // const getTransactionData = async (teamId) => {
-        //     let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-        //     return axios.get(`${currentOrigin}/getTransactions/` + teamId)
-        //     .then((apiResponse) => {
-        //         return apiResponse.data;
-        //     })
-        // };
+        const getTransactionData = async (teamId) => {
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            return axios.get(`${currentOrigin}/fpl/getTransactions/` + teamId)
+            .then((apiResponse) => {
+                return apiResponse.data;
+            })
+        };
 
-        // const createTransactionArray = async () => {
-        //     let transactionArr = [];
-        //     const leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
-        //     for (var i = 0; i < leagueEntries.length; i++) {
-        //         let data = await getTransactionData(leagueEntries[i].entry_id);
-        //         transactionArr.push({total_count: data.entry.transactions_total, id: data.entry.id});
-        //     }
-        //     localStorage.setItem("transactions", JSON.stringify(transactionArr));
-        //     return transactionArr;
-        // };
+        const createTransactionArray = async () => {
+            let transactionArr = [];
+            const leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
+            for (var i = 0; i < leagueEntries.length; i++) {
+                let data = await getTransactionData(leagueEntries[i].entry_id);
+                transactionArr.push({total_count: data.entry.transactions_total, id: data.entry.id});
+            }
+            localStorage.setItem("transactions", JSON.stringify(transactionArr));
+            return transactionArr;
+        };
 
         const start = async () => {
             let transactionArray;
@@ -83,9 +83,9 @@ const TeamStats = ({ owner_entry_id }) => {
             if (JSON.parse(localStorage.getItem("transactions"))) {
                 transactionArray = JSON.parse(localStorage.getItem("transactions"));
             }
-            // else {
-            //     transactionArray = await createTransactionArray();
-            // }
+            else {
+                transactionArray = await createTransactionArray();
+            }
             let newStatArr = [];
             for (var i = 0; i < transactionArray.length; i++) {
                 let teamStats = allStats.filter((team) => team.teamId === transactionArray[i].id);

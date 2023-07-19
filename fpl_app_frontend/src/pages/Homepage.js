@@ -9,7 +9,7 @@ import ManagerOfTheMonth from "../data/ManagerOTM";
 import Spinner from 'react-bootstrap/Spinner';
 
 // seed data for testing
-import Seeds from "../data/LocalStorage_seeds";
+//import Seeds from "../data/LocalStorage_seeds";
 
 
 const Homepage = () => {
@@ -17,47 +17,29 @@ const Homepage = () => {
     const [leagueData, setLeagueData] = useState([]);
     const [standingsData, setStandingsData] = useState([]);
     const [MOTM, setMOTM] = useState([]);
-    const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [currentGameweek, setCurrentGameweek] = useState();
     const [currentGWStatus, setCurrentGWStatus] = useState("");
     const [statCounter, setStatCounter] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(JSON.parse(localStorage.getItem("current_user")));
 
 
     useEffect(() => {
         setIsLoading(true);
 
-        // const collectData = async () => {
-        //     await Promise.allSettled([
-        //         getLeagueData(),
-        //         getPlayers(),
-        //         getDraftData(),
-        //     ]).then(() => {
-        //         setTeamData(JSON.parse(localStorage.getItem("league_entries")));
-        //         setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-        //         setStandingsData(JSON.parse(localStorage.getItem("standings")));
-        //         getAllStats();
-        //     }).catch(() => setIsError(true));
-        // }
+        if (!(JSON.parse(localStorage.getItem("current_user")))) {
+            document.location.replace("/login");
+        }
 
-        // const getAllStats = async () => {
-        //     const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
-        //     for (var index = apiGW; index >= 1; index--) {
-        //         if (index === apiGW) {
-        //             setStatCounter(await seasonStats(index));
-        //         }
-        //         else if (localStorage.getItem(`gw_${index}_stats`)) {
-        //             continue;
-        //         }
-        //         else {
-        //             setStatCounter(await seasonStats(index));
-        //         }
-        //     }
-        //     getManagerOfTheMonth(apiGW);
-        // };
-
-        const getManagerOfTheMonth = async (gw) => {
-            setMOTM(await ManagerOfTheMonth(gw));
+        const start = async () => {
+            // set state variables
+            setIsLoggedIn(JSON.parse(localStorage.getItem("current_user")));
+            setCurrentGameweek(JSON.parse(localStorage.getItem("current_gameweek")));
+            setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+            setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+            setStandingsData(JSON.parse(localStorage.getItem("standings")));
+            setMOTM(localStorage.getItem("manager_of_the_month"));
             if (JSON.parse(localStorage.getItem("current_gameweek_complete")) === false) {
                 setCurrentGWStatus("Incomplete");
             }
@@ -67,36 +49,16 @@ const Homepage = () => {
             setIsLoading(false);
         };
 
-        // const start = async () => {
-        //     const [apiGW, gwComplete] = await getGameweek();
-        //     localStorage.removeItem("draft_data");
-        //     localStorage.removeItem("player_ownership");
-        //     localStorage.removeItem("element_types");
-        //     localStorage.removeItem("elements");
-        //     localStorage.removeItem("teams");
-        //     localStorage.removeItem("league_data");
-        //     localStorage.removeItem("standings");
-        //     localStorage.removeItem("matches");
-        //     localStorage.removeItem("league_entries");
-        //     localStorage.removeItem("current_gameweek");
-        //     localStorage.removeItem("transactions");
-        //     localStorage.removeItem("current_fixtures");
-        //     localStorage.removeItem("current_gameweek_complete");
-        //     localStorage.setItem("current_gameweek", apiGW);
-        //     localStorage.setItem("current_gameweek_complete", gwComplete)
-        //     collectData();
-        // };
-
-        const start = () => {
-            Seeds();
-            setTeamData(JSON.parse(localStorage.getItem("league_entries")));
-            setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-            setStandingsData(JSON.parse(localStorage.getItem("standings")));
-            getManagerOfTheMonth(localStorage.getItem("current_gameweek"));
-        }
+        // const start = () => {
+        //     Seeds();
+        //     setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+        //     setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+        //     setStandingsData(JSON.parse(localStorage.getItem("standings")));
+        //     getManagerOfTheMonth(localStorage.getItem("current_gameweek"));
+        // }
         start();
 
-    },[currentGameweek]);
+    },[]);
 
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
@@ -109,6 +71,16 @@ const Homepage = () => {
     const getDifference = (num1, num2) => {
         return num1 - num2;
     };
+
+    if (!(isLoggedIn)) {
+        return (
+            <main>
+                <section>
+                    <h1>This site is for FPL collegiate athletes and those who are not logged in shall not see the glorious data hidden behind these web walls. Please log in.</h1>
+                </section>
+            </main>
+        );
+    }
 
     if (isLoading) {
         //<div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
@@ -136,11 +108,16 @@ const Homepage = () => {
             <section>
                 <h2>
                     Manager of the Month
-                    {MOTM.map((manager) => (
-                        <div key={manager.team}>
-                            <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
-                        </div>
-                    ))}
+                    {MOTM ? 
+                        MOTM.map((manager) => (
+                            <div key={manager.team}>
+                                <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
+                            </div>
+                        ))
+                    :
+                        <div>
+                            <h3>There is no manager of the month at this time</h3>
+                        </div>}
                 </h2>
             </section>
 

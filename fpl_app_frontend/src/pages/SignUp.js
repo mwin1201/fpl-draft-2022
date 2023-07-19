@@ -55,8 +55,6 @@ const SignUp = () => {
         await Promise.allSettled([
             getLeagueData(primary_league_id),
         ]).then((data) => {
-            console.log(data);
-
             const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
             const leaguePlayer = leagueTeams.filter((team) => team.entry_name === team_name);
             let entry_id, fpl_id;
