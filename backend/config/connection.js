@@ -43,8 +43,8 @@ if (process.env.NODE_ENV === 'production') {
   dbConfig = {
     HOST: "localhost",
     USER: "postgres",
-    PASSWORD: "Daniella4",
-    DB: "postgres",
+    PASSWORD: "AnewSQLsoftware#101",
+    DB: "fpl_test_db",
     dialect: "postgres",
     pool: {
       max: 5,
