@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
   sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    dialetOptions: {
+    dialectOptions: {
       ssl: true
     },
     pool: {
