@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LeagueAlert from "../alerts/LeagueAlert.js";
 
 const PremPlayers = () => {
     const [filterPoints, setFilterPoints] = useState(0);
@@ -127,6 +128,7 @@ const PremPlayers = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <section>
                 <h2 id="teamTitle">Filter Prem Players by Stat and Team</h2>
                 <form id="teamFilter" onSubmit={handleTeamSubmit}>

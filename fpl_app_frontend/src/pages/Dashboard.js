@@ -24,11 +24,20 @@ const Dashboard = () => {
     useEffect(() => {
         const getData = async () => {
             const { primary_league_id } = JSON.parse(localStorage.getItem("current_user"));
-            await Promise.allSettled([
-                DataLoad(primary_league_id)
-            ]).then(() => {
-                setIsLoading(false);
-            }).catch(() => setIsError(true));
+            const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+            if (currentLeague) {
+                await Promise.allSettled([
+                    DataLoad(currentLeague)
+                ]).then(() => {
+                    setIsLoading(false);
+                }).catch(() => setIsError(true));
+            } else {
+                await Promise.allSettled([
+                    DataLoad(primary_league_id)
+                ]).then(() => {
+                    setIsLoading(false);
+                }).catch(() => setIsError(true));
+            }
         };
 
         getData();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import getGameweek from "../data/CurrentGameweek";
+import LeagueAlert from "../alerts/LeagueAlert.js";
 const axios = require('axios').default;
 
 const SeasonLeaders = () => {
@@ -181,6 +182,7 @@ const SeasonLeaders = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <form id="stat-toggle" onSubmit={handleSubmit}>
                 <button type="submit">Toggle View</button>
             </form>
