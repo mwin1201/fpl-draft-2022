@@ -17,26 +17,26 @@ if (process.env.NODE_ENV === 'production') {
     }
   };
 
-  // sequelize = new Sequelize(`${process.env.DB_URI_INTERNAL}`, {
-  //   dialect: "postgres",
-  //   dialectOptions: {
-  //     ssl: true
-  //   }
-  // });
-
-  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
+  sequelize = new Sequelize(process.env.DB_URI_INTERNAL, {
+    dialect: "postgres",
     dialectOptions: {
       ssl: true
-    },
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle
     }
   });
+
+  // sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  //   host: dbConfig.HOST,
+  //   dialect: dbConfig.dialect,
+  //   dialectOptions: {
+  //     ssl: true
+  //   },
+  //   pool: {
+  //       max: dbConfig.pool.max,
+  //       min: dbConfig.pool.min,
+  //       acquire: dbConfig.pool.acquire,
+  //       idle: dbConfig.pool.idle
+  //   }
+  // });
 
 } else {
 
