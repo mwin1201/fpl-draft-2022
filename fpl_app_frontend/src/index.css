@@ -2,7 +2,6 @@
 :root {
   --fpl-purple: #37003c;
   --fpl-green: #00ff87;
-
 }
 
 a {
@@ -11,6 +10,7 @@ a {
 
 main {
   text-align: center;
+  font-family: "Lexend";
 }
 
 /* Header Component */
@@ -22,13 +22,17 @@ header {
 
 header h1 {
   text-align: center;
-  color: var(--fpl-green)
+  color: var(--fpl-green);
+  font-family: "Bebas Neue";
+  font-size: 7em
 }
 
 header nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: "Bebas Neue";
+  font-size: 1.1em;
 }
 
 header nav a {
@@ -41,6 +45,23 @@ header nav a:hover {
 
 header nav a:focus {
   color: var(--fpl-green);
+}
+
+.logo-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.logo {
+  margin-right: 35px;
+  margin-bottom: 15px;
+  height: 8em;
+  width: 6.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Footer Component */
@@ -63,6 +84,7 @@ footer {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  font-family: "Lexend";
 }
 
 .table-data tr:nth-child(even){
@@ -110,19 +132,45 @@ footer {
  }
 
 /* Season Leaders */
+
+.card-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 2em;
+}
 .card-content {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 0px;
+  font-family: "Lexend";
 }
 
-.team-cards, .stat-cards {
+.team-cards {
   border: 2px solid black;
   border-radius: 5px;
-  height: 325px;
-  width: 250px;
+  padding-inline: 10px;
+  padding-bottom: 5px;
+  /* height: 350px;
+  width: 250px; */
+  font-family: "Lexend";
+  margin-right: 1em;
+  text-align: center;
+}
+
+.stat-cards {
+  border: 2px solid black;
+  border-radius: 5px;
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
+  /* height: 350px;
+  width: 250px; */
+  font-family: "Lexend";
+  margin-left: 1em;
+  text-align: center;
 }
 
 .team-cards:hover, .stat-cards:hover {
@@ -136,8 +184,9 @@ footer {
   border-radius: 100%;
   text-align: center;
   width: 34px;
-  height: 34px;
-  padding: 10px;
+  height: 30px;
+  padding: 11px 15px 11px 15px;
+  font-family: "Lexend";
 }
 
 .loss {
@@ -147,7 +196,7 @@ footer {
   text-align: center;
   width: 34px;
   height: 34px;
-  padding: 10px 15px 10px 15px;
+  padding: 11px 15px 11px 15px;
 }
 
 /* Prem Fixtures + Fixtures */
@@ -174,7 +223,7 @@ footer {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Lexend' 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -82,19 +82,20 @@ const Dashboard = () => {
                 <h3>Quick Actions</h3>
                 <button onClick={handleLeagueToggle}>Toggle Leagues</button>
             </div>
-            <h2>{ team_name }</h2>
+
+            <h2 style={{textAlign:'center', fontWeight:600, fontSize: 40}}>{ team_name }</h2>
             <TeamStats owner_entry_id={entry_id}/>
 
-            <h2>Standings</h2>
+            {/* <h2 style={{textAlign:'center'}}>Standings</h2> */}
             <Standings 
                 standings={JSON.parse(localStorage.getItem("standings"))}
                 teams = {JSON.parse(localStorage.getItem("league_entries"))}
             />
 
-            <h2>Recent Fixtures</h2>
+            <h2 style={{textAlign:'center', paddingTop:10}}>Recent Fixtures</h2>
             <FixtureHistory owner_id={fpl_id}/>
 
-            <h2>Upcoming Fixtures</h2>
+            <h2 style={{textAlign:'center', paddingTop:10}}>Upcoming Fixtures</h2>
             <UpcomingFixtures owner_id={fpl_id} />
         </section>
     )

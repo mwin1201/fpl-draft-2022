@@ -271,12 +271,15 @@ const TeamStats = ({ owner_entry_id }) => {
     return (
         <section>
 
-            <h2>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
+            <h2 style={{textAlign:'center'}}>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
+            <div className='card-row'>
                 <div className="card-content">
                     {myGameweekStats.map((stat) => (
                         <div className="team-cards" key={stat.teamId}>
                             <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} rel="noreferrer" target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
-                            <h4>Current Result: {checkWinLoss(stat.league_entry)}</h4>
+                            {/* <h4>Current Result:</h4> */}
+                            {/* <br></br> */}
+                            <h4 style={{padding:12}}>{checkWinLoss(stat.league_entry)}</h4>
                             <div>{stat.total_points} Points ({getGameweekLeagueRank(stat.teamId, "points")})</div>
                             <div>{stat.minutes} Minutes ({getGameweekLeagueRank(stat.teamId, "minutes")})</div>
                             <div>{stat.goals_scored} Goals ({getGameweekLeagueRank(stat.teamId, "goals")})</div>
@@ -308,7 +311,7 @@ const TeamStats = ({ owner_entry_id }) => {
                         </div>
                     ))}
                 </div>
-
+            </div>
         </section>
     );
 };

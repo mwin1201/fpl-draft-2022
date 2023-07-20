@@ -106,22 +106,6 @@ const Homepage = () => {
             </section>
 
             <section>
-                <h2>
-                    Manager of the Month
-                    {MOTM ? 
-                        MOTM.map((manager) => (
-                            <div key={manager.team}>
-                                <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
-                            </div>
-                        ))
-                    :
-                        <div>
-                            <h3>There is no manager of the month at this time</h3>
-                        </div>}
-                </h2>
-            </section>
-
-            <section>
                 <h3>The Participants</h3>
                 {teamData.map((team, i) => (
                     <div key={team.id}>{i+1}. {team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
@@ -164,6 +148,22 @@ const Homepage = () => {
                     ))}
                     </tbody>
                 </table>
+            </section>
+            <br></br>
+            <section>
+                <h2>
+                    Manager of the Month
+                    {MOTM ? 
+                        MOTM.map((manager) => (
+                            <div key={manager.team}>
+                                <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
+                            </div>
+                        ))
+                    :
+                        <div>
+                            <h3>There is no manager of the month at this time</h3>
+                        </div>}
+                </h2>
             </section>
 
         </main>
