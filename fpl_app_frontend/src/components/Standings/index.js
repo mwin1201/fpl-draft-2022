@@ -16,6 +16,14 @@ const Standings = ({standings, teams}) => {
         return num1 - num2;
     };
 
+    if (!(standings)) {
+        return (
+            <section>
+                <h3>There are no standings at this time to display.</h3>
+            </section>
+        );
+    }
+
     return (
         <section>
             <h2 style={{textAlign:'center'}}>League Standings</h2>

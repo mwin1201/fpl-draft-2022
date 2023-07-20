@@ -6,12 +6,17 @@ const UpcomingFixtures = ({ owner_id }) => {
     const [filterTeam, setFilterTeam] = useState(owner_id);
     const [leagueTeams, setLeagueTeams] = useState(JSON.parse(localStorage.getItem("league_entries")));
     const [upcomingFixtures, setUpcomingFixtures] = useState([]);
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         const start = () => {
             const gw = JSON.parse(localStorage.getItem("current_gameweek"));
             const matches = JSON.parse(localStorage.getItem("matches"));
-            if (gw === 38) {
+
+            if (!(matches)) {
+                setIsError(true);
+            }
+            else if (gw === 38) {
                 setUpcomingFixtures([]);
             }
             else if (gw + 6 <= 38) {
@@ -50,6 +55,16 @@ const UpcomingFixtures = ({ owner_id }) => {
             return "";
         }
     };
+
+    if (isError) {
+        return (
+            <main>
+                <section>
+                    <h3>There are no upcoming fixtures to display.</h3>
+                </section>
+            </main>
+        );
+    }
 
 
     return (

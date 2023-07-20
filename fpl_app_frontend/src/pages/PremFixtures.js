@@ -11,7 +11,7 @@ const PremFixtures = () => {
 
         const getFixtureData = async (event) => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getFixtureData/` + event)
+            return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
             .then((apiResponse) => {
                 return apiResponse.data;
             })
