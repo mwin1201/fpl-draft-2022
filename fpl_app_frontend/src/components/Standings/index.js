@@ -18,7 +18,7 @@ const Standings = ({standings, teams}) => {
 
     return (
         <section>
-            <h3>League Standings</h3>
+            <h2 style={{textAlign:'center'}}>League Standings</h2>
             <table className="table-data">
                 <thead>
                 <tr>
