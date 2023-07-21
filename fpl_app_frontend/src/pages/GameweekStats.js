@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LeagueAlert from "../alerts/LeagueAlert.js";
 const axios = require('axios').default;
 
 const GameweekStats = () => {
@@ -131,6 +132,7 @@ const GameweekStats = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <form id="gw-search" onSubmit={handleSubmit}>
                 <h2>Search Stats by Gameweek</h2>
                 <label htmlFor="gameweek">Select a Gameweek:</label>

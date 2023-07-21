@@ -217,7 +217,7 @@ footer {
 }
 
 /* Aggregate Data Page */
-.hide-players {
+.hide-players, .hide-alert {
   display: none;
 }
 

@@ -7,6 +7,7 @@ import seasonStats from "../data/GWStats";
 import ManagerOfTheMonth from "../data/ManagerOTM";
 
 import Spinner from 'react-bootstrap/Spinner';
+import LeagueAlert from "../alerts/LeagueAlert.js";
 
 // seed data for testing
 //import Seeds from "../data/LocalStorage_seeds";
@@ -101,6 +102,7 @@ const Homepage = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <section>
                 <u><h1>{leagueData.name}</h1></u>
             </section>
