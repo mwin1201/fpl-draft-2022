@@ -5,6 +5,10 @@
     header {
         padding: 10px;
     }
+
+    header h1 {
+        font-size: 3em;
+    }
     
     header nav {
         display: flex;
@@ -14,6 +18,10 @@
 
     header nav a {
         margin: 2px;
+    }
+
+    .logo {
+        width: 5em;
     }
 
     /* Homepage */

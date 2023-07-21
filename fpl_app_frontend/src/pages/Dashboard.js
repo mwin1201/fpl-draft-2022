@@ -89,7 +89,7 @@ const Dashboard = () => {
         <section>
             <div>
                 <h3>Quick Actions</h3>
-                <button onClick={handleLeagueToggle}>Toggle Leagues</button>
+                <button onClick={handleLeagueToggle}>Toggle Leagues [viewing {JSON.parse(localStorage.getItem("current_league"))}]</button>
             </div>
 
             <h2 style={{textAlign:'center', fontWeight:600, fontSize: 40}}>{ team_name }</h2>

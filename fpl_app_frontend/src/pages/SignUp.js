@@ -6,7 +6,8 @@
 
 
 import React, { useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
+import DangerAlert from '../alerts/FormAlerts/danger';
+import SuccessAlert from '../alerts/FormAlerts/success';
 // will need to remove comments when league is created
 import getLeagueData from '../data/LeagueData';
 
@@ -75,6 +76,8 @@ const SignUp = () => {
                 });
                 setSuccess(`We found your team and have associated ids ${entry_id} and ${fpl_id} to your user.`)
                 setErrorMessage("");
+                let submitForm = document.getElementById("signup-submit");
+                submitForm.classList.remove("hide-form");
             }
             }).catch(() => setErrorMessage("Issue Finding Team in League Search"));
     };
@@ -114,15 +117,15 @@ const SignUp = () => {
 
     return (
         <section>
-            <form onSubmit={handleOwnerSearch} autoComplete="off">
+            <form id="signup-search" onSubmit={handleOwnerSearch} autoComplete="off">
                 <div>
                     <h1>Join in the FPL Fun!</h1>
 
-                    <h2>First, enter your FPL Draft League ID and your team name in that League.</h2>
+                    <h3>First, enter your FPL Draft League ID and your team name in that League.</h3>
                     <p>This is so we can search for you and pre-populate data relative to your team.</p>
 
-                    {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
-                    {success && <Alert variant='success'>{success}</Alert>}
+                    <DangerAlert message={errorMessage} />
+                    <SuccessAlert message={success} />
 
                     <label htmlFor="primary_league_id">League ID:</label>
                     <input id="primary_league_id" name="primary_league_id" type="number" onBlur={handleChange}></input>
@@ -134,15 +137,16 @@ const SignUp = () => {
                 </div>
             </form>
 
-            <form onSubmit={handleOwnerSignUp} autoComplete="off">
-                <h2>Last Step, enter a password</h2>
-                {errorMessage2 && <Alert variant='danger'>{errorMessage2}</Alert>}
-                {success2 && <Alert variant='success'>{success2}</Alert>}
+            <form id='signup-submit' className='hide-form' onSubmit={handleOwnerSignUp} autoComplete="off">
+                <h2>Last Steps</h2>
+                
+                <DangerAlert message={errorMessage2} />
+                <SuccessAlert message={success2} />
 
                 <label htmlFor="password">Password:</label>
                 <input id="password" name="password" type="password" onBlur={handleChange}></input>
 
-                <h3>Enter a Secondary League ID (optional)</h3>
+                <h3>Enter a Secondary League ID</h3>
                 <label htmlFor="secondary_league_id">Secondary League ID:</label>
                 <input id="secondary_league_id" name="secondary_league_id" type="number" onBlur={handleChange}></input>
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DangerAlert from '../alerts/FormAlerts/danger';
 
 const Login = () => {
     const [formState, setFormState] = useState({
@@ -50,9 +51,10 @@ const Login = () => {
 
     return (
         <section>
-            <form onSubmit={handleLogin} autoComplete='off'>
+            <form className='login-form' onSubmit={handleLogin} autoComplete='off'>
                 <h2>Welcome back to FPL Madness</h2>
-                {errorMessage && <p>{errorMessage}</p>}
+
+                <DangerAlert message={errorMessage} />
 
                 <label htmlFor='team_name'>Team Name:</label>
                 <input id="team_name" name="team_name" type='text' onChange={handleChange} />
