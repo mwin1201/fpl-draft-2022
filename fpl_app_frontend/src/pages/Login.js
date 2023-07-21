@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
     const [formState, setFormState] = useState({
@@ -34,8 +35,9 @@ const Login = () => {
             localStorage.setItem("current_user", JSON.stringify(data));
 
             if (response.ok) {
-                let appURL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL : "http://localhost:3000";
-                document.location.replace(`${appURL}/dashboard`);
+                //let appURL = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL : "http://localhost:3000";
+                //document.location.replace(`${appURL}/dashboard`);
+                return <Navigate replace to="/dashboard" />
             }
 
             else {
