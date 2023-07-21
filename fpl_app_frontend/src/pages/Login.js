@@ -34,7 +34,7 @@ const Login = () => {
             localStorage.setItem("current_user", JSON.stringify(data));
 
             if (response.ok) {
-                document.location.replace("/dashboard");
+                document.location.replace(`${currentOrigin}/dashboard`);
             }
 
             else {
