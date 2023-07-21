@@ -29,9 +29,9 @@ const Homepage = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        if (!(JSON.parse(localStorage.getItem("current_user")))) {
-            document.location.replace("/login");
-        }
+        // if (!(JSON.parse(localStorage.getItem("current_user")))) {
+        //     document.location.replace("/login");
+        // }
 
         const start = async () => {
             // set state variables
