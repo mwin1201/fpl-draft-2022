@@ -41,8 +41,8 @@ const Header = () => {
            
             {loggedIn ?
                 <nav>
-                    <Link to="/dashboard">Dashboard</Link>
                     <Link to="/">Homepage</Link>
+                    <Link to="/dashboard">Dashboard</Link>
                     <Link to="/fixtureHistory">Fixture History</Link>
                     <Link to="/premPlayers">Prem Players</Link>
                     <Link to="/matchups">Head to Head</Link>
