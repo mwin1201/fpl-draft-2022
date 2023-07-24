@@ -4,7 +4,7 @@ const FixtureHistory = ({ owner_id }) => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [fixtureData, setFixtureData] = useState(JSON.parse(localStorage.getItem("matches")));
     const [filterTeam, setFilterTeam] = useState(owner_id);
-    const [recentFixtures, setRecentFixtures] = useState(fixtureData.filter((fixture) => (fixture.event >= currentGameweek - 6)).filter((fixture) => (fixture.league_entry_1 == filterTeam) || (fixture.league_entry_2 == filterTeam)))
+    const [recentFixtures, setRecentFixtures] = useState(fixtureData ? fixtureData.filter((fixture) => (fixture.event >= currentGameweek - 6)).filter((fixture) => (fixture.league_entry_1 == filterTeam) || (fixture.league_entry_2 == filterTeam)) : "");
 
 
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
@@ -32,6 +32,16 @@ const FixtureHistory = ({ owner_id }) => {
         else {
             return "";
         }
+    };
+
+    if (!(recentFixtures)) {
+        return (
+            <main>
+                <section>
+                    <h3>There is no fixture data to show.</h3>
+                </section>
+            </main>
+        );
     };
 
     return (

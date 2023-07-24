@@ -6,9 +6,10 @@
 
 
 import React, { useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
-// will need to remove comments when league is created
+import DangerAlert from '../alerts/FormAlerts/danger';
+import SuccessAlert from '../alerts/FormAlerts/success';
 import getLeagueData from '../data/LeagueData';
+import Spinner from 'react-bootstrap/Spinner';
 
 const SignUp = () => {
     const [formState, setFormState] = useState(
@@ -25,6 +26,8 @@ const SignUp = () => {
     const [success, setSuccess] = useState("");
     const [errorMessage2, setErrorMessage2] = useState("");
     const [success2, setSuccess2] = useState("");
+    const [isSearchLoading, setIsSearchLoading] = useState(false);
+    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -35,6 +38,13 @@ const SignUp = () => {
                 ...formState,
                 [name]: primary_league_id
             })
+        }
+        else if (name === "secondary_league_id") {
+            const secondary_league_id = parseInt(value);
+            setFormState({
+                ...formState,
+                [name]: secondary_league_id
+            });
         }
         else {
             setFormState({
@@ -47,6 +57,7 @@ const SignUp = () => {
     const handleOwnerSearch = async (event) => {
         event.preventDefault();
 
+        setIsSearchLoading(true);
         const primary_league_id = document.getElementById("primary_league_id").value;
         const team_name = document.getElementById("team_name").value;
 
@@ -55,13 +66,10 @@ const SignUp = () => {
         await Promise.allSettled([
             getLeagueData(primary_league_id),
         ]).then((data) => {
-            console.log(data);
-
             const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
             const leaguePlayer = leagueTeams.filter((team) => team.entry_name === team_name);
+            setIsSearchLoading(false);
             let entry_id, fpl_id;
-
-            console.log(leaguePlayer);
 
             if (leaguePlayer.length === 0) {
                 setErrorMessage("Could not find team with provided information");
@@ -77,6 +85,8 @@ const SignUp = () => {
                 });
                 setSuccess(`We found your team and have associated ids ${entry_id} and ${fpl_id} to your user.`)
                 setErrorMessage("");
+                let submitForm = document.getElementById("signup-submit");
+                submitForm.classList.remove("hide-form");
             }
             }).catch(() => setErrorMessage("Issue Finding Team in League Search"));
     };
@@ -87,64 +97,72 @@ const SignUp = () => {
         const team_name = document.getElementById("team_name").value.length;
         const password = document.getElementById("password").value.length;
         const primary_league_id = document.getElementById("primary_league_id").value.length;
+        const secondary_league_id = document.getElementById("secondary_league_id").value.length;
 
         if (!team_name || !primary_league_id) {
-            setErrorMessage("You are missing a required field");
+            setErrorMessage("Your team name and primary league ID are required.");
             setSuccess("");
-        } else if (!password) {
-            setErrorMessage2("Your password is required");
+        } else if (!password || !secondary_league_id) {
+            setErrorMessage2("Your password and secondary league ID are required.");
             setSuccess2("");
         } else {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
-            const response = await fetch(`${currentOrigin}/api/owners`, {
+            setIsSubmitLoading(true);
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            await fetch(`${currentOrigin}/api/owners`, {
                 method: "post",
                 body: JSON.stringify(formState),
                 headers: { "Content-Type": "application/json"}
-            });
-
-            const data = await response.json();
-            localStorage.setItem("current_user", JSON.stringify(data));
-
-            if (response.ok) {
+            }).then((response) => {    
+                if (response.ok) {
+                    return response.json();
+                }
+                else {
+                    throw response;
+                }
+            }).then((data) => {
+                localStorage.setItem("current_user", JSON.stringify(data));
+                setIsSubmitLoading(false);
                 document.location.replace('/dashboard');
-            }
-            else {
-                alert(response.statusText);
-            }
+            })
+            .catch((err) => {
+                setIsSubmitLoading(false);
+                setErrorMessage2("There was an issue with the submission. Please try again.");
+            });
         }
     };
 
     return (
         <section>
-            <form onSubmit={handleOwnerSearch} autoComplete="off">
-                <div>
-                    <h1>Join in the FPL Fun!</h1>
+            <form id="signup-search" onSubmit={handleOwnerSearch} autoComplete="off">
+                <h1>Join in the FPL Fun!</h1>
 
-                    <h2>First, enter your FPL Draft League ID and your team name in that League.</h2>
-                    <p>This is so we can search for you and pre-populate data relative to your team.</p>
+                <h3>First, enter your FPL Draft League ID and your team name in that League.</h3>
+                <p>This is so we can search for you and pre-populate data relative to your team.</p>
 
-                    {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
-                    {success && <Alert variant='success'>{success}</Alert>}
+                <DangerAlert message={errorMessage} />
+                <SuccessAlert message={success} />
+                {isSearchLoading ? <Spinner variant='danger' /> : ""}
 
-                    <label htmlFor="primary_league_id">League ID:</label>
-                    <input id="primary_league_id" name="primary_league_id" type="number" onBlur={handleChange}></input>
+                <label htmlFor="primary_league_id">League ID:</label>
+                <input id="primary_league_id" name="primary_league_id" type="number" onBlur={handleChange}></input>
 
-                    <label htmlFor="team_name">Team Name: </label>
-                    <input id="team_name" name="team_name" type="text" onBlur={handleChange}></input>
+                <label htmlFor="team_name">Team Name: </label>
+                <input id="team_name" name="team_name" type="text" onBlur={handleChange}></input>
 
-                    <button>Search</button>
-                </div>
+                <button>Search</button>
             </form>
 
-            <form onSubmit={handleOwnerSignUp} autoComplete="off">
-                <h2>Last Step, enter a password</h2>
-                {errorMessage2 && <Alert variant='danger'>{errorMessage2}</Alert>}
-                {success2 && <Alert variant='success'>{success2}</Alert>}
+            <form id='signup-submit' className='hide-form' onSubmit={handleOwnerSignUp} autoComplete="off">
+                <h2>Last Steps</h2>
+                
+                <DangerAlert message={errorMessage2} />
+                <SuccessAlert message={success2} />
+                {isSubmitLoading ? <Spinner variant='danger' /> : ""}
 
                 <label htmlFor="password">Password:</label>
                 <input id="password" name="password" type="password" onBlur={handleChange}></input>
 
-                <h3>Enter a Secondary League ID (optional)</h3>
+                <h3>Enter a Secondary League ID</h3>
                 <label htmlFor="secondary_league_id">Secondary League ID:</label>
                 <input id="secondary_league_id" name="secondary_league_id" type="number" onBlur={handleChange}></input>
 

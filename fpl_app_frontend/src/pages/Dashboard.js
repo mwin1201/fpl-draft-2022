@@ -3,9 +3,12 @@ import TeamStats from "../components/TeamStats";
 import Standings from "../components/Standings";
 import FixtureHistory from "../components/FixtureHistory";
 import UpcomingFixtures from "../components/UpcomingFixtures";
+import DataLoad from "../data/DataLoad";
+import Spinner from 'react-bootstrap/Spinner';
 
 const Dashboard = () => {
-
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
     // Dashboard is only accessible to those who login
     // User, aka Owner, will be able to see:
     // 1. Team Name on Top
@@ -18,8 +21,77 @@ const Dashboard = () => {
 
     const { fpl_id, entry_id, team_name } = JSON.parse(localStorage.getItem("current_user"));
 
+    useEffect(() => {
+        const getData = async () => {
+            const { primary_league_id } = JSON.parse(localStorage.getItem("current_user"));
+            const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+            if (currentLeague) {
+                await Promise.allSettled([
+                    DataLoad(currentLeague)
+                ]).then(() => {
+                    setIsLoading(false);
+                }).catch(() => setIsError(true));
+            } else {
+                await Promise.allSettled([
+                    DataLoad(primary_league_id)
+                ]).then(() => {
+                    setIsLoading(false);
+                }).catch(() => setIsError(true));
+            }
+        };
+
+        getData();
+    }, []);
+
+    const handleLeagueToggle = async (event) => {
+        event.preventDefault();
+        setIsLoading(true);
+        const { primary_league_id, secondary_league_id } = JSON.parse(localStorage.getItem("current_user"));
+        let currentLeague = JSON.parse(localStorage.getItem("current_league"));
+
+        if (currentLeague === primary_league_id) {
+            localStorage.setItem("current_league", secondary_league_id);
+            await Promise.allSettled([
+                DataLoad(secondary_league_id)
+            ]).then(() => {
+                setIsLoading(false);
+                //document.location.replace("/");
+            }).catch(() => setIsError(true));
+        } else {
+            localStorage.setItem("current_league", primary_league_id);
+            await Promise.allSettled([
+                DataLoad(primary_league_id)
+            ]).then(() => {
+                setIsLoading(false);
+                //document.location.replace("/");
+            }).catch(() => setIsError(true));
+        }
+
+    };
+
+    if (isLoading) {
+        return (
+            <main>
+                <span>Loading...<Spinner animation="border" variant="success" /></span>
+            </main>
+        );
+    }
+
+    if (isError) {
+        return (
+            <main>
+                <h2>There is an error. Please try refreshing your screen.</h2>
+            </main>
+        );
+    }
+
     return (
         <section>
+            <div>
+                <h3>Quick Actions</h3>
+                <button onClick={handleLeagueToggle}>Toggle Leagues [viewing {JSON.parse(localStorage.getItem("current_league"))}]</button>
+            </div>
+
             <h2 style={{textAlign:'center', fontWeight:600, fontSize: 40}}>{ team_name }</h2>
             <TeamStats owner_entry_id={entry_id}/>
 

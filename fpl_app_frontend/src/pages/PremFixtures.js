@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 const axios = require('axios').default;
 
+
 const PremFixtures = () => {
     const [displayArr, setDisplayArr] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +12,7 @@ const PremFixtures = () => {
 
         const getFixtureData = async (event) => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getFixtureData/` + event)
+            return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
             .then((apiResponse) => {
                 return apiResponse.data;
             })
