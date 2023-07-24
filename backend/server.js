@@ -55,6 +55,14 @@ const fetchRetry = (url, options, retries = 3, backoff = 300) => {
         .catch(console.error);
 };
 
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname,"../fpl_app_frontend/build")));
+}
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../fpl_app_frontend/build/index.html"));
+});
+
 app.listen(PORT, '0.0.0.0', (err) => {
     if (err) throw err;
     console.log(`FPL app listening at port: ${PORT}`);

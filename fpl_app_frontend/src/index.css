@@ -24,7 +24,7 @@ header h1 {
   text-align: center;
   color: var(--fpl-green);
   font-family: "Bebas Neue";
-  font-size: 7em
+  font-size: 7em;
 }
 
 header nav {
@@ -32,7 +32,7 @@ header nav {
   justify-content: space-between;
   align-items: center;
   font-family: "Bebas Neue";
-  font-size: 1.1em;
+  font-size: 1.3em;
 }
 
 header nav a {
@@ -47,7 +47,7 @@ header nav a:focus {
   color: var(--fpl-green);
 }
 
-.logo-title{
+.logo-title {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,6 +74,30 @@ footer {
   margin: 10px 0 0 0;
 }
 
+/* Forms in General */
+#team_name,
+#password,
+#primary_league_id,
+#secondary_league_id {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+button {
+  background-color: var(--fpl-purple);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Login Page */
+
+.login-form {
+  margin: 5px 10px 5px 10px;
+}
+
 /* Homepage */
 
 .table-data {
@@ -87,7 +111,7 @@ footer {
   font-family: "Lexend";
 }
 
-.table-data tr:nth-child(even){
+.table-data tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -126,14 +150,17 @@ footer {
 }
 
 /* Gameweek stats */
-.fpl-link, .fpl-link:hover, .fpl-link:visited, .fpl-link:active {
+.fpl-link,
+.fpl-link:hover,
+.fpl-link:visited,
+.fpl-link:active {
   color: inherit;
   text-decoration: none;
- }
+}
 
 /* Season Leaders */
 
-.card-row{
+.card-row {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -173,7 +200,8 @@ footer {
   text-align: center;
 }
 
-.team-cards:hover, .stat-cards:hover {
+.team-cards:hover,
+.stat-cards:hover {
   background-color: var(--fpl-purple);
   color: var(--fpl-green);
 }
@@ -201,11 +229,11 @@ footer {
 
 /* Prem Fixtures + Fixtures */
 .red-highlight {
-  background-color: #FF1751;
+  background-color: #ff1751;
 }
 
 .green-highlight {
-  background-color: #01FC7A;
+  background-color: #01fc7a;
 }
 
 .grey-highlight {
@@ -217,20 +245,22 @@ footer {
 }
 
 /* Aggregate Data Page */
-.hide-players, .hide-alert {
+.hide-players,
+.hide-alert,
+.hide-form {
   display: none;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Lexend' 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Lexend" "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
