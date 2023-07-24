@@ -75,9 +75,10 @@ footer {
 }
 
 /* Forms in General */
-input[type="text"],
-input[type="password"],
-input[type="number"] {
+#team_name,
+#password,
+#primary_league_id,
+#secondary_league_id {
   width: 100%;
   border: 1px solid black;
   border-radius: 5px;
