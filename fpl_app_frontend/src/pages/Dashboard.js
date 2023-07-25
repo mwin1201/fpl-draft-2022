@@ -90,6 +90,7 @@ const Dashboard = () => {
             <div>
                 <h3>Quick Actions</h3>
                 <button onClick={handleLeagueToggle}>Toggle Leagues [viewing {JSON.parse(localStorage.getItem("current_league"))}]</button>
+                {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
             </div>
 
             <h2 style={{textAlign:'center', fontWeight:600, fontSize: 40}}>{ team_name }</h2>

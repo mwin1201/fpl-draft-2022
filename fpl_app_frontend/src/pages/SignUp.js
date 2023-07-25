@@ -105,6 +105,9 @@ const SignUp = () => {
         } else if (!password || !secondary_league_id) {
             setErrorMessage2("Your password and secondary league ID are required.");
             setSuccess2("");
+        } else if (password < 8) {
+            setErrorMessage2("Your password must be at least 8 characters long!");
+            setSuccess2("");
         } else {
             setIsSubmitLoading(true);
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";

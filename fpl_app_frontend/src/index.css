@@ -94,7 +94,7 @@ footer {
 
 /* Login Page */
 
-.login-form {
+.login-form, #signup-submit, #signup-search, #password-update {
   margin: 5px 10px 5px 10px;
 }
 
