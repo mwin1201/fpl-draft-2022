@@ -126,13 +126,13 @@ const Homepage = () => {
                     <thead>
                     <tr>
                         <th>League Team</th>
-                        <th>Wins</th>
-                        <th>Draws</th>
-                        <th>Losses</th>
+                        <th>W</th>
+                        <th>D</th>
+                        <th>L</th>
                         <th>Pts For</th>
                         <th>Pts Against</th>
                         <th>Pts Diff</th>
-                        <th>Total Table Points</th>
+                        <th>Total Points</th>
                     </tr>
                     </thead>
                     <tbody>
