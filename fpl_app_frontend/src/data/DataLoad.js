@@ -9,12 +9,12 @@ const DataLoad = async (leagueID) => {
     let dataLoadComplete = false;
 
     const collectData = async (leagueID) => {
-        await Promise.allSettled([
+        return await Promise.allSettled([
             getLeagueData(leagueID),
             getPlayers(),
             getDraftData(leagueID),
         ]).then(() => {
-            getAllStats();
+            return getAllStats();
         }).catch((err) => {
             console.log(err);
             return dataLoadComplete;
@@ -23,6 +23,10 @@ const DataLoad = async (leagueID) => {
 
     const getAllStats = async () => {
         const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
+        if (apiGW == null) {
+            dataLoadComplete = true;
+            return dataLoadComplete;
+        }
         for (var index = apiGW; index >= 1; index--) {
             if (index === apiGW) {
                 await seasonStats(index);
@@ -34,7 +38,7 @@ const DataLoad = async (leagueID) => {
                 await seasonStats(index);
             }
         }
-        getManagerOfTheMonth(apiGW);
+        return getManagerOfTheMonth(apiGW);
     };
 
     const getManagerOfTheMonth = async (gw) => {
@@ -61,10 +65,10 @@ const DataLoad = async (leagueID) => {
         localStorage.setItem("current_gameweek", apiGW);
         localStorage.setItem("current_gameweek_complete", gwComplete);
         localStorage.setItem("current_league", leagueID);
-        collectData(leagueID);
+        return collectData(leagueID);
     };
 
-    start(leagueID);
+    return start(leagueID);
 };
 
 export default DataLoad;
