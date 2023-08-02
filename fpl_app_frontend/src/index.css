@@ -255,6 +255,16 @@ button:hover{
   padding: 11px 15px 11px 15px;
 }
 
+.tie {
+  background-color: gray;
+  color: black;
+  border-radius: 100%;
+  text-align: center;
+  width: 34px;
+  height: 34px;
+  padding: 11px 15px 11px 15px;
+}
+
 /* Prem Fixtures + Fixtures */
 .red-highlight {
   background-color: #ff1751;
