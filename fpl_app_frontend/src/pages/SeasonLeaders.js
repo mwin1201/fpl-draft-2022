@@ -4,6 +4,7 @@ import LeagueAlert from "../alerts/LeagueAlert.js";
 const axios = require('axios').default;
 
 const SeasonLeaders = () => {
+    const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [allStats, setAllStats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [statToggle, setStatToggle] = useState(0);
@@ -171,6 +172,14 @@ const SeasonLeaders = () => {
             setStatToggle(0);
         }
     };
+
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <section>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </section>
+        );
+    }
 
     if (isLoading) {
         return (
