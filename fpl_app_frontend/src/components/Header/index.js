@@ -33,10 +33,9 @@ const Header = () => {
     return (
         <header>
             <div className="logo-title">
-                <img className="logo" alt='fpl logo' src='https://www.premierleague.com/resources/rebrand/v7.123.11/i/elements/pl-main-logo.png'></img>
-            <h1>
-                FPL DRAFT 2023/24
-            </h1>
+                <h1>
+                    FPL DRAFT 2023/24
+                </h1>
             </div>
            
             {loggedIn ?

@@ -74,10 +74,9 @@ const UpcomingFixtures = ({ owner_id }) => {
                     <table className="table-data">
                         <thead>
                             <tr>
-                                <th>Gameweek</th>
+                                <th>GW</th>
                                 <th>Team 1</th>
-                                <th>Points</th>
-                                <th>Points</th>
+                                <th>vs</th>
                                 <th>Team 2</th>
                             </tr>
                         </thead>
@@ -86,8 +85,7 @@ const UpcomingFixtures = ({ owner_id }) => {
                                 <tr key={i}>
                                     <td>{fixture.event}</td>
                                     <td>{getTeamName(fixture.league_entry_1)}</td>
-                                    <td className={checkWinorLoss(fixture.league_entry_1, "1", fixture.league_entry_1_points, fixture.league_entry_2_points)}>{fixture.league_entry_1_points}</td>
-                                    <td className={checkWinorLoss(fixture.league_entry_2, "2", fixture.league_entry_1_points, fixture.league_entry_2_points)}>{fixture.league_entry_2_points}</td>
+                                    <td>vs.</td>
                                     <td>{getTeamName(fixture.league_entry_2)}</td>
                                 </tr>
                             ))}

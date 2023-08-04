@@ -48,20 +48,10 @@ header nav a:focus {
 }
 
 .logo-title {
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
   margin: 10px;
-}
-
-.logo {
-  margin-right: 35px;
-  margin-bottom: 15px;
-  height: 8em;
-  width: 6.5em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Footer Component */

@@ -75,10 +75,10 @@ const Fixtures = () => {
                 <table className="table-data">
                     <thead>
                         <tr>
-                            <th>Gameweek</th>
+                            <th>GW</th>
                             <th>Team 1</th>
-                            <th>Points</th>
-                            <th>Points</th>
+                            <th>Pts</th>
+                            <th>Pts</th>
                             <th>Team 2</th>
                         </tr>
                     </thead>
