@@ -175,9 +175,9 @@ const SeasonLeaders = () => {
 
     if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
         return (
-            <section>
+            <main>
                 <h2>Still waiting for the start of the 2023 season!</h2>
-            </section>
+            </main>
         );
     }
 

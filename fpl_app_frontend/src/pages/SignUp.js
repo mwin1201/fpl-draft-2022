@@ -135,43 +135,45 @@ const SignUp = () => {
     };
 
     return (
-        <section>
-            <form id="signup-search" onSubmit={handleOwnerSearch} autoComplete="off">
-                <h1>Join in the FPL Fun!</h1>
+        <main>
+            <section>
+                <form id="signup-search" onSubmit={handleOwnerSearch} autoComplete="off">
+                    <h1>Join in the FPL Fun!</h1>
 
-                <h3>First, enter your FPL Draft League ID and your team name in that League.</h3>
-                <p>This is so we can search for you and pre-populate data relative to your team.</p>
+                    <h3>First, enter your FPL Draft League ID and your team name in that League.</h3>
+                    <p>This is so we can search for you and pre-populate data relative to your team.</p>
 
-                <DangerAlert message={errorMessage} />
-                <SuccessAlert message={success} />
-                {isSearchLoading ? <Spinner variant='danger' /> : ""}
+                    <DangerAlert message={errorMessage} />
+                    <SuccessAlert message={success} />
+                    {isSearchLoading ? <Spinner variant='danger' /> : ""}
 
-                <label htmlFor="primary_league_id">League ID:</label>
-                <input id="primary_league_id" name="primary_league_id" type="number" onBlur={handleChange}></input>
+                    <label htmlFor="primary_league_id">League ID:</label>
+                    <input id="primary_league_id" name="primary_league_id" type="number" onBlur={handleChange}></input>
 
-                <label htmlFor="team_name">Team Name: </label>
-                <input id="team_name" name="team_name" type="text" onBlur={handleChange}></input>
+                    <label htmlFor="team_name">Team Name: </label>
+                    <input id="team_name" name="team_name" type="text" onBlur={handleChange}></input>
 
-                <button>Search</button>
-            </form>
+                    <button>Search</button>
+                </form>
 
-            <form id='signup-submit' className='hide-form' onSubmit={handleOwnerSignUp} autoComplete="off">
-                <h2>Last Steps</h2>
-                
-                <DangerAlert message={errorMessage2} />
-                <SuccessAlert message={success2} />
-                {isSubmitLoading ? <Spinner variant='danger' /> : ""}
+                <form id='signup-submit' className='hide-form' onSubmit={handleOwnerSignUp} autoComplete="off">
+                    <h2>Last Steps</h2>
+                    
+                    <DangerAlert message={errorMessage2} />
+                    <SuccessAlert message={success2} />
+                    {isSubmitLoading ? <Spinner variant='danger' /> : ""}
 
-                <label htmlFor="password">Password:</label>
-                <input id="password" name="password" type="password" onBlur={handleChange}></input>
+                    <label htmlFor="password">Password:</label>
+                    <input id="password" name="password" type="password" onBlur={handleChange}></input>
 
-                <h3>Enter a Secondary League ID</h3>
-                <label htmlFor="secondary_league_id">Secondary League ID:</label>
-                <input id="secondary_league_id" name="secondary_league_id" type="number" onBlur={handleChange}></input>
+                    <h3>Enter a Secondary League ID</h3>
+                    <label htmlFor="secondary_league_id">Secondary League ID:</label>
+                    <input id="secondary_league_id" name="secondary_league_id" type="number" onBlur={handleChange}></input>
 
-                <button>Submit</button>
-            </form>
-        </section>
+                    <button>Submit</button>
+                </form>
+            </section>
+        </main>
     )
 
 };

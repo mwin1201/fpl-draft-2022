@@ -92,28 +92,29 @@ const Dashboard = () => {
     }
 
     return (
-        <section>
-            <div>
-                <h3>Quick Actions</h3>
-                <button onClick={handleLeagueToggle}>Toggle Leagues [viewing {JSON.parse(localStorage.getItem("current_league"))}]</button>
-                {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
-            </div>
+        <main>
+            <section>
+                <div>
+                    <h4>Quick Actions</h4>
+                    <button onClick={handleLeagueToggle}>Toggle Leagues</button>
+                    {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
+                </div>
 
-            <h2 style={{textAlign:'center', fontWeight:600, fontSize: 40}}>{ team_name }</h2>
-            <TeamStats owner_entry_id={entry_id}/>
+                <h1>{ team_name }</h1>
+                <TeamStats owner_entry_id={entry_id}/>
 
-            {/* <h2 style={{textAlign:'center'}}>Standings</h2> */}
-            <Standings 
-                standings={JSON.parse(localStorage.getItem("standings"))}
-                teams = {JSON.parse(localStorage.getItem("league_entries"))}
-            />
+                <Standings 
+                    standings={JSON.parse(localStorage.getItem("standings"))}
+                    teams = {JSON.parse(localStorage.getItem("league_entries"))}
+                />
 
-            <h2 style={{textAlign:'center', paddingTop:10}}>Recent Fixtures</h2>
-            <FixtureHistory owner_id={fpl_id}/>
+                <h2>Recent Fixtures</h2>
+                <FixtureHistory owner_id={fpl_id}/>
 
-            <h2 style={{textAlign:'center', paddingTop:10}}>Upcoming Fixtures</h2>
-            <UpcomingFixtures owner_id={fpl_id} />
-        </section>
+                <h2>Upcoming Fixtures</h2>
+                <UpcomingFixtures owner_id={fpl_id} />
+            </section>
+        </main>
     )
 };
 
