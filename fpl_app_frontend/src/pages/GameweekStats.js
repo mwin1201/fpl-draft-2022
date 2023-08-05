@@ -27,7 +27,7 @@ const GameweekStats = () => {
             }
             else {
                 return (
-                    <span className="tie">T</span>
+                    <span className="draw">D</span>
                 );
             }
         }
@@ -44,7 +44,7 @@ const GameweekStats = () => {
             }
             else {
                 return (
-                    <span className="tie">T</span>
+                    <span className="draw">D</span>
                 );
             }
         }
