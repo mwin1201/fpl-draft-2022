@@ -197,8 +197,8 @@ button:hover{
   border-radius: 5px;
   padding-inline: 10px;
   padding-bottom: 5px;
-  /* height: 350px;
-  width: 250px; */
+  height: 350px;
+  width: 250px;
   font-family: "Lexend";
   margin-right: 1em;
   text-align: center;
@@ -210,8 +210,8 @@ button:hover{
   border-radius: 5px;
   /* padding-top: 5px;
   padding-bottom: 5px; */
-  /* height: 350px;
-  width: 250px; */
+  height: 350px;
+  width: 250px;
   font-family: "Lexend";
   margin-left: 1em;
   text-align: center;
@@ -245,7 +245,7 @@ button:hover{
   padding: 11px 15px 11px 15px;
 }
 
-.tie {
+.draw {
   background-color: gray;
   color: black;
   border-radius: 100%;
