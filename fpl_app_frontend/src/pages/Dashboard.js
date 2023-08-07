@@ -108,7 +108,7 @@ const Dashboard = () => {
                     teams = {JSON.parse(localStorage.getItem("league_entries"))}
                 />
 
-                <h2>Recent Fixtures</h2>
+                <h2>Past Fixtures</h2>
                 <FixtureHistory owner_id={fpl_id}/>
 
                 <h2>Upcoming Fixtures</h2>
