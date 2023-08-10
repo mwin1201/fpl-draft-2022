@@ -11,7 +11,7 @@ const HeadtoHead = () => {
         setIsLoading(true);
 
         const getGameweekStats = async (curGW) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
             return axios.get(`${currentOrigin}/getStats/` + curGW)
             .then((apiResponse) => {
                 return [apiResponse.data.elements, apiResponse.data.fixtures];
@@ -19,7 +19,7 @@ const HeadtoHead = () => {
         };
 
         const getLineups = async (team, gameweek, stats, premFixtures) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
             return axios.get(`${currentOrigin}/getLineups/` + team + "/" + gameweek)
             .then((apiResponse) => {
                 return getLineupStats(apiResponse.data.picks, stats, premFixtures);

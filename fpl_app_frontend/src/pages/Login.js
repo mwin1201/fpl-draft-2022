@@ -28,7 +28,7 @@ const Login = () => {
         const password = document.getElementById("password").value.trim();
 
         if (team_name && password) {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
             await fetch(`${currentOrigin}/api/owners/login`, {
                 method: "post",
                 body: JSON.stringify(formState),

@@ -28,7 +28,7 @@ const UpdatePassword = () => {
 
         if (team_name && password) {
             setIsLoading(true);
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
             await fetch(`${currentOrigin}/api/owners`, {
                 method: "put",
                 body: JSON.stringify(formState),

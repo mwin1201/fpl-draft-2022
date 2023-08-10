@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 
 const getLeagueData = async (leagueID) => {
-    let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+    let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5001";
     return axios.get(`${currentOrigin}/fpl/getTeams/` + leagueID)
         .then((apiTeamResponse) => {
             localStorage.setItem("league_data", JSON.stringify(apiTeamResponse.data.league));
