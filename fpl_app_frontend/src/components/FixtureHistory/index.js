@@ -4,7 +4,7 @@ const FixtureHistory = ({ owner_id }) => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [fixtureData, setFixtureData] = useState(JSON.parse(localStorage.getItem("matches")));
     const [filterTeam, setFilterTeam] = useState(owner_id);
-    const [recentFixtures, setRecentFixtures] = useState(fixtureData ? fixtureData.filter((fixture) => (fixture.event >= currentGameweek - 6)).filter((fixture) => (fixture.league_entry_1 == filterTeam) || (fixture.league_entry_2 == filterTeam)) : "");
+    const [recentFixtures, setRecentFixtures] = useState(fixtureData ? fixtureData.filter((fixture) => (fixture.event <= currentGameweek)).filter((fixture) => (fixture.league_entry_1 === filterTeam) || (fixture.league_entry_2 === filterTeam)) : "");
 
 
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
@@ -17,16 +17,16 @@ const FixtureHistory = ({ owner_id }) => {
     };
 
     const checkWinorLoss = (team, entry, score1, score2) => {
-        if (team == filterTeam && entry === "1" && score1 > score2) {
+        if (team === filterTeam && entry === "1" && score1 > score2) {
             return "green-highlight";
         }
-        else if (team == filterTeam && entry === "1" && score1 < score2) {
+        else if (team === filterTeam && entry === "1" && score1 < score2) {
             return "red-highlight";
         }
-        else if (team == filterTeam && entry === "2" && score2 < score1) {
+        else if (team === filterTeam && entry === "2" && score2 < score1) {
             return "red-highlight";
         }
-        else if (team == filterTeam && entry === "2" && score2 > score1) {
+        else if (team === filterTeam && entry === "2" && score2 > score1) {
             return "green-highlight";
         }
         else {
@@ -47,6 +47,7 @@ const FixtureHistory = ({ owner_id }) => {
     return (
         <main>
             <section>
+                {recentFixtures.length ?
                 <table className="table-data">
                     <thead>
                         <tr>
@@ -69,6 +70,11 @@ const FixtureHistory = ({ owner_id }) => {
                         ))}
                     </tbody>
                 </table>
+                :
+                <div>
+                    <h2>There is no fixture data to show.</h2>
+                </div>
+                }
             </section>
         </main>
     );

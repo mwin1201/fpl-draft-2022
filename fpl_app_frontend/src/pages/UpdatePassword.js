@@ -56,7 +56,7 @@ const UpdatePassword = () => {
     };
 
     return (
-        <section>
+        <main>
             {isLoading ?
                 <div>
                     <Spinner variant='danger'></Spinner> 
@@ -76,7 +76,7 @@ const UpdatePassword = () => {
                     <button type='submit'>Submit</button>
                 </form>
             }
-        </section>
+        </main>
     )
 
 };

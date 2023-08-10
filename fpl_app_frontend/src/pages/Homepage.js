@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from "react";
-import getLeagueData from "../data/LeagueData";
-import getPlayers from "../data/Players";
-import getDraftData from "../data/DraftData";
-import getGameweek from "../data/CurrentGameweek";
-import seasonStats from "../data/GWStats";
-import ManagerOfTheMonth from "../data/ManagerOTM";
 
 import Spinner from 'react-bootstrap/Spinner';
 import LeagueAlert from "../alerts/LeagueAlert.js";
@@ -20,7 +14,6 @@ const Homepage = () => {
     const [MOTM, setMOTM] = useState([]);
     const [currentGameweek, setCurrentGameweek] = useState();
     const [currentGWStatus, setCurrentGWStatus] = useState("");
-    const [statCounter, setStatCounter] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(JSON.parse(localStorage.getItem("current_user")));
@@ -28,10 +21,6 @@ const Homepage = () => {
 
     useEffect(() => {
         setIsLoading(true);
-
-        // if (!(JSON.parse(localStorage.getItem("current_user")))) {
-        //     document.location.replace("/login");
-        // }
 
         const start = async () => {
             // set state variables
@@ -50,13 +39,6 @@ const Homepage = () => {
             setIsLoading(false);
         };
 
-        // const start = () => {
-        //     Seeds();
-        //     setTeamData(JSON.parse(localStorage.getItem("league_entries")));
-        //     setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-        //     setStandingsData(JSON.parse(localStorage.getItem("standings")));
-        //     getManagerOfTheMonth(localStorage.getItem("current_gameweek"));
-        // }
         start();
 
     },[]);
@@ -76,9 +58,7 @@ const Homepage = () => {
     if (!(isLoggedIn)) {
         return (
             <main>
-                <section>
-                    <h1>This site is for FPL collegiate athletes and those who are not logged in shall not see the glorious data hidden behind these web walls. Please log in.</h1>
-                </section>
+                <h1>Those who are not logged in shall not see the glorious data hidden behind these web walls. Please log in.</h1>
             </main>
         );
     }
@@ -94,9 +74,9 @@ const Homepage = () => {
 
     if (isError) {
         return (
-            <div>
+            <main>
                 There is an error, please refresh
-            </div>
+            </main>
         )
     }
 

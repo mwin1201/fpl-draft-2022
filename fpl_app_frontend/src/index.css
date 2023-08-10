@@ -63,20 +63,10 @@ header nav a:focus {
 }
 
 .logo-title {
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
   margin: 10px;
-}
-
-.logo {
-  margin-right: 35px;
-  margin-bottom: 15px;
-  height: 8em;
-  width: 6.5em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Footer Component */
@@ -222,8 +212,8 @@ button:hover{
   border-radius: 5px;
   padding-inline: 10px;
   padding-bottom: 5px;
-  /* height: 350px;
-  width: 250px; */
+  height: 350px;
+  width: 250px;
   font-family: "Lexend";
   margin-right: 1em;
   text-align: center;
@@ -235,8 +225,8 @@ button:hover{
   border-radius: 5px;
   /* padding-top: 5px;
   padding-bottom: 5px; */
-  /* height: 350px;
-  width: 250px; */
+  height: 350px;
+  width: 250px;
   font-family: "Lexend";
   margin-left: 1em;
   text-align: center;
@@ -269,6 +259,16 @@ button:hover{
   height: 30px;
   padding: 11px 15px 11px 15px;
   font-family: "Lexend";
+}
+
+.draw {
+  background-color: gray;
+  color: black;
+  border-radius: 100%;
+  text-align: center;
+  width: 34px;
+  height: 34px;
+  padding: 11px 15px 11px 15px;
 }
 
 /* Prem Fixtures + Fixtures */

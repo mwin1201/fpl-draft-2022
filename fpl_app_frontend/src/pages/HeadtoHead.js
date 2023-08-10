@@ -105,6 +105,14 @@ const HeadtoHead = () => {
         }
     };
 
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <main>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </main>
+        );
+    }
+
     if (isLoading) {
         return(
             <main>

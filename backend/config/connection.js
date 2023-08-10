@@ -2,13 +2,24 @@ const Sequelize = require("sequelize");
 
 let dbConfig,sequelize;
 
-if (process.env.NODE_ENV === 'production') {
+// connect to the Test Database
+if (process.env.DB_INSTANCE === 'development') {
 
-  sequelize = new Sequelize(process.env.DB_URI_INTERNAL, {
+  sequelize = new Sequelize(process.env.DB_URI_TEST_INTERNAL, {
     dialect: "postgres"
   });
 
-} else {
+} 
+
+// connect to the Production Database
+else if (process.env.DB_INSTANCE === 'production') {
+  sequelize = new Sequelize(process.env.DB_URI_PROD_INTERNAL, {
+    dialect: "postgres"
+  });
+} 
+
+// connect to the local hosted database
+else {
 
   dbConfig = {
     HOST: "localhost",

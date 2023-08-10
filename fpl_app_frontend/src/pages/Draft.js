@@ -76,10 +76,10 @@ const Draft = () => {
                 <thead>
                     <tr>
                         <th>Round</th>
-                        <th>Selected By</th>
+                        <th>Owner</th>
                         <th>Player Name</th>
-                        <th>Points</th>
-                        <th>Points Rank</th>
+                        <th>Pts</th>
+                        <th>Rank</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -9,18 +9,6 @@ const TeamStats = ({ owner_entry_id }) => {
     const [mySeasonStats, setMySeasonStats] = useState();
     const [seasonStats, setSeasonStats] = useState();
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     setDisplayArr(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)));
-
-    // },[currentGameweek]);
-
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     setLeagueStats(displayArr.filter((stat) => stat.teamId == owner_entry_id));
-
-    // }, [displayArr, owner_entry_id]);
-
     useEffect(() => {
         setIsLoading(true);
 
@@ -259,6 +247,14 @@ const TeamStats = ({ owner_entry_id }) => {
             return index + "th";
         }
     };
+
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <section>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </section>
+        );
+    }
 
     if (isLoading) {
         return (

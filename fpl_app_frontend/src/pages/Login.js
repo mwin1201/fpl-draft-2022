@@ -58,28 +58,30 @@ const Login = () => {
     };
 
     return (
-        <section>
-            {isLoading ?
-                <div>
-                    <Spinner variant='danger'></Spinner>
-                </div>
-            :
-                <form className='login-form' onSubmit={handleLogin} autoComplete='off'>
-                    <h2>Welcome back to FPL Madness</h2>
+        <main>
+            <section>
+                {isLoading ?
+                    <div>
+                        <Spinner variant='danger'></Spinner>
+                    </div>
+                :
+                    <form className='login-form' onSubmit={handleLogin} autoComplete='off'>
+                        <h2>Welcome back to FPL Madness</h2>
 
-                    <DangerAlert message={errorMessage} />
+                        <DangerAlert message={errorMessage} />
 
-                    <label htmlFor='team_name'>Team Name:</label>
-                    <input id="team_name" name="team_name" type='text' onChange={handleChange} />
+                        <label htmlFor='team_name'>Team Name:</label>
+                        <input id="team_name" name="team_name" type='text' onChange={handleChange} />
 
-                    <label htmlFor='password'>Password:</label>
-                    <input id='password' name="password" type='password' onChange={handleChange} />
+                        <label htmlFor='password'>Password:</label>
+                        <input id='password' name="password" type='password' onChange={handleChange} />
 
-                    <button type='submit'>Submit</button>
-                    <a href='/update'>Forgot your password?</a>
-                </form>
-            }
-        </section>
+                        <button type='submit'>Submit</button>
+                        <a href='/update'>Forgot your password?</a>
+                    </form>
+                }
+            </section>
+        </main>
     )
 };
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
-const axios = require('axios').default;
 
 const GameweekStats = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
@@ -21,9 +20,14 @@ const GameweekStats = () => {
                     <span className="win">W</span>
                 );
             }
-            else {
+            else if (eventMatch[0].league_entry_1_points < eventMatch[0].league_entry_2_points){
                 return (
                     <span className="loss">L</span>
+                );
+            }
+            else {
+                return (
+                    <span className="draw">D</span>
                 );
             }
         }
@@ -33,9 +37,14 @@ const GameweekStats = () => {
                     <span className="win">W</span>
                 );
             }
-            else {
+            else if (eventMatch[0].league_entry_2_points < eventMatch[0].league_entry_1_points){
                 return (
                     <span className="loss">L</span>
+                );
+            }
+            else {
+                return (
+                    <span className="draw">D</span>
                 );
             }
         }
@@ -129,6 +138,14 @@ const GameweekStats = () => {
             setToggleStat(0);
         }
     };
+
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <main>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </main>
+        );
+    }
 
     return (
         <main>

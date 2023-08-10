@@ -30,7 +30,7 @@ const Standings = ({standings, teams}) => {
             <table className="table-data">
                 <thead>
                 <tr>
-                    <th>League Team</th>
+                    <th>Team</th>
                     <th>W</th>
                     <th>D</th>
                     <th>L</th>
