@@ -222,7 +222,7 @@ button:hover{
   border-radius: 5px;
   padding-inline: 10px;
   padding-bottom: 5px;
-  height: 350px;
+  height: 375px;
   width: 250px;
   font-family: "Lexend";
   margin-right: 1em;
@@ -233,8 +233,8 @@ button:hover{
 .stat-cards {
   border: 2px solid black;
   border-radius: 5px;
-  /* padding-top: 5px;
-  padding-bottom: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
   height: 350px;
   width: 250px;
   font-family: "Lexend";
