@@ -43,6 +43,15 @@
         width: 100%;
     }
 
+    /* Dashboard Page */
+    .card-row {
+        display: block;
+    }
+
+    .card-content {
+        margin: 5px;
+    }
+
     /* Gameweek Stats */
     .team-cards {
         border: 2px solid black;

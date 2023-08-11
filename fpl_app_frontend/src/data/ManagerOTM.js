@@ -56,6 +56,9 @@ const ManagerOfTheMonth = async (gameweek) => {
         if (currentGW > 3) {
             start = currentGW - 3;
         }
+        else if (currentGW < 3) {
+            return [];
+        }
         else {
             start = 1;
         }
