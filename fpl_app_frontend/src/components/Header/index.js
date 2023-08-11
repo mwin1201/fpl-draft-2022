@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
-// import logo from 'public/fpl_logo.png' 
+import {NavLink} from "react-router-dom";
+import Logo from '../../pl-main-logo.png';
 
 const Header = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [loggedIn, setLoggedIn] = useState(localStorage.getItem("current_user") !== null);
 
     const logout = () => {
@@ -33,32 +34,44 @@ const Header = () => {
     return (
         <header>
             <div className="logo-title">
-                <h1>
-                    FPL DRAFT 2023/24
-                </h1>
+                <img className="logo" alt='fpl logo' src={Logo}></img>
+                <h1>FPL DRAFT 2023/24</h1>
             </div>
-           
-            {loggedIn ?
-                <nav>
-                    <Link to="/">Homepage</Link>
-                    <Link to="/dashboard">Dashboard</Link>
-                    <Link to="/fixtureHistory">Fixture History</Link>
-                    <Link to="/premPlayers">Prem Players</Link>
-                    <Link to="/matchups">Head to Head</Link>
-                    <Link to="/aggregate">Aggregate Data</Link>
-                    <Link to="/draft">Draft Data</Link>
-                    <Link to="/gameweekStats">Gameweek Stats</Link>
-                    <Link to="/seasonLeaders">Season Leaders</Link>
-                    <Link to="/premFixtures">Prem Fixtures</Link>
+
+            <input 
+                type="checkbox" 
+                id="menuToggle" 
+                checked={isMenuOpen} 
+                onChange={() => setIsMenuOpen(!isMenuOpen)} 
+                style={{ display: 'none' }} 
+            />
+            <label htmlFor="menuToggle" className="menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#ffffff" className="menu-icon-svg">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+                </svg>
+            </label>
+
+            {loggedIn ? (
+                <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
+                    <NavLink to="/" activeClassName="active-link">Homepage</NavLink>
+                    <NavLink to="/dashboard" activeClassName="active-link">Dashboard</NavLink>
+                    <NavLink to="/fixtureHistory" activeClassName="active-link">Fixture History</NavLink>
+                    <NavLink to="/premPlayers" activeClassName="active-link">Prem Players</NavLink>
+                    <NavLink to="/matchups" activeClassName="active-link">Head to Head</NavLink>
+                    <NavLink to="/aggregate" activeClassName="active-link">Aggregate Data</NavLink>
+                    <NavLink to="/draft" activeClassName="active-link">Draft Data</NavLink>
+                    <NavLink to="/gameweekStats" activeClassName="active-link">Gameweek Stats</NavLink>
+                    <NavLink to="/seasonLeaders" activeClassName="active-link">Season Leaders</NavLink>
+                    <NavLink to="/premFixtures" activeClassName="active-link">Prem Fixtures</NavLink>
                     <a href="/" onClick={logout}>Logout</a>
                 </nav>
-                :
-                <nav>
-                    <Link to="/">Homepage</Link>
-                    <Link to="/signup">SignUp</Link>
-                    <Link to="/login">Login</Link>
+            ) : (
+                <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
+                    <NavLink to="/" activeClassName="active-link">Homepage</NavLink>
+                    <NavLink to="/signup" activeClassName="active-link">SignUp</NavLink>
+                    <NavLink to="/login" activeClassName="active-link">Login</NavLink>
                 </nav>
-            }
+            )}
         </header>
     );
 };
