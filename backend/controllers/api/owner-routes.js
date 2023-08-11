@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { Owner } = require("../../models");
 
-// GET all users
+// GET all owners
 router.get("/", (req, res) => {
     Owner.findAll({
         attributes: ["id", "team_name", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id"]
