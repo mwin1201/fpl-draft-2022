@@ -47,11 +47,36 @@ header nav a:focus {
   color: var(--fpl-green);
 }
 
+.active-link {
+  color: var(--fpl-green); 
+  /* Add other styling properties if desired */
+}
+
+.menu {
+  display: none;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.menu a, .menu .Link {
+  margin-right: 16px;
+}
+
 .logo-title {
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px;
+}
+
+.logo {
+  width: 6.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 25px;
+  margin-left: 20px;
+  margin-bottom: 15px;
 }
 
 /* Footer Component */
@@ -241,8 +266,9 @@ button:hover{
   border-radius: 100%;
   text-align: center;
   width: 34px;
-  height: 34px;
+  height: 30px;
   padding: 11px 15px 11px 15px;
+  font-family: "Lexend";
 }
 
 .draw {
@@ -251,8 +277,9 @@ button:hover{
   border-radius: 100%;
   text-align: center;
   width: 34px;
-  height: 34px;
+  height: 30px;
   padding: 11px 15px 11px 15px;
+  font-family: "Lexend";
 }
 
 /* Prem Fixtures + Fixtures */
@@ -291,4 +318,14 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* This hides the hamburger menu on larger screens */
+@media screen and (min-width: 768px) {
+  .menu-icon, #menuToggle {
+      display: none !important; /* !important to override inline styles */
+  }
+  .menu {
+      display: block !important; /* !important to override inline styles */
+  }
 }
