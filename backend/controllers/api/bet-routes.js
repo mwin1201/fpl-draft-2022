@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const { Bet } = require("../../models");
 
+//SHOULD I ADD AUTHORIZATION TO THESE ROUTES??
+
 // GET all Bets for an owner /api/bets/owner/1
 router.get("/owner/:owner_id", (req, res) => {
     Bet.findAll({
@@ -8,7 +10,13 @@ router.get("/owner/:owner_id", (req, res) => {
             owner_id: req.params.owner_id
         }
     })
-    .then((dbBetData) => res.status(200).json(dbBetData))
+    .then((dbBetData) => {
+        if (!dbBetData) {
+            res.status(404).send({message: "No Owner Found"});
+            return;
+        }
+        res.status(200).json(dbBetData);
+    })
     .catch(err => {
         res.status(500).json(err);
     });
@@ -25,4 +33,60 @@ router.post("/", (req, res) => {
         amount: req.body.amount,
         owner_id: req.body.owner_id
     })
-})
+    .then((dbBetData) => res.status(200).send(dbBetData))
+    .catch(err => {
+        res.status(500).json(err);
+    });
+});
+
+// PUT update bet /api/bets
+router.put("/", (req, res) => {
+    Bet.update(
+        {
+            team_h_prediction: req.body.team_h_prediction,
+            team_a_prediction: req.body.team_a_prediction,
+            amount: req.body.amount
+        },
+        {
+            where: {
+                fixture_id: req.body.fixture_id,
+                owner_id: req.body.owner_id
+            }
+        }
+    )
+    .then((dbBetData) => {
+        if (!dbBetData) {
+            res.status(404).send({message: "No Bet found to update"});
+            return;
+        }
+        res.status(200).send(dbBetData);
+    })
+    .catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+// DELETE bet /api/bets
+router.delete("/", (req, res) => {
+    Bet.destroy(
+        {
+            where: {
+                fixture_id: req.body.fixture_id,
+                owner_id: req.body.owner_id
+            }
+        
+        }
+    )
+    .then((dbBetData) => {
+        if (!dbBetData) {
+            res.status(404).send({message: "No Bet found to delete"});
+            return;
+        }
+        res.status(200).send(dbBetData);
+    })
+    .catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+module.exports = router;

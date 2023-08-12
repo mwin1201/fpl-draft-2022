@@ -25,7 +25,7 @@ Wallet.init (
             allowNull: false,
             references: {
                 model: "owner",
-                key: "id"
+                key: "fpl_id"
             }
         }
     },
