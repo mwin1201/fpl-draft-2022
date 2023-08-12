@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
+import Spinner from 'react-bootstrap/Spinner';
 const axios = require('axios').default;
 
 const HeadtoHead = () => {
@@ -105,6 +106,14 @@ const HeadtoHead = () => {
         }
     };
 
+    const calcPtsForStarters = (lineup) => {
+        let total = 0;
+        for (var i = 0; i < 11; i++) {
+            total += lineup[i].points;
+        }
+        return total;
+    };
+
     if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
         return (
             <main>
@@ -116,7 +125,7 @@ const HeadtoHead = () => {
     if (isLoading) {
         return(
             <main>
-                <p>Loading data...</p>
+                <span>Loading...<Spinner animation="border" variant="success" /></span>
             </main>
         )
     }
@@ -135,7 +144,7 @@ const HeadtoHead = () => {
             <section>
                 {matchupData.map((matchup) => (
                     <div key={matchup.team1_id} className="flex-table">
-                        <h2 className="table-item">{matchup.team1_name} {matchup.team1_points}pts vs {matchup.team2_name} {matchup.team2_points}pts</h2>
+                        <h2 className="table-item">{matchup.team1_name} {calcPtsForStarters(matchup.team1_lineup)}pts vs {matchup.team2_name} {calcPtsForStarters(matchup.team2_lineup)}pts</h2>
                         <table className="table-data table-item">
                             <thead>
                                 <tr>
