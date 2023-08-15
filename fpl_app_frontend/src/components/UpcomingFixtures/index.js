@@ -10,10 +10,10 @@ const UpcomingFixtures = ({ owner_id }) => {
             return [];
         }
         else if (currentGameweek + 6 <= 38) {
-            return fixtureData.filter((fixture) => (fixture.event > currentGameweek + 1) && (fixture.event < currentGameweek + 6)).filter((fixture) => fixture.league_entry_1 === filterTeam || fixture.league_entry_2 === filterTeam);
+            return fixtureData.filter((fixture) => (fixture.event > currentGameweek) && (fixture.event < currentGameweek + 6)).filter((fixture) => fixture.league_entry_1 === filterTeam || fixture.league_entry_2 === filterTeam);
         }
         else {
-            return fixtureData.filter((fixture) => (fixture.event > currentGameweek + 1) && (fixture.event < 39)).filter((fixture) => fixture.league_entry_1 === filterTeam || fixture.league_entry_2 === filterTeam);
+            return fixtureData.filter((fixture) => (fixture.event > currentGameweek) && (fixture.event < 39)).filter((fixture) => fixture.league_entry_1 === filterTeam || fixture.league_entry_2 === filterTeam);
         }
     });
 
@@ -28,7 +28,7 @@ const UpcomingFixtures = ({ owner_id }) => {
     return (
         <main>
             <section>
-                {upcomingFixtures.length ? 
+                {upcomingFixtures.length > 0 ?
                     <table className="table-data">
                         <thead>
                             <tr>
