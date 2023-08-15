@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const UpcomingFixtures = ({ owner_id }) => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
@@ -28,7 +28,7 @@ const UpcomingFixtures = ({ owner_id }) => {
     return (
         <main>
             <section>
-                {upcomingFixtures.length > 0 ?
+                {upcomingFixtures.length > 0 ? 
                     <table className="table-data">
                         <thead>
                             <tr>

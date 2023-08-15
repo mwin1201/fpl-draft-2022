@@ -82,7 +82,7 @@ router.delete("/", (req, res) => {
             res.status(404).send({message: "No Bet found to delete"});
             return;
         }
-        res.status(200).send(dbBetData);
+        res.sendStatus(200).send(dbBetData);
     })
     .catch(err => {
         res.status(500).send(err);
