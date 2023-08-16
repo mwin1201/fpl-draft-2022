@@ -53,23 +53,24 @@ const Header = () => {
 
             {loggedIn ? (
                 <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
-                    <NavLink to="/" activeClassName="active-link">Homepage</NavLink>
-                    <NavLink to="/dashboard" activeClassName="active-link">Dashboard</NavLink>
-                    <NavLink to="/fixtureHistory" activeClassName="active-link">Fixture History</NavLink>
-                    <NavLink to="/premPlayers" activeClassName="active-link">Prem Players</NavLink>
-                    <NavLink to="/matchups" activeClassName="active-link">Head to Head</NavLink>
-                    <NavLink to="/aggregate" activeClassName="active-link">Aggregate Data</NavLink>
-                    <NavLink to="/draft" activeClassName="active-link">Draft Data</NavLink>
-                    <NavLink to="/gameweekStats" activeClassName="active-link">Gameweek Stats</NavLink>
-                    <NavLink to="/seasonLeaders" activeClassName="active-link">Season Leaders</NavLink>
-                    <NavLink to="/premFixtures" activeClassName="active-link">Prem Fixtures</NavLink>
+                    <NavLink to="/">Homepage</NavLink>
+                    <NavLink to="/dashboard">Dashboard</NavLink>
+                    <NavLink to="/fixtureHistory">Fixture History</NavLink>
+                    <NavLink to="/premPlayers">Prem Players</NavLink>
+                    <NavLink to="/matchups">Head to Head</NavLink>
+                    <NavLink to="/aggregate">Aggregate Data</NavLink>
+                    <NavLink to="/draft">Draft Data</NavLink>
+                    <NavLink to="/gameweekStats">Gameweek Stats</NavLink>
+                    <NavLink to="/seasonLeaders">Season Leaders</NavLink>
+                    <NavLink to="/premFixtures">Prem Fixtures</NavLink>
+                    <NavLink to="/bets">Bets</NavLink>
                     <a href="/" onClick={logout}>Logout</a>
                 </nav>
             ) : (
                 <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
-                    <NavLink to="/" activeClassName="active-link">Homepage</NavLink>
-                    <NavLink to="/signup" activeClassName="active-link">SignUp</NavLink>
-                    <NavLink to="/login" activeClassName="active-link">Login</NavLink>
+                    <NavLink to="/">Homepage</NavLink>
+                    <NavLink to="/signup">SignUp</NavLink>
+                    <NavLink to="/login">Login</NavLink>
                 </nav>
             )}
         </header>
