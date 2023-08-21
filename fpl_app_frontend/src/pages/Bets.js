@@ -52,12 +52,32 @@ const Bets = () => {
         return(singleTeam[0].name);
     };
 
+    const handleWin = async (event) => {
+        event.preventDefault();
+        const clickedTeam = event.target.id.split("-")[0];
+        const clickedIndex = event.target.id.split("-")[1];
+        let clickedButtonClassList = document.getElementById(event.target.id).classList;
+        const notClickedTeam = clickedTeam === "away" ? "home" : "away";
+        let notClickedButtonClass = document.getElementById(notClickedTeam + "-" + clickedIndex).classList;
+        clickedButtonClassList.remove(...clickedButtonClassList);
+        clickedButtonClassList.add("green-background");
+        notClickedButtonClass.remove(...notClickedButtonClass);
+        notClickedButtonClass.add("red-background");
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const gameweek = document.getElementById("gameweek").value;
         const fixtures = await getFixtureData(gameweek);
         setFixtures(fixtures);
         setVisibleGW(gameweek);
+    };
+
+    const handleBet = async (event) => {
+        event.preventDefault();
+        console.log(event);
+        const closest = document.getElementById(event.target.id).closest("tr");
+        console.log(closest);
     };
 
     if (isLoading) {
@@ -87,14 +107,18 @@ const Bets = () => {
                             <th>Match #</th>
                             <th>AWAY</th>
                             <th>HOME</th>
+                            <th>Amount</th>
+                            <th>Bet</th>
                         </tr>
                     </thead>
                     <tbody>
                         {fixtures.map((fixture, index) => (
                             <tr key={fixture.code}>
                                 <td>{index + 1}</td>
-                                <td>{getTeamName(fixture.team_a)}</td>
-                                <td>{getTeamName(fixture.team_h)}</td>
+                                <td><button id={"away-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_a)}</button></td>
+                                <td><button id={"home-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_h)}</button></td>
+                                <td><input type="number" id="amount" name="amount" min="0"></input></td>
+                                <td><button id={"bet" + index} onClick={handleBet}>Bet</button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -102,8 +126,6 @@ const Bets = () => {
             </section>
         </main>
     );
-
-
 };
 
 export default Bets;
