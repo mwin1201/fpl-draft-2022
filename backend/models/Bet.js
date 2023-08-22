@@ -15,7 +15,7 @@ Bet.init (
         },
         fixture_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false
         },
         team_h: {
             type: DataTypes.INTEGER,

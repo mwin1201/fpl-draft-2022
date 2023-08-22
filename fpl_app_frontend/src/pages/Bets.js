@@ -73,11 +73,80 @@ const Bets = () => {
         setVisibleGW(gameweek);
     };
 
+    const checkTeamPredictions = (element) => {
+        const classList = element.classList;
+        if (classList.contains("green-background")) {
+            return "win";
+        } else if (classList.contains("red-background")) {
+            return "loss";
+        } else {
+            return "draw";
+        }
+    };
+
+    const checkIfBetExists = async (fixture_id) => {
+        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        axios.get(`${currentOrigin}/api/bets/owner/` + JSON.parse(localStorage.getItem("current_user")).fpl_id + "/fixture/" + fixture_id)
+            .then((response) => {
+                console.log(response.data);
+                if (response.data) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+    };
+
+    const editBet = async (betData) => {
+        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        axios.put(`${currentOrigin}/api/bets`, betData)
+        .then((response) => {
+            alert("Bet successfully edited");
+        })
+        .catch(err => {
+            alert("There was an error editing your bet");
+        });
+    };
+
+    const postBet = async (betData) => {
+        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        axios.post(`${currentOrigin}/api/bets`, betData)
+        .then((response) => {
+            if (response.status === 200) {
+                alert("Successfully placed bet");
+            }
+        })
+        .catch(err => {
+            alert("There was an error submitting your bet");
+        })
+    };
+
     const handleBet = async (event) => {
         event.preventDefault();
         console.log(event);
-        const closest = document.getElementById(event.target.id).closest("tr");
-        console.log(closest);
+        const clickedIndex = event.target.id.split("-")[1];
+        let newBet = await checkIfBetExists(event.target.dataset.fixture_id);
+        let bet = {
+            fixture_id: parseInt(event.target.dataset.fixture_id),
+            team_h: parseInt(event.target.dataset.team_h),
+            team_h_prediction: checkTeamPredictions(document.getElementById("home-" + clickedIndex)),
+            team_a: parseInt(event.target.dataset.team_a),
+            team_a_prediction: checkTeamPredictions(document.getElementById("away-" + clickedIndex)),
+            amount: parseInt(document.getElementById("amount-" + clickedIndex).value),
+            owner_id: JSON.parse(localStorage.getItem("current_user")).fpl_id
+        };
+
+        if (!newBet) {
+            await postBet(bet);
+        } else {
+            let betConfirmation = window.confirm("Do you want to edit this existing bet you've made");
+            alert(betConfirmation);
+            if (betConfirmation) {
+                await editBet(bet);
+            } else {
+                alert("Bet edit successfully cancelled");
+            }
+        } 
     };
 
     if (isLoading) {
@@ -117,8 +186,8 @@ const Bets = () => {
                                 <td>{index + 1}</td>
                                 <td><button id={"away-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_a)}</button></td>
                                 <td><button id={"home-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_h)}</button></td>
-                                <td><input type="number" id="amount" name="amount" min="0"></input></td>
-                                <td><button id={"bet" + index} onClick={handleBet}>Bet</button></td>
+                                <td><input type="number" id={"amount-" + index} name="amount" min="0"></input></td>
+                                <td><button id={"bet-" + index} data-fixture_id={fixture.code} data-team_a={fixture.team_a} data-team_h={fixture.team_h} onClick={handleBet}>Bet</button></td>
                             </tr>
                         ))}
                     </tbody>

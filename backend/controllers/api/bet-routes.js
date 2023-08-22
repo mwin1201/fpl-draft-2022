@@ -22,6 +22,26 @@ router.get("/owner/:owner_id", (req, res) => {
     });
 });
 
+// GET specific bet for an owner /api/bets/owner/123/fixture/456
+router.get("/owner/:owner_id/fixture/:fixture_id", (req, res) => {
+    Bet.findOne({
+        where: {
+            owner_id: req.params.owner_id,
+            fixture_id: req.params.fixture_id
+        }
+    })
+    .then((dbBetData) => {
+        if (!dbBetData) {
+            res.status(202).json([]);
+            return;
+        }
+        res.status(200).json(dbBetData);
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+});
+
 // POST create a bet /api/bets
 router.post("/", (req, res) => {
     Bet.create({
