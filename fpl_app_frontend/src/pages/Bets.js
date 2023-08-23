@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Spinner from 'react-bootstrap/Spinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 const axios = require('axios').default;
 
 const Bets = () => {
@@ -16,6 +18,7 @@ const Bets = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [visibleGW, setVisibleGW] = useState(JSON.parse(localStorage.getItem("current_gameweek")) + 1);
     const [fixtures, setFixtures] = useState();
+    const [walletValue, setWalletValue] = useState();
 
     useEffect(() => {
 
@@ -23,14 +26,24 @@ const Bets = () => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
             return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
             .then((apiResponse) => {
-                return apiResponse.data;
+                return apiResponse.data.filter((match) => match.started === false);
             })
         };
 
+        const getWalletValue = async (owner_id) => {
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            return axios.get(`${currentOrigin}/api/wallets/owner/` + owner_id)
+            .then((apiResponse) => {
+                return apiResponse.data.total;
+            })
+            .catch(err => console.error(err));
+        };
 
         const start = async () => {
             const gw = JSON.parse(localStorage.getItem("current_gameweek")) + 1;
+            const ownerId = JSON.parse(localStorage.getItem("current_user")).fpl_id;
             setFixtures(await getFixtureData(gw));
+            setWalletValue(await getWalletValue(ownerId));
             setIsLoading(false);
         };
 
@@ -42,7 +55,7 @@ const Bets = () => {
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
         return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
         .then((apiResponse) => {
-            return apiResponse.data;
+            return apiResponse.data.filter((match) => match.started === false);
         })
     };
 
@@ -84,48 +97,73 @@ const Bets = () => {
         }
     };
 
+
     const checkIfBetExists = async (fixture_id) => {
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-        axios.get(`${currentOrigin}/api/bets/owner/` + JSON.parse(localStorage.getItem("current_user")).fpl_id + "/fixture/" + fixture_id)
+        return axios.get(`${currentOrigin}/api/bets/owner/` + JSON.parse(localStorage.getItem("current_user")).fpl_id + "/fixture/" + fixture_id)
             .then((response) => {
-                console.log(response.data);
-                if (response.data) {
-                    return true;
+                if (Array.isArray(response.data)) {
+                    return {result: false, data: null};
                 } else {
-                    return false;
+                    return {result: true, data: response.data};
                 }
             })
     };
 
-    const editBet = async (betData) => {
+    const editBet = async (betData, currentBet) => {
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
         axios.put(`${currentOrigin}/api/bets`, betData)
-        .then((response) => {
-            alert("Bet successfully edited");
+        .then(async (response) => {
+            if (response.status === 200) {
+                alert("Bet successfully edited");
+                const newWalletValue = walletValue + currentBet.amount;
+                setWalletValue(newWalletValue);
+                await changeWalletValue(betData);
+            }
         })
         .catch(err => {
             alert("There was an error editing your bet");
         });
     };
 
-    const postBet = async (betData) => {
+    const changeWalletValue = async (data) => {
+        const owner = data.owner_id;
+        const betAmount = data.amount;
+        const newWalletTotal = walletValue - betAmount;
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-        axios.post(`${currentOrigin}/api/bets`, betData)
-        .then((response) => {
-            if (response.status === 200) {
-                alert("Successfully placed bet");
+        axios.put(`${currentOrigin}/api/wallets`, {total: newWalletTotal, owner_id: owner})
+        .then((apiResponse) => {
+            if (apiResponse.status === 200) {
+                setWalletValue(newWalletTotal);
             }
         })
-        .catch(err => {
-            alert("There was an error submitting your bet");
-        })
+        .catch(err => console.error(err));
+    };
+
+    const postBet = async (betData) => {
+        // check wallet value
+        if (walletValue >= betData.amount) {
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            axios.post(`${currentOrigin}/api/bets`, betData)
+            .then(async (response) => {
+                if (response.status === 200) {
+                    alert("Successfully placed bet");
+                    await changeWalletValue(betData);
+                }
+            })
+            .catch(err => {
+                alert("There was an error submitting your bet");
+            })
+        }
+        else {
+            alert("Not enough money in your wallet to make that bet.");
+        }
     };
 
     const handleBet = async (event) => {
         event.preventDefault();
-        console.log(event);
         const clickedIndex = event.target.id.split("-")[1];
-        let newBet = await checkIfBetExists(event.target.dataset.fixture_id);
+        let {result, data} = await checkIfBetExists(event.target.dataset.fixture_id);
         let bet = {
             fixture_id: parseInt(event.target.dataset.fixture_id),
             team_h: parseInt(event.target.dataset.team_h),
@@ -136,13 +174,12 @@ const Bets = () => {
             owner_id: JSON.parse(localStorage.getItem("current_user")).fpl_id
         };
 
-        if (!newBet) {
-            await postBet(bet);
+        if (!result) {
+        await postBet(bet);
         } else {
             let betConfirmation = window.confirm("Do you want to edit this existing bet you've made");
-            alert(betConfirmation);
             if (betConfirmation) {
-                await editBet(bet);
+                await editBet(bet, data);
             } else {
                 alert("Bet edit successfully cancelled");
             }
@@ -159,6 +196,9 @@ const Bets = () => {
 
     return (
         <main>
+            <div className="wallet-info">
+                <FontAwesomeIcon icon={faSackDollar} size="2xl"  /> <h3><span>{walletValue}</span></h3>
+            </div>
             <form id="gw-search" onSubmit={handleSubmit}>
                 <h2>Search Gameweek Prem Fixtures</h2>
                 <label htmlFor="gameweek">Select a Gameweek: </label>

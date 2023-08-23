@@ -43,6 +43,16 @@ Bet.init (
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        paid: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        success: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         
         //foreignKey
         owner_id: {

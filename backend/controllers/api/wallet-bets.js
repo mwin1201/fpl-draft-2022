@@ -24,11 +24,11 @@ router.get("/owner/:owner_id", (req, res) => {
 router.put("/", (req, res) => {
     Wallet.update(
         {
-            total: req.params.total
+            total: req.body.total
         },
         {
             where: {
-                owner_id: req.params.owner_id
+                owner_id: req.body.owner_id
             }
         }
     )
@@ -36,6 +36,8 @@ router.put("/", (req, res) => {
         if (!dbWalletData) {
             res.status(404).send({message: "No Wallet found to update"});
             return;
+        } else if (dbWalletData[0] === 0) {
+            res.status(404).send({message: "Wallet was not updated"});
         }
         res.status(200).send(dbWalletData);
     })
