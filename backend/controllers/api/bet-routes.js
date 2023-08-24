@@ -46,6 +46,7 @@ router.get("/owner/:owner_id/fixture/:fixture_id", (req, res) => {
 router.post("/", (req, res) => {
     Bet.create({
         fixture_id: req.body.fixture_id,
+        gameweek: req.body.gameweek,
         team_h: req.body.team_h,
         team_h_prediction: req.body.team_h_prediction,
         team_a: req.body.team_a,

@@ -3,12 +3,17 @@ import TeamStats from "../components/TeamStats";
 import Standings from "../components/Standings";
 import FixtureHistory from "../components/FixtureHistory";
 import UpcomingFixtures from "../components/UpcomingFixtures";
+import PersonalBets from "../components/Bets";
 import DataLoad from "../data/DataLoad";
 import Spinner from 'react-bootstrap/Spinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
+const axios = require('axios').default;
 
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+    const [walletValue, setWalletValue] = useState();
     // Dashboard is only accessible to those who login
     // User, aka Owner, will be able to see:
     // 1. Team Name on Top
@@ -34,7 +39,11 @@ const Dashboard = () => {
                         reject("Data did not load");
                     }
                 });
-                currentLeagueData.then(() => setIsLoading(false)).catch(() => setIsError(true));
+                currentLeagueData.then(() => {
+                    setIsLoading(false);
+                    getWalletValue();
+                })
+                .catch(() => setIsError(true));
             } else {
                 const primaryLeagueData = new Promise( async (resolve, reject) => {
                     const primaryLoad = await DataLoad(primary_league_id);
@@ -44,8 +53,22 @@ const Dashboard = () => {
                         reject("Data did not load");
                     }
                 });
-                primaryLeagueData.then(() => setIsLoading(false)).catch(() => setIsError(true));
+                primaryLeagueData.then(() => {
+                    setIsLoading(false);
+                    getWalletValue();
+                })
+                .catch(() => setIsError(true));
             }
+        };
+
+        const getWalletValue = async () => {
+            const ownerId = JSON.parse(localStorage.getItem("current_user")).fpl_id;
+            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            axios.get(`${currentOrigin}/api/wallets/owner/` + ownerId)
+            .then((apiResponse) => {
+                 setWalletValue(apiResponse.data.total);
+            })
+            .catch(err => console.error(err));
         };
 
         getData();
@@ -113,6 +136,11 @@ const Dashboard = () => {
 
                 <h2>Upcoming Fixtures</h2>
                 <UpcomingFixtures owner_id={fpl_id} />
+
+                <div className="wallet-info">
+                    <FontAwesomeIcon icon={faSackDollar} size="2xl"  /> <h3><span>{walletValue}</span></h3>
+                </div>
+                <PersonalBets />
             </section>
         </main>
     )

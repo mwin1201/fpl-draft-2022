@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
@@ -116,9 +116,7 @@ const Bets = () => {
         .then(async (response) => {
             if (response.status === 200) {
                 alert("Bet successfully edited");
-                const newWalletValue = walletValue + currentBet.amount;
-                setWalletValue(newWalletValue);
-                await changeWalletValue(betData);
+                await changeWalletValue(betData, currentBet.amount);
             }
         })
         .catch(err => {
@@ -126,10 +124,10 @@ const Bets = () => {
         });
     };
 
-    const changeWalletValue = async (data) => {
+    const changeWalletValue = async (data, originalBetAmount) => {
         const owner = data.owner_id;
         const betAmount = data.amount;
-        const newWalletTotal = walletValue - betAmount;
+        const newWalletTotal = walletValue - (betAmount - originalBetAmount);
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
         axios.put(`${currentOrigin}/api/wallets`, {total: newWalletTotal, owner_id: owner})
         .then((apiResponse) => {
@@ -148,7 +146,7 @@ const Bets = () => {
             .then(async (response) => {
                 if (response.status === 200) {
                     alert("Successfully placed bet");
-                    await changeWalletValue(betData);
+                    await changeWalletValue(betData, 0);
                 }
             })
             .catch(err => {
@@ -166,6 +164,7 @@ const Bets = () => {
         let {result, data} = await checkIfBetExists(event.target.dataset.fixture_id);
         let bet = {
             fixture_id: parseInt(event.target.dataset.fixture_id),
+            gameweek: parseInt(event.target.dataset.gameweek),
             team_h: parseInt(event.target.dataset.team_h),
             team_h_prediction: checkTeamPredictions(document.getElementById("home-" + clickedIndex)),
             team_a: parseInt(event.target.dataset.team_a),
@@ -175,7 +174,7 @@ const Bets = () => {
         };
 
         if (!result) {
-        await postBet(bet);
+            await postBet(bet);
         } else {
             let betConfirmation = window.confirm("Do you want to edit this existing bet you've made");
             if (betConfirmation) {
@@ -196,7 +195,7 @@ const Bets = () => {
 
     return (
         <main>
-            <div className="wallet-info">
+            <div>
                 <FontAwesomeIcon icon={faSackDollar} size="2xl"  /> <h3><span>{walletValue}</span></h3>
             </div>
             <form id="gw-search" onSubmit={handleSubmit}>
@@ -227,7 +226,7 @@ const Bets = () => {
                                 <td><button id={"away-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_a)}</button></td>
                                 <td><button id={"home-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_h)}</button></td>
                                 <td><input type="number" id={"amount-" + index} name="amount" min="0"></input></td>
-                                <td><button id={"bet-" + index} data-fixture_id={fixture.code} data-team_a={fixture.team_a} data-team_h={fixture.team_h} onClick={handleBet}>Bet</button></td>
+                                <td><button id={"bet-" + index} data-fixture_id={fixture.code} data-gameweek={fixture.event} data-team_a={fixture.team_a} data-team_h={fixture.team_h} onClick={handleBet}>Bet</button></td>
                             </tr>
                         ))}
                     </tbody>

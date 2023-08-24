@@ -17,6 +17,10 @@ Bet.init (
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        gameweek: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         team_h: {
             type: DataTypes.INTEGER,
             allowNull: false,
