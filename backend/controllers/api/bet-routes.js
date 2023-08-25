@@ -3,6 +3,16 @@ const { Bet } = require("../../models");
 
 //SHOULD I ADD AUTHORIZATION TO THESE ROUTES??
 
+
+// GET all Bets /api/bets
+router.get("/", (req, res) => {
+    Bet.findAll()
+    .then(dbBetData => res.status(200).json(dbBetData))
+    .catch(err => {
+        res.status(500).json(err);
+    });
+});
+
 // GET all Bets for an owner /api/bets/owner/1
 router.get("/owner/:owner_id", (req, res) => {
     Bet.findAll({
@@ -11,10 +21,6 @@ router.get("/owner/:owner_id", (req, res) => {
         }
     })
     .then((dbBetData) => {
-        if (!dbBetData) {
-            res.status(404).send({message: "No Owner Found"});
-            return;
-        }
         res.status(200).json(dbBetData);
     })
     .catch(err => {

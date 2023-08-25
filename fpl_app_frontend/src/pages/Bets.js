@@ -62,7 +62,7 @@ const Bets = () => {
     const getTeamName = (teamId) => {
         const teams = JSON.parse(localStorage.getItem("teams"));
         let singleTeam = teams.filter((team) => team.id === teamId);
-        return(singleTeam[0].name);
+        return(singleTeam[0].short_name);
     };
 
     const handleWin = async (event) => {
@@ -212,10 +212,10 @@ const Bets = () => {
                 <table className="table-data">
                     <thead>
                         <tr>
-                            <th>Match #</th>
-                            <th>AWAY</th>
-                            <th>HOME</th>
-                            <th>Amount</th>
+                            <th>Game</th>
+                            <th>A</th>
+                            <th>H</th>
+                            <th>$$</th>
                             <th>Bet</th>
                         </tr>
                     </thead>
@@ -225,7 +225,7 @@ const Bets = () => {
                                 <td>{index + 1}</td>
                                 <td><button id={"away-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_a)}</button></td>
                                 <td><button id={"home-" + index} className="grey-background" onClick={handleWin}>{getTeamName(fixture.team_h)}</button></td>
-                                <td><input type="number" id={"amount-" + index} name="amount" min="0"></input></td>
+                                <td><input type="number" id={"amount-" + index} name="amount" min="0" style={{width: '40px'}}></input></td>
                                 <td><button id={"bet-" + index} data-fixture_id={fixture.code} data-gameweek={fixture.event} data-team_a={fixture.team_a} data-team_h={fixture.team_h} onClick={handleBet}>Bet</button></td>
                             </tr>
                         ))}

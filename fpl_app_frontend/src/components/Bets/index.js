@@ -24,7 +24,7 @@ const PersonalBets = () => {
     const getTeamName = (teamId) => {
         const teams = JSON.parse(localStorage.getItem("teams"));
         let singleTeam = teams.filter((team) => team.id === teamId);
-        return(singleTeam[0].name);
+        return(singleTeam[0].short_name);
     };
 
 
@@ -49,13 +49,12 @@ const PersonalBets = () => {
                 <thead>
                 <tr>
                     <th>GW</th>
-                    <th>Home</th>
-                    <th>Prediction</th>
-                    <th>Away</th>
-                    <th>Prediction</th>
-                    <th>Amount</th>
-                    <th>Paid</th>
-                    <th>Success</th>
+                    <th>H</th>
+                    <th>Bet</th>
+                    <th>A</th>
+                    <th>Bet</th>
+                    <th>$$$</th>
+                    <th>RSLT</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,7 +66,6 @@ const PersonalBets = () => {
                         <td>{getTeamName(bet.team_a)}</td>
                         <td>{bet.team_a_prediction}</td>
                         <td>{bet.amount}</td>
-                        <td>{bet.paid}</td>
                         <td>{bet.success}</td>
                     </tr>
                 ))}
