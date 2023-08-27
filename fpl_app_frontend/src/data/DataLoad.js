@@ -42,7 +42,7 @@ const DataLoad = async (leagueID) => {
     };
 
     const getManagerOfTheMonth = async (gw) => {
-        localStorage.setItem("manager_of_the_month", await ManagerOfTheMonth(gw));
+        localStorage.setItem("manager_of_the_month", JSON.stringify(await ManagerOfTheMonth(gw)));
         dataLoadComplete = true;
         return dataLoadComplete;
     };
