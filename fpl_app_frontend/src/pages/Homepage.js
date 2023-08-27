@@ -29,7 +29,7 @@ const Homepage = () => {
             setTeamData(JSON.parse(localStorage.getItem("league_entries")));
             setLeagueData(JSON.parse(localStorage.getItem("league_data")));
             setStandingsData(JSON.parse(localStorage.getItem("standings")));
-            setMOTM(localStorage.getItem("manager_of_the_month"));
+            setMOTM(JSON.parse(localStorage.getItem("manager_of_the_month")));
             if (JSON.parse(localStorage.getItem("current_gameweek_complete")) === false) {
                 setCurrentGWStatus("Incomplete");
             }
@@ -135,7 +135,7 @@ const Homepage = () => {
             <section>
                 <h2>
                     Manager of the Month
-                    {MOTM ? 
+                    {MOTM.length > 0 ? 
                         MOTM.map((manager) => (
                             <div key={manager.team}>
                                 <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
