@@ -63,6 +63,7 @@ const CheckBets = async (betOwner) => {
 
     const betStatus = async (bets, fixtureId, fixtures, walletValue) => {
         const {team_h_wins, team_a_wins} = matchOutcome(fixtureId, fixtures);
+        console.log("wallet val: ", walletValue);
         for (var i = 0; i < bets.length; i++) {
             let betTeamHWins = bets[i].team_h_prediction === 'win' ? true : false;
             let betTeamAWins = bets[i].team_a_prediction === 'win' ? true : false;
@@ -160,7 +161,7 @@ const CheckBets = async (betOwner) => {
             return;
         }
 
-        const currentGameweek = await getGameweek();
+        const [currentGameweek, gwStatus] = await getGameweek();
         const betsForCurrentGameweek = betArray.filter((bet) => bet.gameweek === currentGameweek).filter((bet) => bet.paid === false);
         const fixturesForCurrentGameweek = await getFixtureData(currentGameweek);
         const finishedFixtures = fixturesForCurrentGameweek.filter((fixture) => fixture.finished === true);

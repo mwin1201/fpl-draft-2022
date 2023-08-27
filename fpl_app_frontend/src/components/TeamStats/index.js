@@ -267,7 +267,7 @@ const TeamStats = ({ owner_entry_id }) => {
     return (
         <section>
 
-            <h2 style={{textAlign:'center'}}>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"}</h2>
+            <h2 style={{textAlign:'center'}}>Starting Lineup Stats for Gameweek {currentGameweek ? currentGameweek : "TBD"} & Overall Season Stats</h2>
             <div className='card-row'>
                 <div className="card-content">
                     {myGameweekStats.map((stat) => (
