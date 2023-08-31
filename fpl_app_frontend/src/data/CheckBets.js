@@ -48,22 +48,21 @@ const CheckBets = async (betOwner) => {
 
     const matchOutcome = async (fixtureId, fixtures) => {
         const oneFixture = fixtures.filter((fixture) => fixture.code === fixtureId);
-        const teamHScore = oneFixture[0].team_h_score;
-        const teamAScore = oneFixture[0].team_a_score;
+        const teamHScore = parseInt(oneFixture[0].team_h_score);
+        const teamAScore = parseInt(oneFixture[0].team_a_score);
 
         if (teamHScore > teamAScore) {
-            return {team_h_wins: true, team_a_wins: false};
+            return ({team_h_wins: true, team_a_wins: false});
         } else if (teamAScore > teamHScore) {
-            return {team_h_wins: false, team_a_wins: true};
+            return ({team_h_wins: false, team_a_wins: true});
         } else {
-            return {team_h_wins: false, team_a_wins: false};
+            return ({team_h_wins: false, team_a_wins: false});
         }
 
     };
 
     const betStatus = async (bets, fixtureId, fixtures, walletValue) => {
-        const {team_h_wins, team_a_wins} = matchOutcome(fixtureId, fixtures);
-        console.log("wallet val: ", walletValue);
+        const {team_h_wins, team_a_wins} = await matchOutcome(fixtureId, fixtures);
         for (var i = 0; i < bets.length; i++) {
             let betTeamHWins = bets[i].team_h_prediction === 'win' ? true : false;
             let betTeamAWins = bets[i].team_a_prediction === 'win' ? true : false;
@@ -154,6 +153,15 @@ const CheckBets = async (betOwner) => {
         }
     };
 
+    const getGameweekFromBets = (bets) => {
+        const unpaidBets = bets.sort((bet1, bet2) => bet1.gameweek - bet2.gameweek).filter((bet) => bet.paid === false);
+        
+        if (unpaidBets.length > 0) {
+            return unpaidBets[0].gameweek;
+        }
+        return 0;
+    };
+
     const start = async (betOwner) => {
         const betArray = await getAllBets(betOwner);
 
@@ -161,7 +169,13 @@ const CheckBets = async (betOwner) => {
             return;
         }
 
-        const [currentGameweek, gwStatus] = await getGameweek();
+        const currentGameweek = getGameweekFromBets(betArray);
+
+        if (currentGameweek === 0) {
+            return;
+        }
+
+        //const [currentGameweek, gwStatus] = await getGameweek();
         const betsForCurrentGameweek = betArray.filter((bet) => bet.gameweek === currentGameweek).filter((bet) => bet.paid === false);
         const fixturesForCurrentGameweek = await getFixtureData(currentGameweek);
         const finishedFixtures = fixturesForCurrentGameweek.filter((fixture) => fixture.finished === true);

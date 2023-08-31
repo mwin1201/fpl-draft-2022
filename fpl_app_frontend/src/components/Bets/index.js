@@ -66,7 +66,7 @@ const PersonalBets = () => {
                         <td>{getTeamName(bet.team_a)}</td>
                         <td>{bet.team_a_prediction}</td>
                         <td>{bet.amount}</td>
-                        <td>{bet.success}</td>
+                        <td className={bet.success ? "green-highlight" : "red-highlight"}>{bet.success ? "WON" : "LOST"}</td>
                     </tr>
                 ))}
                 </tbody>

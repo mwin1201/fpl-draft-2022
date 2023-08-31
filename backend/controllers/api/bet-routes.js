@@ -72,7 +72,9 @@ router.put("/", (req, res) => {
         {
             team_h_prediction: req.body.team_h_prediction,
             team_a_prediction: req.body.team_a_prediction,
-            amount: req.body.amount
+            amount: req.body.amount,
+            paid: req.body.paid,
+            success: req.body.success
         },
         {
             where: {
