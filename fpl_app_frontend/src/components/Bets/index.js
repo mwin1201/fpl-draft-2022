@@ -58,7 +58,7 @@ const PersonalBets = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {Bets.map((bet) => (
+                {Bets.sort((bet1, bet2) => bet1.gameweek - bet2.gameweek).map((bet) => (
                     <tr key={bet.fixture_id}>
                         <td>{bet.gameweek}</td>
                         <td>{getTeamName(bet.team_h)}</td>
