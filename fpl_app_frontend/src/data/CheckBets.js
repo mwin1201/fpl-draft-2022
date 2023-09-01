@@ -1,4 +1,3 @@
-import getGameweek from "./CurrentGameweek";
 const axios = require("axios").default;
 
 // This function will do the following:

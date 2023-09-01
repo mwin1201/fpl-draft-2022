@@ -30,7 +30,7 @@ const Dashboard = () => {
         const getData = async () => {
             const { primary_league_id } = JSON.parse(localStorage.getItem("current_user"));
             const currentLeague = JSON.parse(localStorage.getItem("current_league"));
-            if (currentLeague) {
+            if (currentLeague !== primary_league_id) {
                 const currentLeagueData = new Promise( async (resolve, reject) => {
                     const load = await DataLoad(currentLeague);
                     if (load) {
@@ -116,32 +116,49 @@ const Dashboard = () => {
 
     return (
         <main>
-            <section>
-                <div>
-                    <h4>Quick Actions</h4>
-                    <button onClick={handleLeagueToggle}>Toggle Leagues</button>
-                    {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
-                </div>
+            {JSON.parse(localStorage.getItem("current_league")) === JSON.parse(localStorage.getItem("current_user")).primary_league_id
+                ?
+                <section>
+                    <div>
+                        <h4>Quick Actions</h4>
+                        <button onClick={handleLeagueToggle}>Toggle Leagues</button>
+                        {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
+                    </div>
 
-                <h1>{ team_name }</h1>
-                <TeamStats owner_entry_id={entry_id}/>
+                    <h1>{ team_name }</h1>
+                    <TeamStats owner_entry_id={entry_id}/>
 
-                <Standings 
-                    standings={JSON.parse(localStorage.getItem("standings"))}
-                    teams = {JSON.parse(localStorage.getItem("league_entries"))}
-                />
+                    <Standings 
+                        standings={JSON.parse(localStorage.getItem("standings"))}
+                        teams = {JSON.parse(localStorage.getItem("league_entries"))}
+                    />
 
-                <h2>Past Fixtures</h2>
-                <FixtureHistory owner_id={fpl_id}/>
+                    <h2>Past Fixtures</h2>
+                    <FixtureHistory owner_id={fpl_id}/>
 
-                <h2>Upcoming Fixtures</h2>
-                <UpcomingFixtures owner_id={fpl_id} />
+                    <h2>Upcoming Fixtures</h2>
+                    <UpcomingFixtures owner_id={fpl_id} />
 
-                <div className="wallet-info">
-                    <FontAwesomeIcon icon={faSackDollar} size="2xl"  /> <h3><span>{walletValue}</span></h3>
-                </div>
-                <PersonalBets />
-            </section>
+                    <div className="wallet-info">
+                        <FontAwesomeIcon icon={faSackDollar} size="2xl"  /> <h3><span>{walletValue}</span></h3>
+                    </div>
+                    <PersonalBets />
+                </section>
+                :
+                <section>
+                    <div>
+                        <h4>Quick Actions</h4>
+                        <button onClick={handleLeagueToggle}>Toggle Leagues</button>
+                        {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
+                    </div>
+
+                    <Standings 
+                        standings={JSON.parse(localStorage.getItem("standings"))}
+                        teams = {JSON.parse(localStorage.getItem("league_entries"))}
+                    />
+                </section>
+            }
+            
         </main>
     )
 };
