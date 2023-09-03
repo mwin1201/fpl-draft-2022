@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import UpdatePassword from './pages/UpdatePassword';
+import Bets from './pages/Bets';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -39,6 +40,7 @@ function App() {
         <Route path='/gameweekStats' element={<GameweekStats/>}></Route>
         <Route path='/seasonLeaders' element={<SeasonLeaders/>}></Route>
         <Route path='/premFixtures' element={<PremFixtures/>}></Route>
+        <Route path='/bets' element={<Bets/>}></Route>
       </Routes>
       <Footer />
     </Router>
