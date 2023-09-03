@@ -299,6 +299,23 @@ button:hover{
   background-color: yellow;
 }
 
+/* Bet Page */
+.red-background {
+  background: red;
+}
+
+.green-background {
+  background: green;
+}
+
+.grey-background {
+  background: lightgray;
+}
+
+.wallet-info{
+  margin-top: 10px;
+}
+
 /* Aggregate Data Page */
 .hide-players,
 .hide-alert,

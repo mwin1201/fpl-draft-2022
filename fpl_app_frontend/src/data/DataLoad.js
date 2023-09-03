@@ -4,6 +4,7 @@ import getDraftData from "./DraftData";
 import getGameweek from "./CurrentGameweek";
 import seasonStats from "./GWStats";
 import ManagerOfTheMonth from "./ManagerOTM";
+import CheckBets from "./CheckBets";
 
 const DataLoad = async (leagueID) => {
     let dataLoadComplete = false;
@@ -13,6 +14,7 @@ const DataLoad = async (leagueID) => {
             getLeagueData(leagueID),
             getPlayers(),
             getDraftData(leagueID),
+            CheckBets(JSON.parse(localStorage.getItem("current_user")).fpl_id)
         ]).then(() => {
             return getAllStats();
         }).catch((err) => {
