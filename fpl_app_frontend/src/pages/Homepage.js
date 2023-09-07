@@ -132,13 +132,17 @@ const Homepage = () => {
                 </table>
             </section>
             <br></br>
+            <section id="google-slides">
+                <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRuCPWsexhKg0LYndxebXzoC0KnQU_blmIdviXz0xjPm8hzlUySTHYEXFSOywMDgbJqaBPqt74cG35H/embed?start=true&loop=true&delayms=5000" title="Chicago Dogs terms and conditions" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            </section>
+            <br></br>
             <section>
                 <h2>
                     Manager of the Month
                     {MOTM.length > 0 ? 
                         MOTM.map((manager) => (
                             <div key={manager.team}>
-                                <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
+                                <h3>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</h3>
                             </div>
                         ))
                     :

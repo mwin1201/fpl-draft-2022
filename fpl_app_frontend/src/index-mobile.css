@@ -43,6 +43,10 @@
         width: 100%;
     }
 
+    #google-slides {
+        display: none;
+    }
+
     /* Dashboard Page */
     .card-row {
         display: block;
