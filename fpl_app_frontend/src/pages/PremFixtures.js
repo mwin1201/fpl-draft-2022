@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 const axios = require('axios').default;
 
 
@@ -308,9 +309,11 @@ const PremFixtures = () => {
     };
 
     if (isLoading) {
-        return (
-            <main>Loading...</main>
-        );
+        return(
+            <main>
+                <span>Loading...<Spinner animation="border" variant="success" /></span>
+            </main>
+        )
     }
 
 
