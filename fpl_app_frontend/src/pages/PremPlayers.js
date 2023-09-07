@@ -86,16 +86,18 @@ const PremPlayers = () => {
 
     const getOwner = (playerId) => {
         let singlePlayer = playerOwnership.filter((player) => player.element === playerId);
-        if (singlePlayer[0].owner) {
-            let team = leagueTeams.filter((team) => team.entry_id === singlePlayer[0].owner);
-            return (
-                <em>Owned by {team[0].entry_name}</em>
-            );
-        }
-        else {
-            return (
-                <mark>Available!</mark>
-            );
+        if (singlePlayer.length > 0) {
+            if (singlePlayer[0].owner) {
+                let team = leagueTeams.filter((team) => team.entry_id === singlePlayer[0].owner);
+                return (
+                    <em>Owned by {team[0].entry_name}</em>
+                );
+            }
+            else {
+                return (
+                    <mark>Available!</mark>
+                );
+            }
         }
     };
 
