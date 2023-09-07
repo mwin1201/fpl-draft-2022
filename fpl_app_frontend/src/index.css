@@ -2,6 +2,9 @@
 :root {
   --fpl-purple: #37003c;
   --fpl-green: #00ff87;
+  --dark-green: #00cc00;
+  --red: #cd5c5c;
+  --purple: #9370db;
 }
 
 a {
@@ -152,9 +155,9 @@ button:hover{
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.table-data tr:nth-child(even) {
+/* .table-data tr:nth-child(even) {
   background-color: #f2f2f2;
-}
+} */
 
 .table-data tr:hover {
   background-color: #ddd;
@@ -163,6 +166,23 @@ button:hover{
 .table-data th {
   background-color: var(--fpl-purple);
   color: white;
+}
+
+/* adding color to standings rows */
+.standings-top1 {
+  background-color: var(--dark-green);
+}
+
+.standings-top4 {
+  background-color: var(--fpl-green);
+}
+
+.standings-playoff4 {
+  background-color: var(--purple);
+}
+
+.standings-bottom3 {
+  background-color: var(--red);
 }
 
 /* Head to Head Page */
