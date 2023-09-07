@@ -16,6 +16,35 @@ const Standings = ({standings, teams}) => {
         return num1 - num2;
     };
 
+    const getColorCode = (index) => {
+        let currentLeague = JSON.parse(localStorage.getItem("current_league"));
+        if (currentLeague === 24003) {
+            if (index === 0) {
+                return "standings-top1";
+            }
+            else if (index > 0 && index < 4) {
+                return "standings-top4";
+            }
+            else if (index > 6 && index < 10) {
+                return "standings-bottom3";
+            }
+        }
+        else {
+            if (index === 0) {
+                return "standings-top1";
+            }
+            else if (index === 1) {
+                return "standings-top4";
+            }
+            else if (index > 1 && index < 6) {
+                return "standings-playoff4";
+            }
+            else if (index === 9) {
+                return "standings-bottom3";
+            }
+        }
+    };
+
     if (!(standings)) {
         return (
             <section>
@@ -41,8 +70,8 @@ const Standings = ({standings, teams}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {standingsData.map((player) => (
-                    <tr key={player.league_entry}>
+                {standingsData.map((player, index) => (
+                    <tr className={getColorCode(index)} key={player.league_entry}>
                         <td>{getEntryName(player.league_entry)}</td>
                         <td>{player.matches_won}</td>
                         <td>{player.matches_drawn}</td>
