@@ -42,6 +42,7 @@ const Login = () => {
                 }
             }).then((data) => {
                 localStorage.setItem("current_user", JSON.stringify(data));
+                localStorage.setItem("current_league", JSON.stringify(data.primary_league_id));
                 setIsLoading(false);
 
                 document.location.replace("/dashboard");

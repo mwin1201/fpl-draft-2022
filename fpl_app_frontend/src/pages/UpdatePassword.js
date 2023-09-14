@@ -43,6 +43,7 @@ const UpdatePassword = () => {
             }).then((data) => {
                 const ownerData = data[1][0];
                 localStorage.setItem("current_user", JSON.stringify(ownerData));
+                localStorage.setItem("current_league", JSON.stringify(ownerData.primary_league_id));
                 setIsLoading(false);
                 document.location.replace("/dashboard");
             }).catch((err) => {
