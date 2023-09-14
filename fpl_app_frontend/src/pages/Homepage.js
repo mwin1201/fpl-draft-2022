@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spinner from 'react-bootstrap/Spinner';
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import Standings from "../components/Standings";
+import { Link } from "react-router-dom";
 
 // seed data for testing
 //import Seeds from "../data/LocalStorage_seeds";
@@ -84,9 +85,14 @@ const Homepage = () => {
 
             <section>
                 <h3>The Participants</h3>
-                {teamData.map((team, i) => (
-                    <div key={team.id}>{i+1}. {team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
-                ))}
+                <div className="participants">
+                    {teamData.map((team, i) => (
+                        <div key={team.id}>
+                            <div>{team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
+                            <Link to={`profile/${team.id}`}><img className="avatar" src={team.avatar} alt="Owner avatar"></img></Link>
+                        </div>
+                    ))}
+                </div>
             </section>
 
             <section>

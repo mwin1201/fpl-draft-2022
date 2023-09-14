@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 const axios = require('axios').default;
 
-const PersonalBets = () => {
+const PersonalBets = ({ owner_id }) => {
     const [Bets, setBets] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
         const getBets = () => {
-            const ownerId = JSON.parse(localStorage.getItem("current_user")).fpl_id;
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            axios.get(`${currentOrigin}/api/bets/owner/` + ownerId)
+            axios.get(`${currentOrigin}/api/bets/owner/` + owner_id)
             .then((apiResponse) => {
                 setBets(apiResponse.data);
                 setIsLoading(false);
@@ -36,15 +35,11 @@ const PersonalBets = () => {
         );
     }
 
-    if (Bets === 0) {
-        <section>
-            <h3>You have no bets at this time.</h3>
-        </section>
-    }
-
     return (
         <section>
             <h2>Personal Bets</h2>
+            {Bets.length > 0
+            ?
              <table className="table-data">
                 <thead>
                 <tr>
@@ -71,6 +66,11 @@ const PersonalBets = () => {
                 ))}
                 </tbody>
             </table>
+            :
+            <section>
+                <h3>No bets at this time.</h3>
+            </section>
+            }
         </section>
     );
 

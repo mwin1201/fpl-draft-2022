@@ -47,6 +47,11 @@
         display: none;
     }
 
+    .participants {
+        width: 200px;
+        margin: 0 auto;
+    }
+
     /* Dashboard Page */
     .card-row {
         display: block;
