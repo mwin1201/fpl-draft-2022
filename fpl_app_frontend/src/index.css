@@ -185,6 +185,22 @@ button:hover{
   background-color: var(--red);
 }
 
+.participants {
+  display: flex;
+  flex-wrap: wrap;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.participants > * {
+  flex: 1 1 400px;
+}
+
+.avatar {
+  width: 100px;
+  border-radius: 50%;
+}
+
 /* Head to Head Page */
 .flex-table {
   display: flex;

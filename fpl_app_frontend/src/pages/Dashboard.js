@@ -142,7 +142,7 @@ const Dashboard = () => {
                     <div className="wallet-info">
                         <FontAwesomeIcon icon={faSackDollar} size="2xl"  /> <h3><span>{walletValue}</span></h3>
                     </div>
-                    <PersonalBets />
+                    <PersonalBets owner_id={fpl_id}/>
                 </section>
                 :
                 <section>
