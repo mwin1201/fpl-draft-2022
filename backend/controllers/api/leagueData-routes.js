@@ -17,6 +17,7 @@ router.get("/owner/:owner_id", (req, res) => {
     })
 });
 
+// POST create a data entry /api/leaguedata
 router.post("/", (req, res) => {
     LeagueData.create({
         season_year: req.body.season_year,
@@ -35,6 +36,37 @@ router.post("/", (req, res) => {
     })
     .then((dbLeagueData) => res.status(200).send(dbLeagueData))
     .catch(err => res.status(500).json(err));
+});
+
+// PUT update league data entry /api/leaguedata/1
+router.put("/:owner_id", (req, res) => {
+    LeagueData.update(
+        {
+            league_ended_in: req.body.league_ended_in,
+            championship_playoff: req.body.championship_playoff,
+            champions_league: req.body.champions_league,
+            table_position: req.body.table_position,
+            relegation: req.body.relegation,
+            promotion: req.body.promotion,
+            total_points: req.body.total_points,
+            total_goals: req.body.total_goals,
+            total_assists: req.body.total_assists,
+            season_complete: req.body.season_complete
+        },
+        {
+            where: {
+                owner_id: req.params.owner_id,
+                season_complete: false
+            }
+        }
+    )
+    .then((dbLeagueData) => {
+        if (!dbLeagueData) {
+            res.status(404).send({message: "No league data entry found"});
+        }
+        res.status(200).send(dbLeagueData);
+    })
+    .catch(err => res.status(500).send(err));
 });
 
 
