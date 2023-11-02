@@ -253,12 +253,30 @@ button:hover{
   font-family: "Lexend";
 }
 
+.season-position-stats, .season-position-stats > p {
+  margin: 0px;
+  font-size: 10px;
+}
+
 .team-cards {
   border: 2px solid black;
   border-radius: 5px;
   padding-inline: 10px;
   padding-bottom: 5px;
   height: 375px;
+  width: 250px;
+  font-family: "Lexend";
+  margin-right: 1em;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.season-team-cards {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding-inline: 10px;
+  padding-bottom: 5px;
+  height: 900px;
   width: 250px;
   font-family: "Lexend";
   margin-right: 1em;
@@ -280,7 +298,8 @@ button:hover{
 }
 
 .team-cards:hover,
-.stat-cards:hover {
+.stat-cards:hover,
+.season-team-cards:hover {
   background-color: var(--fpl-purple);
   color: var(--fpl-green);
 }

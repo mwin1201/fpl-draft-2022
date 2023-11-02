@@ -105,6 +105,12 @@ LeagueData.init(
                 key: "fpl_id"
             }
         }
+    },
+    {
+        sequelize,
+        freezeTableName: true,
+        underscored: true,
+        modelName: "league_data"
     }
 );
 

@@ -37,15 +37,42 @@ const seasonStats = async (index) => {
         const statList = ["minutes", "goals_scored", "assists", "clean_sheets", "goals_conceded", "yellow_cards", "red_cards", "bonus", "total_points"];
         let statArr = [];
         const allPlayerStats = await Promise.all([getStats(gameweek), apiTimeout(100)]).then((values) => values[0]);
+        const allPlayers = await Promise.all([getAllPlayers(), apiTimeout(100)]).then((values) => values[0]);
         for (var y = 0; y < statList.length; y++) {
-            let statCounter = 0;
+            let statCounter = 0, GKP_counter = 0, DEF_counter = 0, MID_counter = 0, FWD_counter = 0;
             for (var i = 0; i < 11; i++) {
                 statCounter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
+                let playerID = teamPlayers[i].element;
+                let playerPosition = allPlayers.filter((player) => player.id == playerID)[0].element_type;
+                if (playerPosition === 1) {
+                    GKP_counter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
+                }
+                else if (playerPosition === 2) {
+                    DEF_counter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
+                }
+                else if (playerPosition === 3) {
+                    MID_counter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
+                }
+                else {
+                    FWD_counter += allPlayerStats[teamPlayers[i].element].stats[statList[y]];
+                }
             }
             let key = statList[y];
             let obj = {};
             obj[key] = statCounter;
             statArr.push(obj);
+            let GKPkey = "GKP_" + statList[y];
+            let DEFkey = "DEF_" + statList[y];
+            let MIDkey = "MID_" + statList[y];
+            let FWDkey = "FWD_" + statList[y];
+
+            let positionCounters = [GKP_counter, DEF_counter, MID_counter, FWD_counter];
+            let positionKeys = [GKPkey, DEFkey, MIDkey, FWDkey];
+            for (var z = 0; z < positionCounters.length; z++) {
+                let positionObj = {};
+                positionObj[positionKeys[z]] = positionCounters[z];
+                statArr.push(positionObj);
+            }
         }
         return statArr;
     };
@@ -53,6 +80,15 @@ const seasonStats = async (index) => {
     // timeout function to prevent overwhelming the FPL API
     const apiTimeout = (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms));
+    };
+
+    // need to get all players in order to get their element type (GKP, DEF, MID, FWD)
+    const getAllPlayers = async () => {
+        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        return axios.get(`${currentOrigin}/fpl/getPremPlayers`)
+        .then((apiResponse) => {
+            return apiResponse.data.elements;
+        })
     };
 
     // need to get team lineups per gameweek
