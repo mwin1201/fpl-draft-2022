@@ -5,14 +5,16 @@ import getGameweek from "./CurrentGameweek";
 import seasonStats from "./GWStats";
 import ManagerOfTheMonth from "./ManagerOTM";
 import CheckBets from "./CheckBets";
+import currentFixtures from "./currentFixtures";
 
 const DataLoad = async (leagueID) => {
     let dataLoadComplete = false;
 
-    const collectData = async (leagueID) => {
+    const collectData = async (leagueID, gw) => {
         return await Promise.allSettled([
             getLeagueData(leagueID),
             getPlayers(),
+            currentFixtures(gw + 1),
             getDraftData(leagueID),
             CheckBets(JSON.parse(localStorage.getItem("current_user")).fpl_id)
         ]).then(() => {
@@ -67,7 +69,7 @@ const DataLoad = async (leagueID) => {
         localStorage.setItem("current_gameweek", apiGW);
         localStorage.setItem("current_gameweek_complete", gwComplete);
         localStorage.setItem("current_league", leagueID);
-        return collectData(leagueID);
+        return collectData(leagueID, apiGW);
     };
 
     return start(leagueID);
