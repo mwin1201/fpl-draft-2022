@@ -6,6 +6,7 @@ const Lineup = ({ owner_id }) => {
     let players = JSON.parse(localStorage.getItem("elements"));
     let playerPositions = JSON.parse(localStorage.getItem("element_types"));
     let premTeams = JSON.parse(localStorage.getItem("teams"));
+    let premFixtures = JSON.parse(localStorage.getItem("current_fixtures"));
 
     useEffect(() => {
         let playerOwnership = JSON.parse(localStorage.getItem("player_ownership"));
@@ -50,6 +51,31 @@ const Lineup = ({ owner_id }) => {
         let teamObj = singleTeam[0];
         return teamObj.short_name;
     };
+
+    const getFixtureDifficulty = (team) => {
+        team = parseInt(team);
+        let homeTeams = premFixtures.filter((fixture) => parseInt(fixture.team_h) === team);
+        let awayTeams = premFixtures.filter((fixture) => parseInt(fixture.team_a) === team);
+        let fixtureDifficulty;
+
+        if (homeTeams.length > 0) {
+            fixtureDifficulty = homeTeams[0].team_h_difficulty;
+        } else {
+            fixtureDifficulty = awayTeams[0].team_a_difficulty;
+        }
+
+        return fixtureDifficulty;
+    };
+
+    const getFDRClassName = (FDR) => {
+        if (FDR < 6 && FDR > 3) {
+            return "red-highlight";
+        }
+        else if (FDR < 3 && FDR > 0) {
+            return "green-highlight";
+        }
+        else { return "grey-highlight" };
+    };
    
     if (isLoading) {
         return (
@@ -64,10 +90,11 @@ const Lineup = ({ owner_id }) => {
                 <thead>
                     <tr>
                         <th>Rank</th>
-                        <th>Position</th>
+                        <th>Pos</th>
                         <th>Team</th>
                         <th>Name</th>
-                        <th>Stat</th>
+                        <th>FDR</th>
+                        <th>Pts</th>
                         <th>News</th>
                     </tr>
                 </thead>
@@ -81,8 +108,9 @@ const Lineup = ({ owner_id }) => {
                             <td>#{i+1}</td>
                             <td>{getType(filteredPlayer.element_type)}</td>
                             <td>{getTeam(filteredPlayer.team)}</td>
-                            <td>{filteredPlayer.first_name} {filteredPlayer.second_name}</td>
-                            <td>{filteredPlayer.total_points} points</td>
+                            <td>{filteredPlayer.second_name}</td>
+                            <td className={getFDRClassName(getFixtureDifficulty(filteredPlayer.team))}>{getFixtureDifficulty(filteredPlayer.team)}</td>
+                            <td>{filteredPlayer.total_points}</td>
                             <td>{getNews(filteredPlayer.id)}</td>
                         </tr>
                     ))}
