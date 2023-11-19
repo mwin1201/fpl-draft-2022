@@ -11,7 +11,7 @@ const Lineup = ({ owner_id }) => {
     useEffect(() => {
         let playerOwnership = JSON.parse(localStorage.getItem("player_ownership"));
         let players = JSON.parse(localStorage.getItem("elements"));
-        const createNewArray = async () => {
+        const createNewArray = () => {
             let newPlayerArray = [];
             for (var i = 0; i < playerOwnership.length; i++) {
                 let newObj = {};
