@@ -19,6 +19,7 @@ import Login from './pages/Login';
 import UpdatePassword from './pages/UpdatePassword';
 import Bets from './pages/Bets';
 import Profile from './pages/Profile';
+import ChampionshipPlayoffs from './pages/ChampionshipPlayoffs';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -43,6 +44,7 @@ function App() {
         <Route path='/premFixtures' element={<PremFixtures/>}></Route>
         <Route path='/bets' element={<Bets/>}></Route>
         <Route path='/profile/:id' element={<Profile/>}></Route>
+        <Route path='/championshipPlayoffs' element={<ChampionshipPlayoffs/>}></Route>
       </Routes>
       <Footer />
     </Router>

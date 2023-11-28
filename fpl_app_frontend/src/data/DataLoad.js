@@ -66,6 +66,11 @@ const DataLoad = async (leagueID) => {
         localStorage.removeItem("transactions");
         localStorage.removeItem("current_fixtures");
         localStorage.removeItem("current_gameweek_complete");
+
+        for (var i = 0; i < 39; i++) {
+            localStorage.removeItem(`gw_${i}_stats`)
+        }
+        
         localStorage.setItem("current_gameweek", apiGW);
         localStorage.setItem("current_gameweek_complete", gwComplete);
         localStorage.setItem("current_league", leagueID);
