@@ -79,18 +79,6 @@ LeagueData.init(
                 isIn: [['Y', 'N', 'NA']]
             }
         },
-        total_points: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        total_goals: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        total_assists: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
         season_complete: {
             type: DataTypes.BOOLEAN,
             allowNull: false

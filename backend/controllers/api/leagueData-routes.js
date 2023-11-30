@@ -28,9 +28,6 @@ router.post("/", (req, res) => {
         table_position: req.body.table_position,
         relegation: req.body.relegation,
         promotion: req.body.promotion,
-        total_points: req.body.total_points,
-        total_goals: req.body.total_goals,
-        total_assists: req.body.total_assists,
         season_complete: req.body.season_complete,
         owner_id: req.body.owner_id
     })
@@ -48,9 +45,6 @@ router.put("/:owner_id", (req, res) => {
             table_position: req.body.table_position,
             relegation: req.body.relegation,
             promotion: req.body.promotion,
-            total_points: req.body.total_points,
-            total_goals: req.body.total_goals,
-            total_assists: req.body.total_assists,
             season_complete: req.body.season_complete
         },
         {
