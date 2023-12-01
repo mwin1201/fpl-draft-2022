@@ -16,6 +16,8 @@ router.get("/league/:league_id", (req, res) => {
     })
 });
 
+// GET all stats
+
 // GET all stats for league and gameweek /api/stats/league/24003/gameweek/13
 router.get("/league/:league_id/gameweek/:gameweek", (req, res) => {
     Stat.findAll({
@@ -46,7 +48,8 @@ router.post("/", (req, res) => {
         total_points:req.body.total_points,
         league_id:req.body.league_id,
         entry_id:req.body.entry_id,
-        owner:req.body.owner,
+        person:req.body.person,
+        gameweek: req.body.gameweek,
         owner_id:req.body.owner_id
     })
     .then((dbStatData) => res.status(200).send(dbStatData))

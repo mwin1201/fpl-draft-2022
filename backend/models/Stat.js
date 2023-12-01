@@ -55,8 +55,12 @@ Stat.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    owner: {
+    person: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    gameweek: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     // foreign key
@@ -65,7 +69,7 @@ Stat.init(
       allowNull: false,
       references: {
         model: "owner",
-        keys: "fpl_id",
+        key: "fpl_id",
       },
     },
   },
