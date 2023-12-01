@@ -215,7 +215,7 @@ const main = async () => {
 
 const job = () => {
   new CronJob(
-    "*/1 * * * *",
+    "0 0 * * *",
     function () {
       main();
     },
