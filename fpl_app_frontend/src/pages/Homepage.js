@@ -3,6 +3,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import Standings from "../components/Standings";
 import { Link } from "react-router-dom";
+import Playoffs from "../components/ChampionshipPlayoffs/index.js";
 
 // seed data for testing
 //import Seeds from "../data/LocalStorage_seeds";
@@ -86,7 +87,7 @@ const Homepage = () => {
             <section>
                 <h3>The Participants</h3>
                 <div className="participants">
-                    {teamData.map((team, i) => (
+                    {teamData.map((team) => (
                         <div key={team.id}>
                             <div>{team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
                             <Link to={`profile/${team.id}`}><img className="avatar" src={team.avatar} alt="Owner avatar"></img></Link>
@@ -105,6 +106,8 @@ const Homepage = () => {
                 standings={JSON.parse(localStorage.getItem("standings"))}
                 teams = {JSON.parse(localStorage.getItem("league_entries"))}
             />
+
+            <Playoffs league_id={JSON.parse(localStorage.getItem("current_league"))}/>
 
             <br></br>
             <section id="google-slides">
