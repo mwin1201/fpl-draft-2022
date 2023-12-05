@@ -192,36 +192,62 @@ const writeStatToDB = async (stat) => {
   };
   const response = await fetch(endpoint, fetchOptions);
   if (response.ok) {
-    console.log("success");
+    return;
   }
 };
 
 const main = async () => {
-  const { isGameweekComplete, currentGameweek } = await checkGWStatus();
-  const doGWStatsExist = await checkStats(currentGameweek);
+  //const { isGameweekComplete, currentGameweek } = await checkGWStatus();
 
-  if (isGameweekComplete === true && doGWStatsExist === false) {
-    const finalArray = await getLeagueData(currentGameweek);
-    for (var i = 0; finalArray.length; i++) {
-      await writeStatToDB(finalArray[i]);
+  for (var i = 1; i < 5; i++) {
+    const doGWStatsExist = await checkStats(i);
+
+    if (doGWStatsExist) {
+      continue;
     }
-    console.log("data written to DB");
-    return "done";
-  } else {
-    console.log("no data written to DB");
-    return "done";
+
+    const finalArray = await getLeagueData(i);
+    for (var y = 0; y < finalArray.length; y++) {
+      await writeStatToDB(finalArray[y]);
+    }
+
+    console.log(`--> LOOP # ${i}`);
   }
+
+  // if (isGameweekComplete === true && doGWStatsExist === false) {
+  //   const finalArray = await getLeagueData(currentGameweek);
+  //   for (var i = 0; finalArray.length; i++) {
+  //     await writeStatToDB(finalArray[i]);
+  //   }
+  //   console.log("data written to DB");
+  //   return "done";
+  // } else {
+  //   console.log("no data written to DB");
+  //   return "done";
+  // }
+
+  //   const { isGameweekComplete, currentGameweek } = await checkGWStatus();
+  //   finalArray = await getLeagueData(3);
+
+  //   for (var i = 1; i < 3; i++) {
+  //     finalArray = await getLeagueData(i);
+  //     console.log(`LOOP #: ${i} `, finalArray);
+  //   }
+  // for (var i = 0; finalArray.length; i++) {
+  //   await writeStatToDB(finalArray[i]);
+  // }
+  // console.log(`Data written for GW ${x}`);
 };
 
 const job = () => {
-  new CronJob(
-    "0 0 0 * * *",
-    function () {
-      main();
-    },
-    null,
-    true
-  );
+//   new CronJob(
+//     "* */2 * * * *",
+//     function () {
+//       main();
+//     },
+//     null,
+//     true
+//   );
 };
 
 module.exports = job();
