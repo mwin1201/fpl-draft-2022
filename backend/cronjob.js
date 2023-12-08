@@ -60,8 +60,16 @@ const getLeagueData = async (gameweek) => {
     }
   }
 
-  return createStatArr(allEntries, gameweek);
-  //console.log(allEntries);
+  //return createStatArr(allEntries, gameweek);
+  //return allEntries;
+  returnPromise(allEntries);
+};
+
+const returnPromise = (entry) => {
+    new Promise(resolve => setTimeout(
+        () => resolve(entry),
+        1000)
+    );
 };
 
 const createStatArr = async (allEntries, gameweek) => {
@@ -77,7 +85,9 @@ const createStatArr = async (allEntries, gameweek) => {
     });
   }
 
-  return modifyArr(fullStatArr);
+  //return modifyArr(fullStatArr);
+  //return fullStatArr;
+  returnPromise(fullStatArr);
 };
 
 const modifyArr = (allStatArr) => {
@@ -95,7 +105,8 @@ const modifyArr = (allStatArr) => {
     finalArr.push(statObj);
   }
 
-  return finalArr;
+  //return finalArr;
+  returnPromise(finalArr);
 };
 
 const getPlayerStats = async (teamPlayers, gameweek) => {
@@ -197,21 +208,16 @@ const writeStatToDB = async (stat) => {
 };
 
 const main = async () => {
-  //const { isGameweekComplete, currentGameweek } = await checkGWStatus();
+  const { isGameweekComplete, currentGameweek } = await checkGWStatus();
+
+  console.log(isGameweekComplete);
+  console.log(currentGameweek);
 
   for (var i = 1; i < 5; i++) {
-    const doGWStatsExist = await checkStats(i);
-
-    if (doGWStatsExist) {
-      continue;
-    }
-
-    const finalArray = await getLeagueData(i);
-    for (var y = 0; y < finalArray.length; y++) {
-      await writeStatToDB(finalArray[y]);
-    }
-
-    console.log(`--> LOOP # ${i}`);
+    const leagueData = await getLeagueData(i);
+    // const statArr = await createStatArr(leagueData, i);
+    // const finalArray = modifyArr(statArr);
+    console.log(leagueData);
   }
 
   // if (isGameweekComplete === true && doGWStatsExist === false) {
@@ -240,14 +246,14 @@ const main = async () => {
 };
 
 const job = () => {
-//   new CronJob(
-//     "* */2 * * * *",
-//     function () {
-//       main();
-//     },
-//     null,
-//     true
-//   );
+  new CronJob(
+    "* */3 * * * *",
+    function () {
+      main();
+    },
+    null,
+    true
+  );
 };
 
 module.exports = job();
