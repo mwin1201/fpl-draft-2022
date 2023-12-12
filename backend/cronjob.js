@@ -60,17 +60,17 @@ const getLeagueData = async (gameweek) => {
     }
   }
 
-  //return createStatArr(allEntries, gameweek);
+  return createStatArr(allEntries, gameweek);
   //return allEntries;
-  returnPromise(allEntries);
+  //returnPromise(allEntries);
 };
 
-const returnPromise = (entry) => {
-    new Promise(resolve => setTimeout(
-        () => resolve(entry),
-        1000)
-    );
-};
+// const returnPromise = (entry) => {
+//     new Promise(resolve => setTimeout(
+//         () => resolve(entry),
+//         1000)
+//     );
+// };
 
 const createStatArr = async (allEntries, gameweek) => {
   let fullStatArr = [];
@@ -85,9 +85,9 @@ const createStatArr = async (allEntries, gameweek) => {
     });
   }
 
-  //return modifyArr(fullStatArr);
+  return modifyArr(fullStatArr);
   //return fullStatArr;
-  returnPromise(fullStatArr);
+  //returnPromise(fullStatArr);
 };
 
 const modifyArr = (allStatArr) => {
@@ -105,8 +105,8 @@ const modifyArr = (allStatArr) => {
     finalArr.push(statObj);
   }
 
-  //return finalArr;
-  returnPromise(finalArr);
+  return finalArr;
+  //returnPromise(finalArr);
 };
 
 const getPlayerStats = async (teamPlayers, gameweek) => {
@@ -207,17 +207,35 @@ const writeStatToDB = async (stat) => {
   }
 };
 
+const delay = (stats, iteration) => {
+  setTimeout(async () => {
+    await writeStatToDB(stats[iteration])
+  }, 2000);
+};
+
 const main = async () => {
   const { isGameweekComplete, currentGameweek } = await checkGWStatus();
 
-  console.log(isGameweekComplete);
-  console.log(currentGameweek);
+  let promises = [];
 
-  for (var i = 1; i < 5; i++) {
-    const leagueData = await getLeagueData(i);
-    // const statArr = await createStatArr(leagueData, i);
-    // const finalArray = modifyArr(statArr);
-    console.log(leagueData);
+  for (var i = 1; i < currentGameweek; i++) {
+    promises.push(getLeagueData(i));
+  }
+
+  const data = await Promise.all(promises);
+
+  const arrayOfTeamStats = [];
+  for (var x = 0; x < data.length; x++) {
+    for (var y = 0; y < data[x].length; y++) {
+      arrayOfTeamStats.push(data[x][y]);
+    }
+  }
+
+  console.log(arrayOfTeamStats);
+  console.log(`final array is length ${arrayOfTeamStats.length}`);
+
+  for (var z = 0; z < arrayOfTeamStats.length; z++) {
+    delay(arrayOfTeamStats, z);
   }
 
   // if (isGameweekComplete === true && doGWStatsExist === false) {
@@ -245,15 +263,21 @@ const main = async () => {
   // console.log(`Data written for GW ${x}`);
 };
 
-const job = () => {
-  new CronJob(
-    "* */3 * * * *",
+const cronFunc = () => {
+  const cronJob = new CronJob(
+    "*/30 * * * * *",
     function () {
       main();
     },
-    null,
+    console.log("HIIII"),
     true
   );
+
+  setTimeout(() => cronJob.stop(), 10000);
+};
+
+const job = () => {
+  main();
 };
 
 module.exports = job();
