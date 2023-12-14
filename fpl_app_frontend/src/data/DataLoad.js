@@ -7,7 +7,7 @@ import ManagerOfTheMonth from "./ManagerOTM";
 import CheckBets from "./CheckBets";
 import currentFixtures from "./currentFixtures";
 
-const DataLoad = async (leagueID) => {
+const DataLoad = async (leagueID, didLeagueChange) => {
   let dataLoadComplete = false;
 
   const collectData = async (leagueID, gw) => {
@@ -20,6 +20,24 @@ const DataLoad = async (leagueID) => {
     ])
       .then(() => {
         return getAllStats();
+      })
+      .then(() => {
+        if (gw < 36 && leagueID === 20667) {
+          let standings = JSON.parse(localStorage.getItem("standings"));
+          let playoffTeams = standings.filter(
+            (team) =>
+              team.rank === 3 ||
+              team.rank === 4 ||
+              team.rank === 5 ||
+              team.rank === 6
+          );
+          localStorage.setItem(
+            "championship_playoff_teams",
+            JSON.stringify(playoffTeams)
+          );
+        }
+        dataLoadComplete = true;
+        return dataLoadComplete;
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +72,7 @@ const DataLoad = async (leagueID) => {
     return dataLoadComplete;
   };
 
-  const start = async (leagueID) => {
+  const start = async (leagueID, didLeagueChange) => {
     const [apiGW, gwComplete] = await getGameweek();
     localStorage.removeItem("draft_data");
     localStorage.removeItem("player_ownership");
@@ -70,8 +88,14 @@ const DataLoad = async (leagueID) => {
     localStorage.removeItem("current_fixtures");
     localStorage.removeItem("current_gameweek_complete");
 
-    for (var i = 0; i < 39; i++) {
-      localStorage.removeItem(`gw_${i}_stats`);
+    if (didLeagueChange) {
+      for (var i = 0; i < 39; i++) {
+        localStorage.removeItem(`gw_${i}_stats`);
+      }
+    }
+
+    if (apiGW < 36) {
+      localStorage.removeItem("championship_playoff_teams");
     }
 
     localStorage.setItem("current_gameweek", apiGW);
@@ -80,7 +104,7 @@ const DataLoad = async (leagueID) => {
     return collectData(leagueID, apiGW);
   };
 
-  return start(leagueID);
+  return start(leagueID, didLeagueChange);
 };
 
 export default DataLoad;
