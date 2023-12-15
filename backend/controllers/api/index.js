@@ -5,6 +5,7 @@ const betRoutes = require("./bet-routes");
 const walletRoutes = require("./wallet-bets");
 const leagueDataRoutes = require("./leagueData-routes");
 
+
 router.use("/owners", ownerRoutes);
 router.use("/bets", betRoutes);
 router.use("/wallets", walletRoutes);
