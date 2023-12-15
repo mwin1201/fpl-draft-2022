@@ -32,7 +32,7 @@ const Dashboard = () => {
             const currentLeague = JSON.parse(localStorage.getItem("current_league"));
             if (currentLeague !== primary_league_id) {
                 const currentLeagueData = new Promise( async (resolve, reject) => {
-                    const load = await DataLoad(currentLeague);
+                    const load = await DataLoad(currentLeague, false);
                     if (load) {
                         resolve("Data has loaded");
                     } else {
@@ -46,7 +46,7 @@ const Dashboard = () => {
                 .catch(() => setIsError(true));
             } else {
                 const primaryLeagueData = new Promise( async (resolve, reject) => {
-                    const primaryLoad = await DataLoad(primary_league_id);
+                    const primaryLoad = await DataLoad(primary_league_id, false);
                     if (primaryLoad) {
                         resolve("Data has loaded");
                     } else {
@@ -83,14 +83,14 @@ const Dashboard = () => {
         if (currentLeague === primary_league_id) {
             localStorage.setItem("current_league", secondary_league_id);
             await Promise.allSettled([
-                DataLoad(secondary_league_id)
+                DataLoad(secondary_league_id, true)
             ]).then(() => {
                 setIsLoading(false);
             }).catch(() => setIsError(true));
         } else {
             localStorage.setItem("current_league", primary_league_id);
             await Promise.allSettled([
-                DataLoad(primary_league_id)
+                DataLoad(primary_league_id, true)
             ]).then(() => {
                 setIsLoading(false);
             }).catch(() => setIsError(true));
@@ -101,7 +101,7 @@ const Dashboard = () => {
     if (isLoading) {
         return (
             <main>
-                <span>Loading...<Spinner animation="border" variant="success" /></span>
+                <span>Loading all gameweek data...<Spinner animation="border" variant="success" /></span>
             </main>
         );
     }
