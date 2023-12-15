@@ -5,11 +5,12 @@ import getRecord from "../../data/MatchResults";
 import { Link } from "react-router-dom";
 
 const Playoffs = ({league_id}) => {
-    // let standings = JSON.parse(localStorage.getItem("standings"));
 
-    // let playoffTeams = standings.filter((team) => (
-    //     team.rank === 3 || team.rank === 4 || team.rank === 5 || team.rank === 6
-    // ));
+    if (league_id === 24003) {
+        return(
+            <div></div>
+        );
+    }
 
     let playoffTeams = JSON.parse(localStorage.getItem("championship_playoff_teams"));
 
@@ -54,10 +55,6 @@ const Playoffs = ({league_id}) => {
                 </div>
             </div>
         );
-    }
-
-    else {
-        return(<div></div>);
     }
 
 };

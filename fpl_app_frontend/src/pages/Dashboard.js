@@ -101,7 +101,7 @@ const Dashboard = () => {
     if (isLoading) {
         return (
             <main>
-                <span>Loading...<Spinner animation="border" variant="success" /></span>
+                <span>Loading all gameweek data...<Spinner animation="border" variant="success" /></span>
             </main>
         );
     }

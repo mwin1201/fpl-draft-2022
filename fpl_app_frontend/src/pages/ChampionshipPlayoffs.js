@@ -29,7 +29,7 @@ const ChampionshipPlayoffs = () => {
     playoffTeams[i].curScore = PlayoffScore(playoffTeams[i].league_entry);
   }
 
-  console.log(topPlayers(70760,3));
+  console.log(topPlayers(70760, 3));
 
   // 3 vs 6
   let firstMatchup = playoffTeams.filter(
@@ -58,9 +58,8 @@ const ChampionshipPlayoffs = () => {
               {team.topPlayers.map((player, i) => (
                 <div key={player.element}>
                   <p>
-                    #{i+1}: {PlayerPosition(player.element_type)}{" "}
-                    {PlayerTeam(player.team)} {player.second_name}{" "}
-                    FDR: {PlayerFDR(player.team)} {player.total_points}pts
+                    #{i + 1}: [FDR: {PlayerFDR(player.team)}]{" "}
+                    {player.second_name} - {player.total_points}pts
                   </p>
                 </div>
               ))}
@@ -80,9 +79,8 @@ const ChampionshipPlayoffs = () => {
               {team.topPlayers.map((player, i) => (
                 <div key={player.element}>
                   <p>
-                    #{i+1}: {PlayerPosition(player.element_type)}{" "}
-                    {PlayerTeam(player.team)} {player.second_name}{" "}
-                    FDR: {PlayerFDR(player.team)} {player.total_points}pts
+                    #{i + 1}: [FDR: {PlayerFDR(player.team)}]{" "}
+                    {player.second_name} - {player.total_points}pts
                   </p>
                 </div>
               ))}
