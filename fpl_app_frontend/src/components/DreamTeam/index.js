@@ -1,5 +1,5 @@
 import React from "react";
-import getTeamName from "../../data/TeamName";
+import getLeagueTeam from "../../data/LeagueTeam";
 import PlayerPosition from "../../data/PlayerPosition";
 
 
@@ -14,9 +14,9 @@ const DreamTeam = () => {
         // get team that owns player
         let playerOwner = playerOwnership.filter((player) => player.element === loopPlayer.element_id)[0].owner;
         let singlePlayer = players.filter((player) => player.id === loopPlayer.element_id);
-        dreamteam[i].leagueTeam = playerOwner ? getTeamName(playerOwner) : "Unowned";
-        dreamteam[i].position = PlayerPosition(singlePlayer.element_type);
-        dreamteam[i].name = singlePlayer.second_name;
+        dreamteam[i].leagueTeam = playerOwner ? getLeagueTeam(playerOwner) : "Unowned";
+        dreamteam[i].position = PlayerPosition(singlePlayer[0].element_type);
+        dreamteam[i].name = singlePlayer[0].second_name;
     }
 
     return (
