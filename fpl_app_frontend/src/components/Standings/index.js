@@ -85,7 +85,7 @@ const Standings = ({standings, teams}) => {
                 </tbody>
             </table>
         </section>
-    )
+    );
 };
 
 export default Standings;

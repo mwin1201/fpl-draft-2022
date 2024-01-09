@@ -101,4 +101,14 @@ router.get("/getTransactions/:teamId", async (req, res) => {
     res.json(jsonResponse);
 });
 
+// this section is the endpoint to grab the weekly dream team
+router.get("/getDreamteam/:event", async (req, res) => {
+    const fetchOptions = {
+        method: "GET"
+    };
+    const response = await fetch("https://draft.premierleague.com/api/dreamteam/" + req.params.event, fetchOptions);
+    const jsonResponse = await response.json();
+    res.json(jsonResponse);
+});
+
 module.exports = router;
