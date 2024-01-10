@@ -6,6 +6,7 @@ import seasonStats from "./GWStats";
 import ManagerOfTheMonth from "./ManagerOTM";
 import CheckBets from "./CheckBets";
 import currentFixtures from "./currentFixtures";
+import getDreamteam from "./DreamTeam";
 
 const DataLoad = async (leagueID, didLeagueChange) => {
   let dataLoadComplete = false;
@@ -15,6 +16,7 @@ const DataLoad = async (leagueID, didLeagueChange) => {
       getLeagueData(leagueID),
       getPlayers(),
       currentFixtures(gw + 1),
+      getDreamteam(gw),
       getDraftData(leagueID),
       CheckBets(JSON.parse(localStorage.getItem("current_user")).fpl_id),
     ])
@@ -87,6 +89,7 @@ const DataLoad = async (leagueID, didLeagueChange) => {
     localStorage.removeItem("transactions");
     localStorage.removeItem("current_fixtures");
     localStorage.removeItem("current_gameweek_complete");
+    localStorage.removeItem("dreamteam");
 
     if (didLeagueChange) {
       for (var i = 0; i < 39; i++) {
