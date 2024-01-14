@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from "react";
+import LeagueAlert from "../alerts/LeagueAlert.js";
+import Spinner from 'react-bootstrap/Spinner';
 const axios = require('axios').default;
 
 const HeadtoHead = () => {
@@ -11,7 +13,7 @@ const HeadtoHead = () => {
 
         const getGameweekStats = async (curGW) => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getStats/` + curGW)
+            return axios.get(`${currentOrigin}/fpl/getStats/` + curGW)
             .then((apiResponse) => {
                 return [apiResponse.data.elements, apiResponse.data.fixtures];
             })
@@ -19,7 +21,7 @@ const HeadtoHead = () => {
 
         const getLineups = async (team, gameweek, stats, premFixtures) => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getLineups/` + team + "/" + gameweek)
+            return axios.get(`${currentOrigin}/fpl/getLineups/` + team + "/" + gameweek)
             .then((apiResponse) => {
                 return getLineupStats(apiResponse.data.picks, stats, premFixtures);
             })
@@ -104,16 +106,33 @@ const HeadtoHead = () => {
         }
     };
 
+    const calcPtsForStarters = (lineup) => {
+        let total = 0;
+        for (var i = 0; i < 11; i++) {
+            total += lineup[i].points;
+        }
+        return total;
+    };
+
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <main>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </main>
+        );
+    }
+
     if (isLoading) {
         return(
             <main>
-                <p>Loading data...</p>
+                <span>Loading...<Spinner animation="border" variant="success" /></span>
             </main>
         )
     }
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <section>
                 <form id="gameweekFilter" onSubmit={handleGameweekSubmit}>
                     <label htmlFor="gameweek">Choose a gameweek:</label>
@@ -125,7 +144,7 @@ const HeadtoHead = () => {
             <section>
                 {matchupData.map((matchup) => (
                     <div key={matchup.team1_id} className="flex-table">
-                        <h2 className="table-item">{matchup.team1_name} {matchup.team1_points}pts vs {matchup.team2_name} {matchup.team2_points}pts</h2>
+                        <h2 className="table-item">{matchup.team1_name} {calcPtsForStarters(matchup.team1_lineup)}pts vs {matchup.team2_name} {calcPtsForStarters(matchup.team2_lineup)}pts</h2>
                         <table className="table-data table-item">
                             <thead>
                                 <tr>

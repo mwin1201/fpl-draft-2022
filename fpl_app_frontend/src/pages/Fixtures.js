@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LeagueAlert from "../alerts/LeagueAlert.js";
 
 const Fixtures = () => {
     const [fixtureData, setFixtureData] = useState(JSON.parse(localStorage.getItem("matches")));
@@ -49,6 +50,7 @@ const Fixtures = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <h3>Search Fixtures by League Team</h3>
             <div>
                 <form id="teamFilters" onSubmit={handleSubmit}>
@@ -73,10 +75,10 @@ const Fixtures = () => {
                 <table className="table-data">
                     <thead>
                         <tr>
-                            <th>Gameweek</th>
+                            <th>GW</th>
                             <th>Team 1</th>
-                            <th>Points</th>
-                            <th>Points</th>
+                            <th>Pts</th>
+                            <th>Pts</th>
                             <th>Team 2</th>
                         </tr>
                     </thead>

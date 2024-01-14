@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LeagueAlert from "../alerts/LeagueAlert.js";
 
 const PremPlayers = () => {
     const [filterPoints, setFilterPoints] = useState(0);
@@ -85,16 +86,18 @@ const PremPlayers = () => {
 
     const getOwner = (playerId) => {
         let singlePlayer = playerOwnership.filter((player) => player.element === playerId);
-        if (singlePlayer[0].owner) {
-            let team = leagueTeams.filter((team) => team.entry_id === singlePlayer[0].owner);
-            return (
-                <em>Owned by {team[0].entry_name}</em>
-            );
-        }
-        else {
-            return (
-                <mark>Available!</mark>
-            );
+        if (singlePlayer.length > 0) {
+            if (singlePlayer[0].owner) {
+                let team = leagueTeams.filter((team) => team.entry_id === singlePlayer[0].owner);
+                return (
+                    <em>Owned by {team[0].entry_name}</em>
+                );
+            }
+            else {
+                return (
+                    <mark>Available!</mark>
+                );
+            }
         }
     };
 
@@ -127,6 +130,7 @@ const PremPlayers = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <section>
                 <h2 id="teamTitle">Filter Prem Players by Stat and Team</h2>
                 <form id="teamFilter" onSubmit={handleTeamSubmit}>

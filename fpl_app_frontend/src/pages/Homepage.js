@@ -1,182 +1,173 @@
 import React, { useEffect, useState } from "react";
-import getLeagueData from "../data/LeagueData";
-import getPlayers from "../data/Players";
-import getDraftData from "../data/DraftData";
-import getGameweek from "../data/CurrentGameweek";
-import seasonStats from "../data/GWStats";
-import ManagerOfTheMonth from "../data/ManagerOTM";
+import Spinner from "react-bootstrap/Spinner";
+import LeagueAlert from "../alerts/LeagueAlert.js";
+import Standings from "../components/Standings";
+import { Link } from "react-router-dom";
+import Playoffs from "../components/ChampionshipPlayoffs/index.js";
+import DreamTeam from "../components/DreamTeam/index.js";
 
+// seed data for testing
+//import Seeds from "../data/LocalStorage_seeds";
 
 const Homepage = () => {
-    const [teamData, setTeamData] = useState([]);
-    const [leagueData, setLeagueData] = useState([]);
-    const [standingsData, setStandingsData] = useState([]);
-    const [MOTM, setMOTM] = useState([]);
-    const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
-    const [currentGWStatus, setCurrentGWStatus] = useState("");
-    const [statCounter, setStatCounter] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
+  const [teamData, setTeamData] = useState([]);
+  const [leagueData, setLeagueData] = useState([]);
+  const [MOTM, setMOTM] = useState([]);
+  const [currentGameweek, setCurrentGameweek] = useState();
+  const [currentGWStatus, setCurrentGWStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    JSON.parse(localStorage.getItem("current_user"))
+  );
 
+  useEffect(() => {
+    setIsLoading(true);
 
-    useEffect(() => {
-        setIsLoading(true);
+    const start = async () => {
+      // set state variables
+      setIsLoggedIn(JSON.parse(localStorage.getItem("current_user")));
+      setCurrentGameweek(JSON.parse(localStorage.getItem("current_gameweek")));
+      setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+      setLeagueData(JSON.parse(localStorage.getItem("league_data")));
+      setMOTM(JSON.parse(localStorage.getItem("manager_of_the_month")));
 
-        const collectData = async () => {
-            await Promise.allSettled([
-                getLeagueData(),
-                getPlayers(),
-                getDraftData(),
-            ]).then(() => {
-                setTeamData(JSON.parse(localStorage.getItem("league_entries")));
-                setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-                setStandingsData(JSON.parse(localStorage.getItem("standings")));
-                getAllStats();
-            }).catch(() => setIsError(true));
-        }
-
-        const getAllStats = async () => {
-            const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
-            for (var index = apiGW; index >= 1; index--) {
-                if (index === apiGW) {
-                    setStatCounter(await seasonStats(index));
-                }
-                else if (localStorage.getItem(`gw_${index}_stats`)) {
-                    continue;
-                }
-                else {
-                    setStatCounter(await seasonStats(index));
-                }
-            }
-            getManagerOfTheMonth(apiGW);
-        };
-
-        const getManagerOfTheMonth = async (gw) => {
-            setMOTM(await ManagerOfTheMonth(gw));
-            if (JSON.parse(localStorage.getItem("current_gameweek_complete")) === false) {
-                setCurrentGWStatus("Incomplete");
-            }
-            else {
-                setCurrentGWStatus("Complete");
-            }
-            setIsLoading(false);
-        };
-
-        const start = async () => {
-            const [apiGW, gwComplete] = await getGameweek();
-            localStorage.removeItem("draft_data");
-            localStorage.removeItem("player_ownership");
-            localStorage.removeItem("element_types");
-            localStorage.removeItem("elements");
-            localStorage.removeItem("teams");
-            localStorage.removeItem("league_data");
-            localStorage.removeItem("standings");
-            localStorage.removeItem("matches");
-            localStorage.removeItem("league_entries");
-            localStorage.removeItem("current_gameweek");
-            localStorage.removeItem("transactions");
-            localStorage.removeItem("current_fixtures");
-            localStorage.removeItem("current_gameweek_complete");
-            localStorage.setItem("current_gameweek", apiGW);
-            localStorage.setItem("current_gameweek_complete", gwComplete)
-            collectData();
-        };
-        start();
-
-    },[currentGameweek]);
-
-    const getEntryName = (entry_id) => {
-        let oneTeam = teamData.filter((team) => {
-            return team.id === entry_id;
-        });
-
-        return oneTeam[0].entry_name;
+      if (
+        JSON.parse(localStorage.getItem("current_gameweek_complete")) === false
+      ) {
+        setCurrentGWStatus("Incomplete");
+      } else {
+        setCurrentGWStatus("Complete");
+      }
+      setIsLoading(false);
     };
 
-    const getDifference = (num1, num2) => {
-        return num1 - num2;
-    };
+    start();
+  }, []);
 
-    if (isLoading) {
-        return (
-            <main>
-                <div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
-            </main>
-        )
-    }
+  const getEntryName = (entry_id) => {
+    let oneTeam = teamData.filter((team) => {
+      return team.id === entry_id;
+    });
 
-    if (isError) {
-        return (
-            <div>
-                There is an error, please refresh
-            </div>
-        )
-    }
+    return oneTeam[0].entry_name;
+  };
 
+  if (!isLoggedIn) {
     return (
-        <main>
-            <section>
-                <u><h1>{leagueData.name}</h1></u>
-            </section>
+      <main>
+        <h1>
+          Those who are not logged in shall not see the glorious data hidden
+          behind these web walls. Please log in.
+        </h1>
+      </main>
+    );
+  }
 
-            <section>
-                <h2>
-                    Manager of the Month
-                    {MOTM.map((manager) => (
-                        <div key={manager.team}>
-                            <mark>{getEntryName(manager.team)} with {manager.points}pts over last 4 GWs!</mark>
-                        </div>
-                    ))}
-                </h2>
-            </section>
+  if (isLoading) {
+    //<div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
+    return (
+      <main>
+        <span>
+          Loading...
+          <Spinner animation="border" variant="success" />
+        </span>
+      </main>
+    );
+  }
 
-            <section>
-                <h3>The Participants</h3>
-                {teamData.map((team, i) => (
-                    <div key={team.id}>{i+1}. {team.player_first_name} {team.player_last_name} - {team.entry_name}</div>
-                ))}
-            </section>
+  if (isError) {
+    return <main>There is an error, please refresh</main>;
+  }
 
-            <section>
+  return (
+    <main>
+      <LeagueAlert
+        data={{
+          user: JSON.parse(localStorage.getItem("current_user")),
+          league: JSON.parse(localStorage.getItem("current_league")),
+          leagueData: JSON.parse(localStorage.getItem("league_data")),
+        }}
+      />
+      <section>
+        <u>
+          <h1>{leagueData.name}</h1>
+        </u>
+      </section>
+
+      <section>
+        <h3>The Participants</h3>
+        <div className="participants">
+          {teamData.map((team) => (
+            <div key={team.id}>
+              <div>
+                {team.player_first_name} {team.player_last_name} -{" "}
+                {team.entry_name}
+              </div>
+              <Link to={`profile/${team.id}`}>
+                <img
+                  className="avatar"
+                  src={team.avatar}
+                  alt="Owner avatar"
+                ></img>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h3>
+          Current Gameweek: {currentGameweek} - Status: {currentGWStatus}
+        </h3>
+      </section>
+
+      <Standings
+        standings={JSON.parse(localStorage.getItem("standings"))}
+        teams={JSON.parse(localStorage.getItem("league_entries"))}
+      />
+
+      <DreamTeam />
+
+      <Playoffs
+        league_id={JSON.parse(localStorage.getItem("current_league"))}
+      />
+
+      <br></br>
+      <section id="google-slides">
+        <iframe
+          src="https://docs.google.com/presentation/d/e/2PACX-1vRuCPWsexhKg0LYndxebXzoC0KnQU_blmIdviXz0xjPm8hzlUySTHYEXFSOywMDgbJqaBPqt74cG35H/embed?start=true&loop=true&delayms=5000"
+          title="Chicago Dogs terms and conditions"
+          frameBorder="0"
+          width="960"
+          height="569"
+          allowFullScreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+        ></iframe>
+      </section>
+      <br></br>
+      <section>
+        <h2>
+          Manager of the Month
+          {MOTM.length > 0 ? (
+            MOTM.map((manager) => (
+              <div key={manager.team}>
                 <h3>
-                    Current Gameweek: {currentGameweek} - Status: {currentGWStatus}
+                  {getEntryName(manager.team)} with {manager.points}pts over
+                  last 4 GWs!
                 </h3>
-            </section>
-
-            <section>
-                <h3>League Standings</h3>
-                <table className="table-data">
-                    <thead>
-                    <tr>
-                        <th>League Team</th>
-                        <th>Wins</th>
-                        <th>Draws</th>
-                        <th>Losses</th>
-                        <th>Pts For</th>
-                        <th>Pts Against</th>
-                        <th>Pts Diff</th>
-                        <th>Total Table Points</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {standingsData.map((player) => (
-                        <tr key={player.league_entry}>
-                            <td>{getEntryName(player.league_entry)}</td>
-                            <td>{player.matches_won}</td>
-                            <td>{player.matches_drawn}</td>
-                            <td>{player.matches_lost}</td>
-                            <td>{player.points_for}</td>
-                            <td>{player.points_against}</td>
-                            <td>{getDifference(player.points_for, player.points_against)}</td>
-                            <td>{player.total}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </section>
-
-        </main>
-    )
+              </div>
+            ))
+          ) : (
+            <div>
+              <h3>There is no manager of the month at this time</h3>
+            </div>
+          )}
+        </h2>
+      </section>
+    </main>
+  );
 };
 
 export default Homepage;

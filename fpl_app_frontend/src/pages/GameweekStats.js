@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-const axios = require('axios').default;
+import LeagueAlert from "../alerts/LeagueAlert.js";
 
 const GameweekStats = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
@@ -20,9 +20,14 @@ const GameweekStats = () => {
                     <span className="win">W</span>
                 );
             }
-            else {
+            else if (eventMatch[0].league_entry_1_points < eventMatch[0].league_entry_2_points){
                 return (
                     <span className="loss">L</span>
+                );
+            }
+            else {
+                return (
+                    <span className="draw">D</span>
                 );
             }
         }
@@ -32,9 +37,14 @@ const GameweekStats = () => {
                     <span className="win">W</span>
                 );
             }
-            else {
+            else if (eventMatch[0].league_entry_2_points < eventMatch[0].league_entry_1_points){
                 return (
                     <span className="loss">L</span>
+                );
+            }
+            else {
+                return (
+                    <span className="draw">D</span>
                 );
             }
         }
@@ -129,8 +139,17 @@ const GameweekStats = () => {
         }
     };
 
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <main>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </main>
+        );
+    }
+
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <form id="gw-search" onSubmit={handleSubmit}>
                 <h2>Search Stats by Gameweek</h2>
                 <label htmlFor="gameweek">Select a Gameweek:</label>
@@ -147,7 +166,7 @@ const GameweekStats = () => {
                 <div className="card-content">
                     {displayArr.map((stat) => (
                         <div className="team-cards" key={stat.teamId}>
-                            <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
+                            <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} rel="noreferrer" target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
                             <h4>Overall: {getTableRank(stat.league_entry)}</h4>
                             <h4>{checkWinLoss(stat.league_entry)}</h4>
                             <div>{stat.total_points} Points ({getLeagueRank(stat.teamId, "points")})</div>

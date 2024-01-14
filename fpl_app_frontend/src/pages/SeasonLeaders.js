@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import getGameweek from "../data/CurrentGameweek";
+import LeagueAlert from "../alerts/LeagueAlert.js";
 const axios = require('axios').default;
 
 const SeasonLeaders = () => {
+    const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [allStats, setAllStats] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [statToggle, setStatToggle] = useState(0);
@@ -171,6 +173,14 @@ const SeasonLeaders = () => {
         }
     };
 
+    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+        return (
+            <main>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </main>
+        );
+    }
+
     if (isLoading) {
         return (
             <main>
@@ -181,6 +191,7 @@ const SeasonLeaders = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <form id="stat-toggle" onSubmit={handleSubmit}>
                 <button type="submit">Toggle View</button>
             </form>

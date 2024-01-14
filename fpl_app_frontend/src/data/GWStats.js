@@ -58,7 +58,7 @@ const seasonStats = async (index) => {
     // need to get team lineups per gameweek
     const getLineups = async (team,gameweek) => {
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/getLineups/` + team + "/" + gameweek)
+        return axios.get(`${currentOrigin}/fpl/getLineups/` + team + "/" + gameweek)
         .then((apiResponse) => {
            return apiResponse.data.picks;
         })
@@ -67,7 +67,7 @@ const seasonStats = async (index) => {
     // need to pull player stats per gameweek
     const getStats = async (gameweek) => {
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/getStats/` + gameweek)
+        return axios.get(`${currentOrigin}/fpl/getStats/` + gameweek)
             .then((apiResponse) => {
                 return apiResponse.data.elements;
             })

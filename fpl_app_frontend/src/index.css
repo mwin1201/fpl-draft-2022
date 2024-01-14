@@ -2,7 +2,9 @@
 :root {
   --fpl-purple: #37003c;
   --fpl-green: #00ff87;
-
+  --dark-green: #00cc00;
+  --red: #cd5c5c;
+  --purple: #9370db;
 }
 
 a {
@@ -11,6 +13,7 @@ a {
 
 main {
   text-align: center;
+  font-family: "Lexend";
 }
 
 /* Header Component */
@@ -22,13 +25,17 @@ header {
 
 header h1 {
   text-align: center;
-  color: var(--fpl-green)
+  color: var(--fpl-green);
+  font-family: "Bebas Neue";
+  font-size: 7em;
 }
 
 header nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: "Bebas Neue";
+  font-size: 1.3em;
 }
 
 header nav a {
@@ -43,6 +50,38 @@ header nav a:focus {
   color: var(--fpl-green);
 }
 
+.active-link {
+  color: var(--fpl-green); 
+  /* Add other styling properties if desired */
+}
+
+.menu {
+  display: none;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.menu a, .menu .Link {
+  margin-right: 16px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.logo {
+  width: 6.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 25px;
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
 /* Footer Component */
 footer {
   background-color: black;
@@ -51,6 +90,55 @@ footer {
   width: 100%;
   padding: 30px 0px;
   margin: 10px 0 0 0;
+}
+
+/* Forms in General */
+#team_name,
+#password,
+#primary_league_id,
+#secondary_league_id {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+/* button {
+  background-color: var(--fpl-purple);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+} */
+
+/* Login Page */
+
+.login-form, #signup-submit, #signup-search, #password-update {
+  margin: 5px 10px 5px 10px;
+}
+
+/* Button */
+
+button {
+  background: rgb(14,239,253);
+  background: linear-gradient(90deg, rgba(14,239,253,1) 0%, rgba(4,255,135,1) 100%);
+  box-shadow: 0px 3px 3px 0px #c7c7c7;
+  border: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 1.5px;
+  padding-bottom: 1.5px;
+  margin: .5em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 800ms ease; 
+}
+
+button:hover{
+  /* background: rgb(4,255,135);
+  background: linear-gradient(90deg, rgba(4,255,135,1) 0%, rgba(14,239,253,1) 100%); */
+  transform: translate(-.5px, -.75px);
+  transition: all .4s ease-in-out 0s;
+  
 }
 
 /* Homepage */
@@ -63,11 +151,13 @@ footer {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  font-family: "Lexend";
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.table-data tr:nth-child(even){
+/* .table-data tr:nth-child(even) {
   background-color: #f2f2f2;
-}
+} */
 
 .table-data tr:hover {
   background-color: #ddd;
@@ -76,6 +166,39 @@ footer {
 .table-data th {
   background-color: var(--fpl-purple);
   color: white;
+}
+
+/* adding color to standings rows */
+.standings-top1 {
+  background-color: var(--dark-green);
+}
+
+.standings-top4 {
+  background-color: var(--fpl-green);
+}
+
+.standings-playoff4 {
+  background-color: var(--purple);
+}
+
+.standings-bottom3 {
+  background-color: var(--red);
+}
+
+.participants {
+  display: flex;
+  flex-wrap: wrap;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.participants > * {
+  flex: 1 1 400px;
+}
+
+.avatar {
+  width: 100px;
+  border-radius: 50%;
 }
 
 /* Head to Head Page */
@@ -104,28 +227,60 @@ footer {
 }
 
 /* Gameweek stats */
-.fpl-link, .fpl-link:hover, .fpl-link:visited, .fpl-link:active {
+.fpl-link,
+.fpl-link:hover,
+.fpl-link:visited,
+.fpl-link:active {
   color: inherit;
   text-decoration: none;
- }
+}
 
 /* Season Leaders */
+
+.card-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 2em;
+}
 .card-content {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 0px;
+  font-family: "Lexend";
 }
 
-.team-cards, .stat-cards {
+.team-cards {
   border: 2px solid black;
   border-radius: 5px;
-  height: 325px;
+  padding-inline: 10px;
+  padding-bottom: 5px;
+  height: 375px;
   width: 250px;
+  font-family: "Lexend";
+  margin-right: 1em;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.team-cards:hover, .stat-cards:hover {
+.stat-cards {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 350px;
+  width: 250px;
+  font-family: "Lexend";
+  margin-left: 1em;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.team-cards:hover,
+.stat-cards:hover {
   background-color: var(--fpl-purple);
   color: var(--fpl-green);
 }
@@ -136,8 +291,9 @@ footer {
   border-radius: 100%;
   text-align: center;
   width: 34px;
-  height: 34px;
-  padding: 10px;
+  height: 30px;
+  padding: 11px 15px 11px 15px;
+  font-family: "Lexend";
 }
 
 .loss {
@@ -146,17 +302,29 @@ footer {
   border-radius: 100%;
   text-align: center;
   width: 34px;
-  height: 34px;
-  padding: 10px 15px 10px 15px;
+  height: 30px;
+  padding: 11px 15px 11px 15px;
+  font-family: "Lexend";
+}
+
+.draw {
+  background-color: gray;
+  color: black;
+  border-radius: 100%;
+  text-align: center;
+  width: 34px;
+  height: 30px;
+  padding: 11px 15px 11px 15px;
+  font-family: "Lexend";
 }
 
 /* Prem Fixtures + Fixtures */
 .red-highlight {
-  background-color: #FF1751;
+  background-color: #ff1751;
 }
 
 .green-highlight {
-  background-color: #01FC7A;
+  background-color: #01fc7a;
 }
 
 .grey-highlight {
@@ -167,21 +335,50 @@ footer {
   background-color: yellow;
 }
 
+/* Bet Page */
+.red-background {
+  background: red;
+}
+
+.green-background {
+  background: green;
+}
+
+.grey-background {
+  background: lightgray;
+}
+
+.wallet-info{
+  margin-top: 10px;
+}
+
 /* Aggregate Data Page */
-.hide-players {
+.hide-players,
+.hide-alert,
+.hide-form {
   display: none;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Lexend" "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* This hides the hamburger menu on larger screens */
+@media screen and (min-width: 768px) {
+  .menu-icon, #menuToggle {
+      display: none !important; /* !important to override inline styles */
+  }
+  .menu {
+      display: block !important; /* !important to override inline styles */
+  }
 }

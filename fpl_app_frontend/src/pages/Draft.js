@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import LeagueAlert from "../alerts/LeagueAlert.js";
 
 const Draft = () => {
 
@@ -51,6 +51,7 @@ const Draft = () => {
 
     return (
         <main>
+            <LeagueAlert data={{user: JSON.parse(localStorage.getItem("current_user")), league: JSON.parse(localStorage.getItem("current_league")), leagueData: JSON.parse(localStorage.getItem("league_data"))}}/>
             <section>
                 <h2>See Players Picked by Round</h2>
                 <form id="roundFilter" onSubmit={handleRoundSubmit}>
@@ -75,10 +76,10 @@ const Draft = () => {
                 <thead>
                     <tr>
                         <th>Round</th>
-                        <th>Selected By</th>
+                        <th>Owner</th>
                         <th>Player Name</th>
-                        <th>Points</th>
-                        <th>Points Rank</th>
+                        <th>Pts</th>
+                        <th>Rank</th>
                     </tr>
                 </thead>
                 <tbody>

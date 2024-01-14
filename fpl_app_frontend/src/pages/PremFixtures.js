@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Spinner from 'react-bootstrap/Spinner';
 const axios = require('axios').default;
+
 
 const PremFixtures = () => {
     const [displayArr, setDisplayArr] = useState([]);
@@ -11,7 +13,7 @@ const PremFixtures = () => {
 
         const getFixtureData = async (event) => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getFixtureData/` + event)
+            return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
             .then((apiResponse) => {
                 return apiResponse.data;
             })
@@ -307,9 +309,11 @@ const PremFixtures = () => {
     };
 
     if (isLoading) {
-        return (
-            <main>Loading...</main>
-        );
+        return(
+            <main>
+                <span>Loading...<Spinner animation="border" variant="success" /></span>
+            </main>
+        )
     }
 
 

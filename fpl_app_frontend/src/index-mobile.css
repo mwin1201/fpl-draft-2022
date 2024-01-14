@@ -3,7 +3,11 @@
 @media screen and (max-width: 768px) {
     /* Header Component */
     header {
-        padding: 10px;
+        padding: 10px 0px 10px 0px;
+    }
+
+    header h1 {
+        font-size: 3em;
     }
     
     header nav {
@@ -14,6 +18,16 @@
 
     header nav a {
         margin: 2px;
+    }
+
+    .logo {
+        width: 6.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        margin-left: 20px;
+        margin-bottom: 15px;
     }
 
     /* Homepage */
@@ -29,6 +43,24 @@
         width: 100%;
     }
 
+    #google-slides {
+        display: none;
+    }
+
+    .participants {
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    /* Dashboard Page */
+    .card-row {
+        display: block;
+    }
+
+    .card-content {
+        margin: 5px;
+    }
+
     /* Gameweek Stats */
     .team-cards {
         border: 2px solid black;
@@ -36,4 +68,61 @@
         height: 350px;
         width: 250px;
       }
+
+      .menu-container {
+        position: relative;
+    }
+
+    .menu-icon {
+        font-size: 30px;
+        cursor: pointer;
+        display: flex; /* Initially hidden, will show only for mobile */
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .menu-icon-svg {
+        width: 32px;
+        height: 32px;
+        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-right: 10px;
+        margin-bottom: 12px;
+        padding: 0;
+    }
+
+    .menu {
+        display: none; /* Initially hidden */
+    }
+
+    .menu ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .menu ul li {
+        padding: 10px 0;
+    }
+
+    .menu ul li a {
+        text-decoration: none;
+        color: black;
+        padding: 10px 15px;
+        display: block;
+    }
+
+    #menuToggle:checked ~ .menu {
+        display: block;
+    }
+
+    .menu a, .menu .Link {
+       overflow: visible;
+       display: block;
+       margin: 0;
+       padding: 0;
+    }
 }
