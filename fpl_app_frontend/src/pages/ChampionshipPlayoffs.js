@@ -17,7 +17,13 @@ const ChampionshipPlayoffs = () => {
     localStorage.getItem("championship_playoff_teams")
   );
 
+  let leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
+
   for (var i = 0; i < playoffTeams.length; i++) {
+    let curTeam = playoffTeams[i];
+    let singleEntry = leagueEntries.filter((entry) => entry.id === curTeam.league_entry);
+
+    playoffTeams[i].avatar = singleEntry[0].avatar;
     playoffTeams[i].avgScore = calculateAVGScore(
       playoffTeams[i].league_entry,
       5
@@ -28,8 +34,6 @@ const ChampionshipPlayoffs = () => {
     playoffTeams[i].topPlayers = topPlayers(playoffTeams[i].id, 3);
     playoffTeams[i].curScore = PlayoffScore(playoffTeams[i].league_entry);
   }
-
-  console.log(topPlayers(70760, 3));
 
   // 3 vs 6
   let firstMatchup = playoffTeams.filter(
@@ -51,6 +55,7 @@ const ChampionshipPlayoffs = () => {
               <h3>
                 #{team.rank}: {team.teamName}
               </h3>
+              <img className="avatar" src={team.avatar} alt="Owner Avatar"></img>
               <h5>Score: {team.curScore}</h5>
               <p>L5 GW Avg Score: {team.avgScore}</p>
               <p>L5 GW Results: {team.results}</p>
@@ -72,6 +77,7 @@ const ChampionshipPlayoffs = () => {
               <h3>
                 #{team.rank}: {team.teamName}
               </h3>
+              <img className="avatar" src={team.avatar} alt="Owner Avatar"></img>
               <h5>Score: {team.curScore}</h5>
               <p>L5 GW Avg Score: {team.avgScore}</p>
               <p>L5 GW Results: {team.results}</p>
