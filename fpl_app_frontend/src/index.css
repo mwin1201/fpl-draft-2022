@@ -359,6 +359,23 @@ button:hover{
   display: none;
 }
 
+/* Championship Playoffs Page */
+.container {
+  text-align: center;
+}
+
+.team-container {
+  display: flex;
+  justify-content: space-evenly;
+  border: solid 2px black;
+}
+
+.stat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Lexend" "Segoe UI", "Roboto",

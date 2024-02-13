@@ -5,15 +5,19 @@ const PlayoffScore = (entry_id) => {
     const curGWStatus = JSON.parse(
         localStorage.getItem("current_gameweek_complete")
       );
+    
+    let scores = [];
     let totalScore = 0;
     if (currentGW >= 36 && currentGW < 38) {
         let gw36Stats = JSON.parse(localStorage.getItem(`gw_36_stats`));
         let gw37Stats = JSON.parse(localStorage.getItem(`gw_37_stats`));
         if (gw36Stats) {
-            totalScore += gw36Stats.filter((team) => team.league_entry === entry_id)[0].total_points;
+            totalScore = gw36Stats.filter((team) => team.league_entry === entry_id)[0].total_points;
+            scores.push({gw: 36, score: totalScore});
         }
         if (gw37Stats) {
-            totalScore += gw37Stats.filter((team) => team.league_entry === entry_id)[0].total_points;
+            totalScore = gw37Stats.filter((team) => team.league_entry === entry_id)[0].total_points;
+            scores.push({gw: 37, score: totalScore});
         }
     }
     else {
@@ -21,20 +25,22 @@ const PlayoffScore = (entry_id) => {
             for (var i = currentGW - 1; i <= currentGW; i++) {
                 let curGWStats;
                 curGWStats = JSON.parse(localStorage.getItem(`gw_${i}_stats`));
-                totalScore += curGWStats.filter((team) => team.league_entry === entry_id)[0]
+                totalScore = curGWStats.filter((team) => team.league_entry === entry_id)[0]
                   .total_points;
+                scores.push({gw: i, score: totalScore})
             }
         } else {
             for (var y = currentGW - 2; y < currentGW; y++) {
                 let curGWStats;
                 curGWStats = JSON.parse(localStorage.getItem(`gw_${y}_stats`));
-                totalScore += curGWStats.filter((team) => team.league_entry === entry_id)[0]
+                totalScore = curGWStats.filter((team) => team.league_entry === entry_id)[0]
                   .total_points;
+                scores.push({gw: y, score: totalScore});
             }
         }
     }
 
-    return totalScore;
+    return scores;
 };
 
 export default PlayoffScore;
