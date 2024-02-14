@@ -12,6 +12,7 @@ import PlayerFDR from "../data/PlayerFDR";
 import PlayerTeam from "../data/PlayerTeam";
 import PlayoffScore from "../data/PlayoffScore";
 import { Link } from "react-router-dom";
+import checkOutcome from "../data/checkWinorLoss";
 
 const ChampionshipPlayoffs = () => {
   let playoffTeams = JSON.parse(
@@ -34,7 +35,11 @@ const ChampionshipPlayoffs = () => {
     playoffTeams[i].id = OwnerID(playoffTeams[i].league_entry);
     playoffTeams[i].topPlayers = topPlayers(playoffTeams[i].id, 3);
     let scoreArray = PlayoffScore(playoffTeams[i].league_entry);
-    playoffTeams[i].curScore = scoreArray[0].score + scoreArray[1].score;
+    if (scoreArray.length === 1) {
+      playoffTeams[i].curScore = scoreArray[0].score;
+    } else {
+      playoffTeams[i].curScore = scoreArray[0].score + scoreArray[1].score;
+    }
     playoffTeams[i] = {...playoffTeams[i], scores: scoreArray};
   }
 
@@ -59,7 +64,6 @@ const ChampionshipPlayoffs = () => {
                 #{team.rank}: {team.teamName}
               </h3>
               <Link to={`/profile/${team.league_entry}`}><img className="avatar" src={team.avatar} alt="Owner Avatar"></img></Link>
-              <h5>Score: {team.curScore}</h5>
               <p>L5 Avg Score: {team.avgScore}</p>
               <p>L5 Results: {team.results}</p>
               <h4>Top Players</h4>
@@ -81,7 +85,6 @@ const ChampionshipPlayoffs = () => {
                 #{team.rank}: {team.teamName}
               </h3>
               <Link to={`/profile/${team.league_entry}`}><img className="avatar" src={team.avatar} alt="Owner Avatar"></img></Link>
-              <h5>Score: {team.curScore}</h5>
               <p>L5 Avg Score: {team.avgScore}</p>
               <p>L5 Results: {team.results}</p>
               <h4>Top Players</h4>
@@ -96,8 +99,8 @@ const ChampionshipPlayoffs = () => {
             </div>
           ))}
         </div>
+        <h2>Gameweek Scores</h2>
           <div className="team-container">
-          <h2>Gameweek Scores</h2>
           {firstMatchup.map((team) => (
             <div key={team.league_entry}>
               {team.teamName}
@@ -106,8 +109,12 @@ const ChampionshipPlayoffs = () => {
                   GW: {game.gw} - {game.score}pts
                 </div>
               ))}
+              <h3>Total: {team.curScore}</h3>
+              <p>{checkOutcome(firstMatchup,team.league_entry)}</p>
             </div>
           ))}
+          </div>
+          <div className="team-container">
           {secondMatchup.map((team) => (
             <div key={team.league_entry}>
               {team.teamName}
@@ -116,6 +123,8 @@ const ChampionshipPlayoffs = () => {
                   GW: {game.gw} - {game.score}pts
                 </div>
               ))}
+              <h3>Total: {team.curScore}</h3>
+              <p>{checkOutcome(secondMatchup,team.league_entry)}</p>
             </div>
           ))}
         </div>

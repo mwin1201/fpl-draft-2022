@@ -368,6 +368,7 @@ button:hover{
   display: flex;
   justify-content: space-evenly;
   border: solid 2px black;
+  margin-top: 10px;
 }
 
 .stat-container {
