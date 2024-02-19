@@ -60,8 +60,10 @@ const Lineup = ({ owner_id }) => {
 
         if (homeTeams.length > 0) {
             fixtureDifficulty = homeTeams[0].team_h_difficulty;
-        } else {
+        } else if (awayTeams.length > 0) {
             fixtureDifficulty = awayTeams[0].team_a_difficulty;
+        } else {
+            return 0;
         }
 
         return fixtureDifficulty;
