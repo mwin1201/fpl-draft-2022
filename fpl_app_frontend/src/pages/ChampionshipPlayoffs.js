@@ -11,13 +11,21 @@ import PlayerPosition from "../data/PlayerPosition";
 import PlayerFDR from "../data/PlayerFDR";
 import PlayerTeam from "../data/PlayerTeam";
 import PlayoffScore from "../data/PlayoffScore";
+import { Link } from "react-router-dom";
+import checkOutcome from "../data/checkWinorLoss";
 
 const ChampionshipPlayoffs = () => {
   let playoffTeams = JSON.parse(
     localStorage.getItem("championship_playoff_teams")
   );
 
+  let leagueEntries = JSON.parse(localStorage.getItem("league_entries"));
+
   for (var i = 0; i < playoffTeams.length; i++) {
+    let curTeam = playoffTeams[i];
+    let singleEntry = leagueEntries.filter((entry) => entry.id === curTeam.league_entry);
+
+    playoffTeams[i].avatar = singleEntry[0].avatar;
     playoffTeams[i].avgScore = calculateAVGScore(
       playoffTeams[i].league_entry,
       5
@@ -26,10 +34,14 @@ const ChampionshipPlayoffs = () => {
     playoffTeams[i].results = getRecord(playoffTeams[i].league_entry, 5);
     playoffTeams[i].id = OwnerID(playoffTeams[i].league_entry);
     playoffTeams[i].topPlayers = topPlayers(playoffTeams[i].id, 3);
-    playoffTeams[i].curScore = PlayoffScore(playoffTeams[i].league_entry);
+    let scoreArray = PlayoffScore(playoffTeams[i].league_entry);
+    if (scoreArray.length === 1) {
+      playoffTeams[i].curScore = scoreArray[0].score;
+    } else {
+      playoffTeams[i].curScore = scoreArray[0].score + scoreArray[1].score;
+    }
+    playoffTeams[i] = {...playoffTeams[i], scores: scoreArray};
   }
-
-  console.log(topPlayers(70760, 3));
 
   // 3 vs 6
   let firstMatchup = playoffTeams.filter(
@@ -44,17 +56,17 @@ const ChampionshipPlayoffs = () => {
   return (
     <section>
       <div className="container">
-        <h2>Championship Playoffs</h2>
-        <div className="row row-cols-2">
+      <h1>Championship Playoffs</h1>
+        <div className="team-container">
           {firstMatchup.map((team) => (
-            <div className="col" key={team.league_entry}>
+            <div className="stat-container" key={team.league_entry}>
               <h3>
                 #{team.rank}: {team.teamName}
               </h3>
-              <h5>Score: {team.curScore}</h5>
-              <p>L5 GW Avg Score: {team.avgScore}</p>
-              <p>L5 GW Results: {team.results}</p>
-              <h4>Top 3 Players on Roster</h4>
+              <Link to={`/profile/${team.league_entry}`}><img className="avatar" src={team.avatar} alt="Owner Avatar"></img></Link>
+              <p>L5 Avg Score: {team.avgScore}</p>
+              <p>L5 Results: {team.results}</p>
+              <h4>Top Players</h4>
               {team.topPlayers.map((player, i) => (
                 <div key={player.element}>
                   <p>
@@ -66,16 +78,16 @@ const ChampionshipPlayoffs = () => {
             </div>
           ))}
         </div>
-        <div className="row row-cols-2">
+        <div className="team-container">
           {secondMatchup.map((team) => (
-            <div className="col" key={team.league_entry}>
+            <div className="stat-container" key={team.league_entry}>
               <h3>
                 #{team.rank}: {team.teamName}
               </h3>
-              <h5>Score: {team.curScore}</h5>
-              <p>L5 GW Avg Score: {team.avgScore}</p>
-              <p>L5 GW Results: {team.results}</p>
-              <h4>Top 3 Players on Roster</h4>
+              <Link to={`/profile/${team.league_entry}`}><img className="avatar" src={team.avatar} alt="Owner Avatar"></img></Link>
+              <p>L5 Avg Score: {team.avgScore}</p>
+              <p>L5 Results: {team.results}</p>
+              <h4>Top Players</h4>
               {team.topPlayers.map((player, i) => (
                 <div key={player.element}>
                   <p>
@@ -84,6 +96,35 @@ const ChampionshipPlayoffs = () => {
                   </p>
                 </div>
               ))}
+            </div>
+          ))}
+        </div>
+        <h2>Gameweek Scores</h2>
+          <div className="team-container">
+          {firstMatchup.map((team) => (
+            <div key={team.league_entry}>
+              {team.teamName}
+              {team.scores.map((game) => (
+                <div key={game.gw}>
+                  GW: {game.gw} - {game.score}pts
+                </div>
+              ))}
+              <h3>Total: {team.curScore}</h3>
+              <p>{checkOutcome(firstMatchup,team.league_entry)}</p>
+            </div>
+          ))}
+          </div>
+          <div className="team-container">
+          {secondMatchup.map((team) => (
+            <div key={team.league_entry}>
+              {team.teamName}
+              {team.scores.map((game) => (
+                <div key={game.gw}>
+                  GW: {game.gw} - {game.score}pts
+                </div>
+              ))}
+              <h3>Total: {team.curScore}</h3>
+              <p>{checkOutcome(secondMatchup,team.league_entry)}</p>
             </div>
           ))}
         </div>

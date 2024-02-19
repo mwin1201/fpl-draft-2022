@@ -125,4 +125,13 @@
        margin: 0;
        padding: 0;
     }
+
+    /* Championship Playoffs Page */
+    .stat-container h3 {
+        height: 60px;
+    }
+  
+    .stat-container div p {
+        height: 48px;
+    }
 }
