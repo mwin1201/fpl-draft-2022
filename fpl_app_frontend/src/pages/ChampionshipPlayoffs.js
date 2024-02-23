@@ -15,6 +15,38 @@ import { Link } from "react-router-dom";
 import checkOutcome from "../data/checkWinorLoss";
 
 const ChampionshipPlayoffs = () => {
+  const gameweek = JSON.parse(localStorage.getItem("current_gameweek"));
+  const gameweekStatus = JSON.parse(localStorage.getItem("current_gameweek_complete"));
+
+  const semiFinalCheck = () => {
+    let semiFinalWinners = [];
+    // check first matchup results
+    let matchup1team1 = firstMatchup[0].curScore;
+    let matchup1team2 = firstMatchup[1].curScore;
+
+    if (matchup1team1 > matchup1team2) {
+      firstMatchup[0].finalScore = 0;
+      semiFinalWinners.push(firstMatchup[0]);
+    } else {
+      firstMatchup[1].finalScore = 0;
+      semiFinalWinners.push(firstMatchup[1]);
+    }
+
+    // check second matchup results
+    let matchup2team1 = secondMatchup[0].curScore;
+    let matchup2team2 = secondMatchup[1].curScore;
+
+    if (matchup2team1 > matchup2team2) {
+      secondMatchup[0].finalScore = 0;
+      semiFinalWinners.push(secondMatchup[0]);
+    } else {
+      secondMatchup[1].finalScore = 0;
+      semiFinalWinners.push(secondMatchup[1]);
+    }
+
+    return semiFinalWinners;
+  };
+
   let playoffTeams = JSON.parse(
     localStorage.getItem("championship_playoff_teams")
   );
@@ -53,10 +85,26 @@ const ChampionshipPlayoffs = () => {
     (team) => team.rank === 4 || team.rank === 5
   );
 
+
+  const playoffWinnerCheck = () => {
+    let finalists = semiFinalCheck();
+
+    for (var i = 0; i < finalists.length; i++) {
+      let finalScoreArray = PlayoffScore(finalists[i].league_entry);
+      finalists[i]["finalScore"] = finalScoreArray[0].score;
+    }
+
+    return finalists;
+
+  };
+
+  // want to create a function that will be checked after week 38 to declare
+  // a Championship playoff winner
+
   return (
     <section>
       <div className="container">
-      <h1>Championship Playoffs</h1>
+        <h1>Championship Playoffs</h1>
         <div className="team-container">
           {firstMatchup.map((team) => (
             <div className="stat-container" key={team.league_entry}>
@@ -99,7 +147,7 @@ const ChampionshipPlayoffs = () => {
             </div>
           ))}
         </div>
-        <h2>Gameweek Scores</h2>
+        <h2>Semi Finals</h2>
           <div className="team-container">
           {firstMatchup.map((team) => (
             <div key={team.league_entry}>
@@ -110,7 +158,7 @@ const ChampionshipPlayoffs = () => {
                 </div>
               ))}
               <h3>Total: {team.curScore}</h3>
-              <p>{checkOutcome(firstMatchup,team.league_entry)}</p>
+              <p>{checkOutcome(firstMatchup,team.league_entry,"semifinals")}</p>
             </div>
           ))}
           </div>
@@ -124,10 +172,42 @@ const ChampionshipPlayoffs = () => {
                 </div>
               ))}
               <h3>Total: {team.curScore}</h3>
-              <p>{checkOutcome(secondMatchup,team.league_entry)}</p>
+              <p>{checkOutcome(secondMatchup,team.league_entry,"semifinals")}</p>
             </div>
           ))}
         </div>
+        <h2>Finals</h2>
+        {(gameweek >= 37 && gameweekStatus)
+        ?
+        <div>
+          {(gameweek === 38 && gameweekStatus)
+          ?
+          <div className="team-container">
+          {playoffWinnerCheck().map((team) => (
+            <div key={team.league_entry}>
+              {team.teamName}
+              <h3>Total: {team.finalScore}</h3>
+              <p>{checkOutcome(playoffWinnerCheck(),team.league_entry,"finals")}</p>
+            </div>
+          ))}
+          </div>
+          :
+          <div className="team-container">
+            {playoffWinnerCheck().map((team) => (
+              <div key={team.league_entry}>
+                {team.teamName}
+                <h3>Total: {team.finalScore}</h3>
+                <p>Match still in progress!</p>
+              </div>
+            ))}
+          </div>
+          }
+        </div>  
+        :
+        <div>
+          <p>Coming week 38</p>
+        </div>
+        }
       </div>
     </section>
   );
