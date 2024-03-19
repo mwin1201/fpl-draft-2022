@@ -6,6 +6,7 @@ import PersonalBets from "../components/Bets";
 import Lineup from "../components/Lineup";
 import TeamStats from "../components/TeamStats";
 import WalletValue from "../components/WalletValue";
+import TeamForm from "../components/TeamForm";
 
 const Profile = () => {
     let { id: fpl_id} = useParams();
@@ -19,6 +20,11 @@ const Profile = () => {
                 <img className="avatar" src={ownerProfile[0].avatar} alt="Owner avatar"></img>
 
                 <TeamStats owner_entry_id={ownerProfile[0].entry_id} />
+
+                <TeamForm
+                    team_id={ownerProfile[0].id} 
+                    number={10}
+                />
 
                 <Lineup owner_id={ownerProfile[0].entry_id} />
 
