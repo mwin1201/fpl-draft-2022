@@ -20,6 +20,11 @@ const PlayoffScore = (entry_id) => {
             scores.push({gw: 37, score: totalScore});
         }
     }
+    else if (currentGW === 38) {
+        let gw38Stats = JSON.parse(localStorage.getItem(`gw_38_stats`));
+        totalScore = gw38Stats.filter((team) => team.league_entry === entry_id)[0].total_points;
+        scores.push({gw:38, score: totalScore});
+    }
     else {
         if (curGWStatus) {
             for (var i = currentGW - 1; i <= currentGW; i++) {

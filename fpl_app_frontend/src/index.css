@@ -377,6 +377,11 @@ button:hover{
   align-items: center;
 }
 
+/* Profile Page */
+.team-form > h3{
+  color: var(--dark-green);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Lexend" "Segoe UI", "Roboto",
