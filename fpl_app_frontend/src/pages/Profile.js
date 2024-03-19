@@ -6,6 +6,8 @@ import PersonalBets from "../components/Bets";
 import Lineup from "../components/Lineup";
 import TeamStats from "../components/TeamStats";
 import WalletValue from "../components/WalletValue";
+import getRecord from "../data/MatchResults";
+import calculateAVGScore from "../data/AvgGWScore";
 
 const Profile = () => {
     let { id: fpl_id} = useParams();
@@ -19,6 +21,10 @@ const Profile = () => {
                 <img className="avatar" src={ownerProfile[0].avatar} alt="Owner avatar"></img>
 
                 <TeamStats owner_entry_id={ownerProfile[0].entry_id} />
+
+                <h2>Current Team Form</h2>
+                <h3>L10 Results (W-D-L): {getRecord(ownerProfile[0].id, 10)}</h3>
+                <h3>L10 Avg Score: {calculateAVGScore(ownerProfile[0].id, 10)}pts</h3>
 
                 <Lineup owner_id={ownerProfile[0].entry_id} />
 
