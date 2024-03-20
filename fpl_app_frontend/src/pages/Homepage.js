@@ -5,6 +5,7 @@ import Standings from "../components/Standings";
 import { Link } from "react-router-dom";
 import Playoffs from "../components/ChampionshipPlayoffs/index.js";
 import DreamTeam from "../components/DreamTeam/index.js";
+import LeagueForm from "../components/HotorNot/index.js";
 
 // seed data for testing
 //import Seeds from "../data/LocalStorage_seeds";
@@ -132,6 +133,8 @@ const Homepage = () => {
       <Playoffs
         league_id={JSON.parse(localStorage.getItem("current_league"))}
       />
+
+      <LeagueForm league_entries={JSON.parse(localStorage.getItem("league_entries"))} />
 
       <br></br>
       <section id="google-slides">

@@ -8,6 +8,7 @@ import DataLoad from "../data/DataLoad";
 import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
+import TeamForm from "../components/TeamForm";
 const axios = require('axios').default;
 
 const Dashboard = () => {
@@ -127,6 +128,11 @@ const Dashboard = () => {
 
                     <h1>{ team_name }</h1>
                     <TeamStats owner_entry_id={entry_id}/>
+
+                    <TeamForm
+                        team_id={fpl_id} 
+                        number={10}
+                    />
 
                     <Standings 
                         standings={JSON.parse(localStorage.getItem("standings"))}
