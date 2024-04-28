@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Playoffs = ({league_id}) => {
 
-    if (league_id === 24003 && !localStorage.getItem("championship_playoff_teams")) {
+    if (league_id === 24003 || !localStorage.getItem("championship_playoff_teams")) {
         return(
             <div></div>
         );
