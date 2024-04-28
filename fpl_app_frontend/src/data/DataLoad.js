@@ -24,7 +24,7 @@ const DataLoad = async (leagueID, didLeagueChange) => {
         return getAllStats();
       })
       .then(() => {
-        if (gw <= 36 && leagueID === 20667) { // need to remember to change this to gw === 36
+        if (gw === 36 && leagueID === 20667) { // need to remember to change this to gw === 36
           let standings = JSON.parse(localStorage.getItem("standings"));
           let playoffTeams = standings.filter(
             (team) =>
