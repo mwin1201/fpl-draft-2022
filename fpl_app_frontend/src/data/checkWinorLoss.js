@@ -3,6 +3,7 @@
 
 const checkOutcome = (matchup, teamEntry, playoffStage) => {
     let team1Score,team2Score;
+    let gwStatus = JSON.parse(localStorage.getItem("current_gameweek_complete"));
 
     if (playoffStage === "semifinals") {
         team1Score = matchup.filter((team) => team.league_entry === teamEntry)[0].curScore;
@@ -10,32 +11,38 @@ const checkOutcome = (matchup, teamEntry, playoffStage) => {
         const matchesPlayed = matchup.filter((team) => team.league_entry === teamEntry)[0].scores.length;
 
         // 2 matches and team 1 wins
-        if (matchesPlayed === 2 && team1Score > team2Score) {
+        if (matchesPlayed === 2 && team1Score > team2Score && gwStatus === true) {
             return <span className="win">W</span>
         }
         // 2 matches and team 1 loses
-        else if (matchesPlayed === 2 && team1Score < team2Score) {
+        else if (matchesPlayed === 2 && team1Score < team2Score && gwStatus === true) {
             return <span className="loss">L</span>
         }
-        else if (matchesPlayed === 1 && team1Score > team2Score) {
+        else if ((matchesPlayed === 1 && team1Score > team2Score) || (matchesPlayed === 2 && team1Score > team2Score && gwStatus === false)) {
             return <span className="win">+{team1Score - team2Score}</span>
         }
-        else if (matchesPlayed === 1 && team1Score < team2Score) {
+        else if ((matchesPlayed === 1 && team1Score < team2Score) || (matchesPlayed === 2 && team1Score < team2Score && gwStatus === false)) {
             return <span className="loss">{team1Score - team2Score}</span>
         }
     } else {
         team1Score = matchup.filter((team) => team.league_entry === teamEntry)[0].finalScore;
         team2Score = matchup.filter((team) => team.league_entry !== teamEntry)[0].finalScore;
 
-        if (team1Score > team2Score) {
+        if (team1Score > team2Score && gwStatus === true) {
             return (
                 <p><span className="win">W</span>Playoff Winner!!</p>
                 
             );
         }
         // 2 matches and team 1 loses
-        else {
+        else if (team1Score < team2Score && gwStatus === true) {
             return <span className="loss">L</span>
+        }
+        else if (team1Score > team2Score) {
+            return <span className="win">+{team1Score - team2Score}</span>
+        }
+        else if (team1Score < team2Score) {
+            return <span className="loss">{team1Score - team2Score}</span>
         }
     }
 };
