@@ -28,6 +28,7 @@ const PlayoffScore = (entry_id) => {
         totalScore = gw38Stats.filter((team) => team.league_entry === entry_id)[0].total_points;
         scores.push({gw:38, score: totalScore});
     }
+    // this section was created for tracking purposes leading up to the playoff gameweeks 36,37, and 38
     else {
         if (curGWStatus) {
             for (var i = currentGW - 1; i <= currentGW; i++) {
