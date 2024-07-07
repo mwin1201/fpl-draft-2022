@@ -130,7 +130,7 @@ const Dashboard = () => {
                     <TeamStats owner_entry_id={entry_id}/>
 
                     <TeamForm
-                        team_id={fpl_id} 
+                        team_id={fpl_id}
                         number={10}
                     />
 
