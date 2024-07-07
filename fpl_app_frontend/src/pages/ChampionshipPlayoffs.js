@@ -197,7 +197,7 @@ const ChampionshipPlayoffs = () => {
               <div key={team.league_entry}>
                 {team.teamName}
                 <h3>Total: {team.finalScore}</h3>
-                <p>Match still in progress!</p>
+                <p>Match still in progress or upcoming!</p>
               </div>
             ))}
           </div>
