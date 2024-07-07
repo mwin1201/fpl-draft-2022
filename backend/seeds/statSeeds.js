@@ -31,7 +31,7 @@ const seedPlayers = [
   }
 ];
 
-for (var i = 0; i < 38; i++) {
+for (var i = 1; i < 39; i++) {
   for (var y = 0; y < seedPlayers.length; y++) {
     var stat = {
       minutes: Math.floor(Math.random() * (990 - 300) + 300),
