@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
+import getStatData from "../data/GetStatData.js";
 const axios = require('axios').default;
 
 const GameweekStats = () => {
@@ -8,15 +9,7 @@ const GameweekStats = () => {
     const [toggleStat, setToggleStat] = useState(0);
 
     useEffect(() => {
-        const start = async () => {
-            const getStatData = async (gw, leagueId) => {
-                let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-                return axios.get(`${currentOrigin}/api/stats/league/` + leagueId + "/gameweek/" + gw)
-                .then((apiResponse) => {
-                    return apiResponse.data;
-                })
-            };
-    
+        const start = async () => {    
             const currentLeague = JSON.parse(localStorage.getItem("current_league"));
     
             setDisplayArr(await getStatData(currentGameweek, currentLeague));

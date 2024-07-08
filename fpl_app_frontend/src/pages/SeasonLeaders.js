@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import getGameweek from "../data/CurrentGameweek";
 import LeagueAlert from "../alerts/LeagueAlert.js";
+import getStatData from "../data/GetStatData.js";
 const axios = require('axios').default;
 
 const SeasonLeaders = () => {
@@ -42,14 +43,6 @@ const SeasonLeaders = () => {
                 }
             }
             return buildArr;
-        };
-
-        const getStatData = async (gw, leagueId) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/api/stats/league/` + leagueId + "/gameweek/" + gw)
-            .then((apiResponse) => {
-                return apiResponse.data;
-            })
         };
 
         const getTransactionData = async (teamId) => {
