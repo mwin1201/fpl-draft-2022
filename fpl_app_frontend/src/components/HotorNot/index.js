@@ -1,31 +1,56 @@
 import { useState, useEffect } from "react";
 import getRecord from "../../data/MatchResults";
 import calculateAVGScore from "../../data/AvgGWScore";
+import getStatData from "../../data/GetStatData";
 
-const LeagueForm = ({league_entries}) => {
+const LeagueForm = ({league_id, currentGameweek}) => {
     const [lookback, setLookback] = useState(10);
     const [leagueFormData, setLeagueFormData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        let data = [];
-        const league_entries = JSON.parse(localStorage.getItem("league_entries"));
-        
-        for (var i = 0; i < league_entries.length; i++) {
-            let obj = {};
-            obj.name = league_entries[i].entry_name;
-            obj.team_id = league_entries[i].id;
-            obj.form = getRecord(league_entries[i].id, lookback);
-            obj.avg_score = calculateAVGScore(league_entries[i].id, lookback);
-            data.push(obj);
-        }
-        setLeagueFormData(data);
+        setIsLoading(true);
 
-    },[lookback]);
+        const start = async () => {
+            let data = [];
+            const league_entries = JSON.parse(localStorage.getItem("league_entries"));
+            const stats = await getStatData(currentGameweek, league_id);
+
+            for (var i = 0; i < stats.length; i++) {
+                let stat_entry_id = stats[i].entry_id;
+                let league_entry = league_entries.filter((team) => team.entry_id === stat_entry_id)[0];
+                let obj = {};
+                obj.name = league_entry.entry_name;
+                obj.team_id = league_entry.id;
+                obj.form = getRecord(league_entry.id, lookback);
+                obj.avg_score = await calculateAVGScore(league_entry.id, lookback);
+                data.push(obj);
+            }
+            console.log(data);
+            setLeagueFormData(data);
+            setIsLoading(false);
+        };
+
+        start();
+
+    },[lookback, currentGameweek, league_id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLookback(document.getElementById("searchNumber").value);
     };
+
+    const delay = () => {
+        new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, 5000);
+        });
+    };
+
+    if (isLoading) {
+        return delay();
+    }
 
     return (
         <section>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import getStatData from "../data/GetStatData.js";
-const axios = require('axios').default;
 
 const GameweekStats = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));

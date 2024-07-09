@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import FixtureHistory from "../components/FixtureHistory";
 import UpcomingFixtures from "../components/UpcomingFixtures";
@@ -21,10 +21,12 @@ const Profile = () => {
 
                 <TeamStats owner_entry_id={ownerProfile[0].entry_id} />
 
-                <TeamForm
-                    team_id={ownerProfile[0].id} 
-                    number={10}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <TeamForm
+                        team_id={ownerProfile[0].id}
+                        number={10}
+                    />
+                </Suspense>
 
                 <Lineup owner_id={ownerProfile[0].entry_id} />
 
