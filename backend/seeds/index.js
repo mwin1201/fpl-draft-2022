@@ -2,6 +2,8 @@
 const ownerSeed = require("./ownerSeeds");
 const walletSeed = require("./walletSeeds");
 const seedAllStats = require("./statSeeds");
+const seedAllChampionsLeague = require("./championsLeagueSeeds");
+const seedAllChampionsLeagueFixtures = require("./championsLeagueFixtureSeeds");
 
 const sequelize = require("../config/connection");
 
@@ -11,6 +13,8 @@ const seedAll = async () => {
   await ownerSeed();
   await walletSeed();
   await seedAllStats();
+  await seedAllChampionsLeague();
+  await seedAllChampionsLeagueFixtures();
 
   process.exit(0);
 };
