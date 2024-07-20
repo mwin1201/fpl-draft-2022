@@ -11,6 +11,10 @@ ChampionsLeague.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    team_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     owner_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
