@@ -55,6 +55,7 @@ const Header = () => {
                 <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
                     <NavLink to="/">Homepage</NavLink>
                     <NavLink to="/dashboard">Dashboard</NavLink>
+                    <NavLink to="/championsLeague">UCL</NavLink>
                     <NavLink to="/fixtureHistory">Fixture History</NavLink>
                     <NavLink to="/premPlayers">Prem Players</NavLink>
                     <NavLink to="/matchups">Head to Head</NavLink>

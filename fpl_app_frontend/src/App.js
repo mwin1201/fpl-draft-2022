@@ -20,6 +20,7 @@ import UpdatePassword from "./pages/UpdatePassword";
 import Bets from "./pages/Bets";
 import Profile from "./pages/Profile";
 import ChampionshipPlayoffs from "./pages/ChampionshipPlayoffs";
+import ChampionsLeague from "./pages/ChampionsLeague";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -48,6 +49,7 @@ function App() {
           path="/championshipPlayoffs"
           element={<ChampionshipPlayoffs />}
         ></Route>
+        <Route path="/championsLeague" element={<ChampionsLeague />}></Route>
       </Routes>
       <Footer />
     </Router>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import getGameweek from "../data/CurrentGameweek";
 import LeagueAlert from "../alerts/LeagueAlert.js";
+import getStatData from "../data/GetStatData.js";
 const axios = require('axios').default;
 
 const SeasonLeaders = () => {
@@ -12,18 +13,18 @@ const SeasonLeaders = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        const createFullStatArray = (loopEnd) => {
+        const createFullStatArray = async (loopEnd, league) => {
             let buildArr = [];
             for (var i = 1; i <= loopEnd; i++) {
                 let teamArr = [];
-                let startArr = JSON.parse(localStorage.getItem(`gw_${i}_stats`));
+                let startArr = await getStatData(i, league);
                 for (var y = 0; y < startArr.length; y++) {
                     if (buildArr.length === 0) {
                         buildArr = startArr;
                         break;
                     }
                     else {
-                        let team = buildArr.find(obj => obj.teamId === startArr[y].teamId);
+                        let team = buildArr.find(obj => obj.entry_id === startArr[y].entry_id);
                         team.minutes = team.minutes + startArr[y].minutes;
                         team.goals_scored = team.goals_scored + startArr[y].goals_scored;
                         team.assists = team.assists + startArr[y].assists;
@@ -66,7 +67,8 @@ const SeasonLeaders = () => {
         const start = async () => {
             let transactionArray;
             const currentGameweek = JSON.parse(localStorage.getItem("current_gameweek"));
-            let allStats = createFullStatArray(currentGameweek);
+            const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+            let allStats = await createFullStatArray(currentGameweek, currentLeague);
             if (JSON.parse(localStorage.getItem("transactions"))) {
                 transactionArray = JSON.parse(localStorage.getItem("transactions"));
             }
@@ -74,8 +76,8 @@ const SeasonLeaders = () => {
                 transactionArray = await createTransactionArray();
             }
             let newStatArr = [];
-            for (var i = 0; i < transactionArray.length; i++) {
-                let teamStats = allStats.filter((team) => team.teamId === transactionArray[i].id);
+            for (var i = 0; i < allStats.length; i++) {
+                let teamStats = allStats.filter((team) => team.entry_id === transactionArray[i].id);
                 teamStats[0]["total_transactions"] = transactionArray[i].total_count;
                 newStatArr.push(teamStats[0]);
             }
@@ -173,20 +175,20 @@ const SeasonLeaders = () => {
         }
     };
 
-    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
-        return (
-            <main>
-                <h2>Still waiting for the start of the 2023 season!</h2>
-            </main>
-        );
-    }
-
     if (isLoading) {
         return (
             <main>
                 LOADING ALL DATA, PLEASE BE PATIENT
             </main>
         )
+    }
+
+    if (allStats.length === 0) {
+        return (
+            <main>
+                <h2>Still waiting for the start of the 2023 season!</h2>
+            </main>
+        );
     }
 
     return (
@@ -198,19 +200,19 @@ const SeasonLeaders = () => {
             {statToggle ? 
                 <div className="card-content">
                     {allStats.map((stat) => (
-                        <div className="team-cards" key={stat.teamId}>
+                        <div className="team-cards" key={stat.entry_id}>
                             <h3>{stat.person}</h3>
-                            <h4>Overall: {getTableRank(stat.league_entry)}</h4>
-                            <div>{stat.total_points} Points ({getLeagueRank(stat.teamId, "points")})</div>
-                            <div>{stat.minutes} Minutes ({getLeagueRank(stat.teamId, "minutes")})</div>
-                            <div>{stat.goals_scored} Goals ({getLeagueRank(stat.teamId, "goals")})</div>
-                            <div>{stat.assists} Assists ({getLeagueRank(stat.teamId, "assists")})</div>
-                            <div>{stat.bonus} Bonus ({getLeagueRank(stat.teamId, "bonus")})</div>
-                            <div>{stat.clean_sheets} Shutouts ({getLeagueRank(stat.teamId, "shutouts")})</div>
-                            <div>{stat.goals_conceded} Goals Against ({getLeagueRank(stat.teamId, "goals against")})</div>
-                            <div>{stat.yellow_cards} Yellow Cards ({getLeagueRank(stat.teamId, "yellows")})</div>
-                            <div>{stat.red_cards} Red Cards ({getLeagueRank(stat.teamId, "reds")})</div>
-                            <div>{stat.total_transactions} Transactions ({getLeagueRank(stat.teamId, "transactions")})</div>
+                            <h4>Overall: {getTableRank(stat.owner_id)}</h4>
+                            <div>{stat.total_points} Points ({getLeagueRank(stat.entry_id, "points")})</div>
+                            <div>{stat.minutes} Minutes ({getLeagueRank(stat.entry_id, "minutes")})</div>
+                            <div>{stat.goals_scored} Goals ({getLeagueRank(stat.entry_id, "goals")})</div>
+                            <div>{stat.assists} Assists ({getLeagueRank(stat.entry_id, "assists")})</div>
+                            <div>{stat.bonus} Bonus ({getLeagueRank(stat.entry_id, "bonus")})</div>
+                            <div>{stat.clean_sheets} Shutouts ({getLeagueRank(stat.entry_id, "shutouts")})</div>
+                            <div>{stat.goals_conceded} Goals Against ({getLeagueRank(stat.entry_id, "goals against")})</div>
+                            <div>{stat.yellow_cards} Yellow Cards ({getLeagueRank(stat.entry_id, "yellows")})</div>
+                            <div>{stat.red_cards} Red Cards ({getLeagueRank(stat.entry_id, "reds")})</div>
+                            <div>{stat.total_transactions} Transactions ({getLeagueRank(stat.entry_id, "transactions")})</div>
                         </div>
                     ))}
                 </div>

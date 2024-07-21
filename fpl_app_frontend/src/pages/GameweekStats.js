@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
+import getStatData from "../data/GetStatData.js";
 
 const GameweekStats = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
@@ -7,7 +8,12 @@ const GameweekStats = () => {
     const [toggleStat, setToggleStat] = useState(0);
 
     useEffect(() => {
-        setDisplayArr(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)));
+        const start = async () => {    
+            const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+    
+            setDisplayArr(await getStatData(currentGameweek, currentLeague));
+        };
+        start();
 
     },[currentGameweek]);
 
@@ -165,19 +171,19 @@ const GameweekStats = () => {
             {toggleStat ?
                 <div className="card-content">
                     {displayArr.map((stat) => (
-                        <div className="team-cards" key={stat.teamId}>
-                            <a href={"https://draft.premierleague.com/entry/" + stat.teamId + "/event/" + currentGameweek} rel="noreferrer" target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
+                        <div className="team-cards" key={stat.entry_id}>
+                            <a href={"https://draft.premierleague.com/entry/" + stat.entry_id + "/event/" + currentGameweek} rel="noreferrer" target="_blank" className="fpl-link"><h3>{stat.person}</h3></a>
                             <h4>Overall: {getTableRank(stat.league_entry)}</h4>
                             <h4>{checkWinLoss(stat.league_entry)}</h4>
-                            <div>{stat.total_points} Points ({getLeagueRank(stat.teamId, "points")})</div>
-                            <div>{stat.minutes} Minutes ({getLeagueRank(stat.teamId, "minutes")})</div>
-                            <div>{stat.goals_scored} Goals ({getLeagueRank(stat.teamId, "goals")})</div>
-                            <div>{stat.assists} Assists ({getLeagueRank(stat.teamId, "assists")})</div>
-                            <div>{stat.bonus} Bonus ({getLeagueRank(stat.teamId, "bonus")})</div>
-                            <div>{stat.clean_sheets} Shutouts ({getLeagueRank(stat.teamId, "shutouts")})</div>
-                            <div>{stat.goals_conceded} Goals Against ({getLeagueRank(stat.teamId, "goals against")})</div>
-                            <div>{stat.yellow_cards} Yellow Cards ({getLeagueRank(stat.teamId, "yellows")})</div>
-                            <div>{stat.red_cards} Red Cards ({getLeagueRank(stat.teamId, "reds")})</div>
+                            <div>{stat.total_points} Points ({getLeagueRank(stat.entry_id, "points")})</div>
+                            <div>{stat.minutes} Minutes ({getLeagueRank(stat.entry_id, "minutes")})</div>
+                            <div>{stat.goals_scored} Goals ({getLeagueRank(stat.entry_id, "goals")})</div>
+                            <div>{stat.assists} Assists ({getLeagueRank(stat.entry_id, "assists")})</div>
+                            <div>{stat.bonus} Bonus ({getLeagueRank(stat.entry_id, "bonus")})</div>
+                            <div>{stat.clean_sheets} Shutouts ({getLeagueRank(stat.entry_id, "shutouts")})</div>
+                            <div>{stat.goals_conceded} Goals Against ({getLeagueRank(stat.entry_id, "goals against")})</div>
+                            <div>{stat.yellow_cards} Yellow Cards ({getLeagueRank(stat.entry_id, "yellows")})</div>
+                            <div>{stat.red_cards} Red Cards ({getLeagueRank(stat.entry_id, "reds")})</div>
                         </div>
                     ))}
                 </div>
