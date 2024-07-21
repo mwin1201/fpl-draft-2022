@@ -2,6 +2,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import getUCLTeams from "../data/UCLmethods/UCLteams";
 import getUCLGames from "../data/UCLmethods/UCLgames";
 import getUCLTeamStats from "../data/UCLmethods/UCLstats";
+import UCLFixtureHistory from "../data/UCLmethods/UCLfixturehistory";
 
 const ChampionsLeague = () => {
   // need to show a standings table for the league
@@ -13,6 +14,8 @@ const ChampionsLeague = () => {
   // 5. Sort by total points
 
   const [UCLstandings, setUCLStandings] = useState([]);
+  const [UCLgames, setUCLGames] = useState([]);
+  const [UCLteams, setUCLTeams] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -38,6 +41,8 @@ const ChampionsLeague = () => {
     const start = async () => {
       const UCLteams = await getUCLTeams();
       const UCLgames = await getUCLGames();
+      setUCLTeams(UCLteams);
+      setUCLGames(UCLgames);
       createTeamObjects(UCLteams, UCLgames);
       setIsLoading(false);
     };
@@ -87,6 +92,10 @@ const ChampionsLeague = () => {
             ))}
             </tbody>
         </table>
+      </section>
+      <section>
+        <h2>Champions League Past Fixtures</h2>
+        <UCLFixtureHistory teams={UCLteams} games={UCLgames} />
       </section>
     </div>
   );
