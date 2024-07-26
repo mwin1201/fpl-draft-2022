@@ -50,7 +50,9 @@ const UCLFixtureHistory = ({ teams, games }) => {
               </tr>
             </thead>
             <tbody>
-              {games.map((game, i) => (
+              {games.sort((a,b) => (
+                a.gameweek - b.gameweek
+              )).map((game, i) => (
                 <tr key={i}>
                   <td>{game.gameweek}</td>
                   <td>{getTeamName(game.league_entry_1)}</td>

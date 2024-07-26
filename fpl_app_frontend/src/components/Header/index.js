@@ -35,7 +35,7 @@ const Header = () => {
         <header>
             <div className="logo-title">
                 <img className="logo" alt='fpl logo' src={Logo}></img>
-                <h1>FPL DRAFT 2023/24</h1>
+                <h1>FPL DRAFT 2024/25</h1>
             </div>
 
             <input 
