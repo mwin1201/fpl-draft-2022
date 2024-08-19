@@ -44,6 +44,26 @@ router.put("/", (req, res) => {
     .catch(err => {
         res.status(500).send(err);
     });
-})
+});
+
+// POST create wallet for owner /api/wallets
+router.post("/", (req, res) => {
+    Wallet.create(
+        {
+            total: req.body.total,
+            owner_id: req.body.owner_id
+        }
+    )
+    .then((dbWalletData) => {
+        if (!dbWalletData) {
+            res.status(404).send({message: "No Wallet created"});
+            return;
+        }
+        res.status(200).send(dbWalletData);
+    })
+    .catch(err => {
+        res.status(500).send(err);
+    })
+});
 
 module.exports = router;
