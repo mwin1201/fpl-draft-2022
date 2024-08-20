@@ -35,7 +35,7 @@ const Header = () => {
         <header>
             <div className="logo-title">
                 <img className="logo" alt='fpl logo' src={Logo}></img>
-                <h1>FPL DRAFT 2023/24</h1>
+                <h1>FPL DRAFT 2024/25</h1>
             </div>
 
             <input 
@@ -55,6 +55,7 @@ const Header = () => {
                 <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
                     <NavLink to="/">Homepage</NavLink>
                     <NavLink to="/dashboard">Dashboard</NavLink>
+                    <NavLink to="/championsLeague">UCL</NavLink>
                     <NavLink to="/fixtureHistory">Fixture History</NavLink>
                     <NavLink to="/premPlayers">Prem Players</NavLink>
                     <NavLink to="/matchups">Head to Head</NavLink>

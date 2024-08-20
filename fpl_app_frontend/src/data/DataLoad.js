@@ -21,10 +21,10 @@ const DataLoad = async (leagueID, didLeagueChange) => {
       CheckBets(JSON.parse(localStorage.getItem("current_user")).fpl_id),
     ])
       .then(() => {
-        return getAllStats();
+        return getManagerOfTheMonth(gw);
       })
       .then(() => {
-        if (gw === 36 && leagueID === 20667) { // need to remember to change this to gw === 36
+        if (gw === 36 && leagueID === 29556) { // need to remember to change this to gw === 36
           let standings = JSON.parse(localStorage.getItem("standings"));
           let playoffTeams = standings.filter(
             (team) =>
@@ -47,23 +47,23 @@ const DataLoad = async (leagueID, didLeagueChange) => {
       });
   };
 
-  const getAllStats = async () => {
-    const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
-    if (apiGW == null) {
-      dataLoadComplete = true;
-      return dataLoadComplete;
-    }
-    for (var index = apiGW; index >= 1; index--) {
-      if (index === apiGW) {
-        await seasonStats(index);
-      } else if (localStorage.getItem(`gw_${index}_stats`)) {
-        continue;
-      } else {
-        await seasonStats(index);
-      }
-    }
-    return getManagerOfTheMonth(apiGW);
-  };
+  // const getAllStats = async () => {
+  //   const apiGW = JSON.parse(localStorage.getItem("current_gameweek"));
+  //   if (apiGW == null) {
+  //     dataLoadComplete = true;
+  //     return dataLoadComplete;
+  //   }
+  //   for (var index = apiGW; index >= 1; index--) {
+  //     if (index === apiGW) {
+  //       await seasonStats(index);
+  //     } else if (localStorage.getItem(`gw_${index}_stats`)) {
+  //       continue;
+  //     } else {
+  //       await seasonStats(index);
+  //     }
+  //   }
+  //   return getManagerOfTheMonth(apiGW);
+  // };
 
   const getManagerOfTheMonth = async (gw) => {
     localStorage.setItem(
@@ -91,10 +91,8 @@ const DataLoad = async (leagueID, didLeagueChange) => {
     localStorage.removeItem("current_gameweek_complete");
     localStorage.removeItem("dreamteam");
 
-    if (didLeagueChange) {
-      for (var i = 0; i < 39; i++) {
-        localStorage.removeItem(`gw_${i}_stats`);
-      }
+    for (var i = 0; i < 39; i++) {
+      localStorage.removeItem(`gw_${i}_stats`);
     }
 
     if (apiGW < 36) {

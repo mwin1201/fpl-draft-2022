@@ -3,6 +3,8 @@ const Bet = require("./Bet");
 const Wallet = require("./Wallet");
 const LeagueData = require("./LeagueData");
 const Stat = require("./Stat");
+const ChampionsLeague = require("./ChampionsLeague");
+const ChampionsLeagueFixtures = require("./ChampionsLeagueFixtures");
 
 Owner.hasMany(Bet, {
   foreignKey: "owner_id",
@@ -36,4 +38,12 @@ Stat.belongsTo(Owner, {
   foreignKey: "owner_id",
 });
 
-module.exports = { Owner, Bet, Wallet, LeagueData, Stat };
+Owner.hasOne(ChampionsLeague, {
+  foreignKey: "owner_id",
+});
+
+ChampionsLeague.belongsTo(Owner, {
+  foreignKey: "owner_id",
+});
+
+module.exports = { Owner, Bet, Wallet, LeagueData, Stat, ChampionsLeague, ChampionsLeagueFixtures};

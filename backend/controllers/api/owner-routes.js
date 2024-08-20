@@ -34,6 +34,18 @@ router.post("/", (req, res) => {
     });
 });
 
+// POST create many owners at once /api/owners/bulk
+router.post("/bulk", (req, res) => {
+    Owner.bulkCreate(req.body)
+    .then(dbOwnerData => {
+        res.status(201).send(dbOwnerData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
+
 // POST login an owner
 router.post("/login", (req, res) => {
     Owner.findOne({

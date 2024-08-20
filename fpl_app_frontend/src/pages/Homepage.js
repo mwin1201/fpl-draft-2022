@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import Standings from "../components/Standings";
@@ -134,7 +134,12 @@ const Homepage = () => {
         league_id={JSON.parse(localStorage.getItem("current_league"))}
       />
 
-      <LeagueForm league_entries={JSON.parse(localStorage.getItem("league_entries"))} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LeagueForm 
+          league_id={JSON.parse(localStorage.getItem("current_league"))}
+          currentGameweek={JSON.parse(localStorage.getItem("current_gameweek"))}  
+        />
+      </Suspense>
 
       <br></br>
       <section id="google-slides">

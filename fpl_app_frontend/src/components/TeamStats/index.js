@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import getStatData from '../../data/GetStatData';
 const axios = require('axios').default;
 
 const TeamStats = ({ owner_entry_id }) => {
@@ -12,18 +13,18 @@ const TeamStats = ({ owner_entry_id }) => {
     useEffect(() => {
         setIsLoading(true);
 
-        const createFullStatArray = (loopEnd) => {
+        const createFullStatArray = async (loopEnd, league) => {
             let buildArr = [];
             for (var i = 1; i <= loopEnd; i++) {
                 let teamArr = [];
-                let startArr = JSON.parse(localStorage.getItem(`gw_${i}_stats`));
+                let startArr = await getStatData(loopEnd, league);
                 for (var y = 0; y < startArr.length; y++) {
                     if (buildArr.length === 0) {
                         buildArr = startArr;
                         break;
                     }
                     else {
-                        let team = buildArr.find(obj => obj.teamId === startArr[y].teamId);
+                        let team = buildArr.find(obj => obj.entry_id === startArr[y].entry_id);
                         team.minutes = team.minutes + startArr[y].minutes;
                         team.goals_scored = team.goals_scored + startArr[y].goals_scored;
                         team.assists = team.assists + startArr[y].assists;
@@ -66,8 +67,9 @@ const TeamStats = ({ owner_entry_id }) => {
         const start = async () => {
             let transactionArray;
             const currentGameweek = JSON.parse(localStorage.getItem("current_gameweek"));
-            setGameweekStats(JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)));
-            let allStats = createFullStatArray(currentGameweek);
+            const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+            setGameweekStats(await getStatData(currentGameweek, currentLeague));
+            let allStats = await createFullStatArray(currentGameweek, currentLeague);
             if (JSON.parse(localStorage.getItem("transactions"))) {
                 transactionArray = JSON.parse(localStorage.getItem("transactions"));
             }
@@ -75,8 +77,8 @@ const TeamStats = ({ owner_entry_id }) => {
                 transactionArray = await createTransactionArray();
             }
             let newStatArr = [];
-            for (var i = 0; i < transactionArray.length; i++) {
-                let teamStats = allStats.filter((team) => team.teamId === transactionArray[i].id);
+            for (var i = 0; i < allStats.length; i++) {
+                let teamStats = allStats.filter((team) => team.entry_id === transactionArray[i].id);
                 teamStats[0]["total_transactions"] = transactionArray[i].total_count;
                 newStatArr.push(teamStats[0]);
             }
