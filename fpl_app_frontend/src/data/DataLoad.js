@@ -24,7 +24,7 @@ const DataLoad = async (leagueID, didLeagueChange) => {
         return getManagerOfTheMonth(gw);
       })
       .then(() => {
-        if (gw === 36 && leagueID === 20667) { // need to remember to change this to gw === 36
+        if (gw === 36 && leagueID === 29556) { // need to remember to change this to gw === 36
           let standings = JSON.parse(localStorage.getItem("standings"));
           let playoffTeams = standings.filter(
             (team) =>
@@ -91,11 +91,9 @@ const DataLoad = async (leagueID, didLeagueChange) => {
     localStorage.removeItem("current_gameweek_complete");
     localStorage.removeItem("dreamteam");
 
-    // if (didLeagueChange) {
-    //   for (var i = 0; i < 39; i++) {
-    //     localStorage.removeItem(`gw_${i}_stats`);
-    //   }
-    // }
+    for (var i = 0; i < 39; i++) {
+      localStorage.removeItem(`gw_${i}_stats`);
+    }
 
     if (apiGW < 36) {
       localStorage.removeItem("championship_playoff_teams");

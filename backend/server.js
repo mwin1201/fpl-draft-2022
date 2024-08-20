@@ -4,7 +4,7 @@ const cors = require("cors");
 const fetch = require("node-fetch");
 const dotenv = require("dotenv").config();
 const sequelize = require("./config/connection");
-const start_cron_jobs = require("./schedule/runner");
+const get_stat_data = require("./schedule/gameweek_player_stat_data");
 //const record_ucl_fixture_data = require("./schedule/ucl_fixture_data");
 //const bodyParser = require("body-parser");
 

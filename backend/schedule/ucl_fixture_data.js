@@ -3,7 +3,8 @@ const fetch = require("node-fetch");
 
 // Logic
 // #1. Check if the gameweek is complete. Quit if False
-// #2. Search over gameweek matches and see if any UCL teams played each other.
+// #2. Check if data has already been written to table for current gameweek. Quit if True
+// #3. Search over gameweek matches and see if any UCL teams played each other.
 // Quit if there are 0 results.
 
 const getGameweek = async () => {
@@ -16,6 +17,17 @@ const getGameweek = async () => {
   return {gameweek: jsonResponse.current_event, gameweekStatus: jsonResponse.current_event_finished};
 };
 
+const checkIfDataExists = async (gameweek) => {
+  let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+  const endpoint = `${currentOrigin}/api/championsleaguefixtures/gameweek/${gameweek}`;
+  const fetchOptions = {
+    method: "GET"
+  };
+  const response = await fetch(endpoint, fetchOptions);
+  const jsonResponse = await response.json();
+  return jsonResponse.length > 0;
+};
+
 const getMatches = async (gw) => {
   const premiership_league_id = "13098";
   const fetchOptions = {
@@ -24,7 +36,7 @@ const getMatches = async (gw) => {
   const endpoint = `https://draft.premierleague.com/api/league/${premiership_league_id}/details`
   const response = await fetch(endpoint, fetchOptions);
   const jsonResponse = await response.json();
-  return (jsonResponse.filter((match) => match.event === gw));
+  return (jsonResponse.matches.filter((match) => match.event === gw));
 };
 
 const getUCLTeams = async () => {
@@ -47,10 +59,6 @@ const checkUCLMatchup = (matches, teams) => {
     }
   });
   return ucl_matchups;
-};
-
-const pausePost = () => {
-  
 };
 
 const write_to_db = async (ucl_matchups) => {
@@ -83,9 +91,10 @@ const write_to_db = async (ucl_matchups) => {
 
 const start = async () => {
   const { gameweek, gameweekStatus } = await getGameweek();
-  if (!gameweekStatus) {
+  if (!gameweekStatus || await checkIfDataExists(gameweek)) {
     return;
   }
+
   const gameweek_matches = await getMatches(gameweek);
   const ucl_teams = await getUCLTeams();
   const ucl_matchups = checkUCLMatchup(gameweek_matches, ucl_teams);
@@ -94,10 +103,8 @@ const start = async () => {
   }
 };
 
-start();
-
 const record_ucl_fixture_data = () => {
-  new CronJob(`15 59 12 * * *`,
+  new CronJob(`15 30 23 * * *`,
     function () {
       start();
     },

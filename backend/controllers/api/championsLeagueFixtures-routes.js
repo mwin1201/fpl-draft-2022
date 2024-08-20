@@ -26,6 +26,20 @@ router.get("/owner/:owner_id", (req, res) => {
   });
 });
 
+// GET all champions league fixtures for gameweek /api/championsLeagueFixtures/gameweek/:gameweek
+router.get("/gameweek/:gameweek", (req, res) => {
+  ChampionsLeagueFixtures.findAll({
+    where:{
+      gameweek: req.params.gameweek
+    }
+  })
+  .then(dbChampionsLeagueFixturesdata => res.status(200).json(dbChampionsLeagueFixturesdata))
+  .catch(err => {
+    res.status(500).json(err);
+  });
+})
+
+
 router.post("/", (req, res) => {
   ChampionsLeagueFixtures.create({
     gameweek: req.body.gameweek,
