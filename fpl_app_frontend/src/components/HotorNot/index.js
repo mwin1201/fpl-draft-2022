@@ -4,7 +4,7 @@ import calculateAVGScore from "../../data/AvgGWScore";
 import getStatData from "../../data/GetStatData";
 
 const LeagueForm = ({league_id, currentGameweek}) => {
-    const [lookback, setLookback] = useState(10);
+    const [lookback, setLookback] = useState(1);
     const [leagueFormData, setLeagueFormData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
