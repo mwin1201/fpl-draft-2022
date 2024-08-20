@@ -95,6 +95,32 @@ router.put("/", (req, res) => {
         console.log(err);
         res.status(500).send(err);
     })
+});
+
+// PUT update owner team name api/owners/update_name
+router.put("/update_name", (req, res) => {
+    Owner.update(
+        {
+            team_name: req.body.team_name
+        },
+        {
+            where: {
+                id: req.body.id
+            },
+            attributes: ["id", "team_name", "password", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id"],
+        }
+    )
+    .then(dbOwnerData => {
+        if (!dbOwnerData) {
+            res.status(404).send({message: "No Owner found with this ID."});
+            return;
+        }
+        res.status(200).send(dbOwnerData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+    })
 })
 
 // POST owner logout
