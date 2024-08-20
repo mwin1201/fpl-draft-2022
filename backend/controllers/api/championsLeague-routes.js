@@ -12,4 +12,19 @@ router.get("/", (req, res) => {
     });
 });
 
+// POST create a champions league team
+router.post("/", (req, res) => {
+    ChampionsLeague.create({
+        owner_id: req.body.owner_id,
+        team_name: req.body.team_name
+    })
+    .then(dbChampionsLeagueData => {
+        res.status(200).send(dbChampionsLeagueData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
+
 module.exports = router;
