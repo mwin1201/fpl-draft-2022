@@ -176,7 +176,7 @@ const start = async () => {
 };
 
 const get_stat_data = () => {
-  new CronJob(`15 45 23 * * *`,
+  new CronJob(`15 31 23 * * *`,
     function() {
       start();
     },
