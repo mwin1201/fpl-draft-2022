@@ -5,7 +5,7 @@ const fetch = require("node-fetch");
 const dotenv = require("dotenv").config();
 const sequelize = require("./config/connection");
 const get_stat_data = require("./schedule/gameweek_player_stat_data");
-//const record_ucl_fixture_data = require("./schedule/ucl_fixture_data");
+const record_ucl_fixture_data = require("./schedule/ucl_fixture_data");
 //const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 5000;
