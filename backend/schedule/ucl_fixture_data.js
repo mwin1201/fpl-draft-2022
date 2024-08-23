@@ -1,4 +1,3 @@
-//const CronJob = require('cron').CronJob;
 const fetch = require("node-fetch");
 
 // Logic
@@ -108,16 +107,3 @@ const start = async () => {
 };
 
 start();
-
-// const record_ucl_fixture_data = () => {
-//   new CronJob(`15 30 23 * * *`,
-//     function () {
-//       start();
-//     },
-//     null,
-//     true,
-//     'America/Chicago'
-//   );
-// };
-
-// module.exports = record_ucl_fixture_data();
