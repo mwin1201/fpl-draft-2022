@@ -36,6 +36,7 @@ const getMatches = async (gw) => {
   const endpoint = `https://draft.premierleague.com/api/league/${premiership_league_id}/details`
   const response = await fetch(endpoint, fetchOptions);
   const jsonResponse = await response.json();
+  console.log("matches",jsonResponse.matches.filter((match) => match.event === gw));
   return (jsonResponse.matches.filter((match) => match.event === gw));
 };
 
@@ -47,6 +48,7 @@ const getUCLTeams = async () => {
   };
   const response = await fetch(endpoint, fetchOptions);
   const jsonResponse = await response.json();
+  console.log("ucl teams",jsonResponse);
   return jsonResponse;
 };
 
@@ -62,6 +64,7 @@ const checkUCLMatchup = (matches, teams) => {
 };
 
 const write_to_db = async (ucl_matchups) => {
+  console.log("entering write to DB!!");
   let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
   ucl_matchups.forEach(async (match) => {
     const data = {
@@ -92,6 +95,7 @@ const write_to_db = async (ucl_matchups) => {
 const start = async () => {
   const { gameweek, gameweekStatus } = await getGameweek();
   if (!gameweekStatus || await checkIfDataExists(gameweek)) {
+    console.log("Gameweek is not complete or data already exists. Exiting...");
     return;
   }
 
