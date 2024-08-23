@@ -54,4 +54,23 @@ router.post("/", (req, res) => {
   });
 });
 
+// remove a champions league fixture /api/championsLeagueFixtures/:id
+router.delete("/:id", (req, res) => {
+  ChampionsLeagueFixtures.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbChampionsLeagueFixturesdata => {
+    if (!dbChampionsLeagueFixturesdata) {
+      res.status(404).json({ message: "No champions league fixture found with this id" });
+      return;
+    }
+    res.status(200).json(dbChampionsLeagueFixturesdata);
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  });
+});
+
 module.exports = router;
