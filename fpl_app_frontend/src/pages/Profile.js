@@ -11,19 +11,19 @@ import TeamForm from "../components/TeamForm";
 const Profile = () => {
     let { id: fpl_id} = useParams();
     fpl_id = parseInt(fpl_id);
-    const ownerProfile = JSON.parse(localStorage.getItem("league_entries")).filter((team) => team.id === fpl_id);
+    const ownerProfile = JSON.parse(localStorage.getItem("db_league_data")).filter((team) => team.fpl_id === fpl_id);
 
     return (
         <main>
             <section>
-                <h1>Profile for {ownerProfile[0].entry_name}</h1>
+                <h1>Profile for {ownerProfile[0].team_name}</h1>
                 <img className="avatar" src={ownerProfile[0].avatar} alt="Owner avatar"></img>
 
                 <TeamStats owner_entry_id={ownerProfile[0].entry_id} />
 
                 <Suspense fallback={<div>Loading...</div>}>
                     <TeamForm
-                        team_id={ownerProfile[0].id}
+                        team_id={ownerProfile[0].fpl_id}
                     />
                 </Suspense>
 
