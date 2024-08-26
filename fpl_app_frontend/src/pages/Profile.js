@@ -12,7 +12,6 @@ const Profile = () => {
     let { id: fpl_id} = useParams();
     fpl_id = parseInt(fpl_id);
     const ownerProfile = JSON.parse(localStorage.getItem("db_league_data")).filter((team) => team.fpl_id === fpl_id);
-    console.log("ownerProfile", ownerProfile);
 
     return (
         <main>
