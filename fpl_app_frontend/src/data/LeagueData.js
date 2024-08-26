@@ -1,5 +1,4 @@
 const axios = require("axios").default;
-const { faker } = require('@faker-js/faker');
 
 const getLeagueData = async (leagueID) => {
     let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
@@ -10,10 +9,6 @@ const getLeagueData = async (leagueID) => {
             localStorage.setItem("matches", JSON.stringify(apiTeamResponse.data.matches));
 
             let owners = apiTeamResponse.data.league_entries;
-
-            for (var i = 0; i < owners.length; i++) {
-                owners[i].avatar = faker.image.avatar();
-            }
 
             localStorage.setItem("league_entries", JSON.stringify(owners));
         })

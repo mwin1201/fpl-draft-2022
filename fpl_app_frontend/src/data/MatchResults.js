@@ -1,8 +1,8 @@
 // Purpose of this file is to calculate the W-D-L record over a span of X gameweeks for an entry ID
 
-const getRecord = (entry_id, number) => {
+const getRecord = (entry_id, number, gameweek) => {
   let matches = JSON.parse(localStorage.getItem("matches"));
-  let curGW = JSON.parse(localStorage.getItem("current_gameweek"));
+  let curGW = gameweek; //JSON.parse(localStorage.getItem("current_gameweek"));
   const curGWStatus = JSON.parse(
     localStorage.getItem("current_gameweek_complete")
   );
