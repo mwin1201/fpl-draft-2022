@@ -46,6 +46,10 @@ Owner.init(
         secondary_league_id: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        avatar: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     },
     {

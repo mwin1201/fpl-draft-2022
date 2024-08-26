@@ -111,43 +111,43 @@ const SeasonLeaders = () => {
         let sortStats, index;
         if (stat === "points") {
             sortStats = allStats.sort((a,b) => b.total_points - a.total_points);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "minutes") {
             sortStats = allStats.sort((a,b) => b.minutes - a.minutes);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "goals") {
             sortStats = allStats.sort((a,b) => b.goals_scored - a.goals_scored);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "assists") {
             sortStats = allStats.sort((a,b) => b.assists - a.assists);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "bonus") {
             sortStats = allStats.sort((a,b) => b.bonus - a.bonus);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "shutouts") {
             sortStats = allStats.sort((a,b) => b.clean_sheets - a.clean_sheets);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "goals against") {
             sortStats = allStats.sort((a,b) => b.goals_conceded - a.goals_conceded);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "yellows") {
             sortStats = allStats.sort((a,b) => b.yellow_cards - a.yellow_cards);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "reds") {
             sortStats = allStats.sort((a,b) => b.red_cards - a.red_cards);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
         if (stat === "transactions") {
             sortStats = allStats.sort((a,b) => b.total_transactions - a.total_transactions);
-            index = sortStats.findIndex((team) => team.teamId === teamId) + 1;
+            index = sortStats.findIndex((team) => team.entry_id === teamId) + 1;
         }
 
 

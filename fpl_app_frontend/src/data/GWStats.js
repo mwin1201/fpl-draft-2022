@@ -5,7 +5,7 @@ const seasonStats = async (index) => {
         const leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
         let fullLineupArr = [];
         for (var i = 0; i < leagueTeams.length; i++) {
-            fullLineupArr.push({"teamId": leagueTeams[i].entry_id, "person": leagueTeams[i].entry_name, "league_entry": leagueTeams[i].id, "lineup": await Promise.all([getLineups(leagueTeams[i].entry_id, currentGameweek), apiTimeout(100)]).then((values) => values[0])});
+            fullLineupArr.push({"entry_id": leagueTeams[i].entry_id, "person": leagueTeams[i].entry_name, "owner_id": leagueTeams[i].id, "lineup": await Promise.all([getLineups(leagueTeams[i].entry_id, currentGameweek), apiTimeout(100)]).then((values) => values[0])});
         }
         return createStatArr(fullLineupArr, currentGameweek);
     };
@@ -13,7 +13,7 @@ const seasonStats = async (index) => {
     const createStatArr = async (allLineups, currentGameweek) => {
         let fullStatArr = [];
         for (var i = 0; i < allLineups.length; i++) {
-            fullStatArr.push({"teamId": allLineups[i].teamId, "person": allLineups[i].person, "league_entry": allLineups[i].league_entry, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)});
+            fullStatArr.push({"entry_id": allLineups[i].entry_id, "person": allLineups[i].person, "owner_id": allLineups[i].owner_id, "stats": await getPlayerStats(allLineups[i].lineup, currentGameweek)});
         }
         return modifyArr(fullStatArr, currentGameweek);
     };
@@ -25,9 +25,9 @@ const seasonStats = async (index) => {
             for (var y = 0; y < allStatArr[i].stats.length; y++) {
                 Object.assign(statObj,allStatArr[i].stats[y]);
             }
-            statObj.teamId = allStatArr[i].teamId;
+            statObj.entry_id = allStatArr[i].entry_id;
             statObj.person = allStatArr[i].person;
-            statObj.league_entry = allStatArr[i].league_entry;
+            statObj.owner_id = allStatArr[i].owner_id;
             newArr.push(statObj);
         }
         return newArr;

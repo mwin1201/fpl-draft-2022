@@ -14,7 +14,17 @@ const LeagueForm = ({league_id, currentGameweek}) => {
         const start = async () => {
             let data = [];
             const league_entries = JSON.parse(localStorage.getItem("league_entries"));
-            const stats = await getStatData(currentGameweek, league_id);
+            const currentGWStats = await getStatData(currentGameweek, league_id);
+            let previousGWStats, GWvalue;
+
+            if (currentGWStats.length === 0) {
+                previousGWStats = await getStatData(currentGameweek - 1, league_id);
+                GWvalue = currentGameweek - 1;
+            } else { 
+                GWvalue = currentGameweek;
+            }
+
+            const stats = currentGWStats.length === 0 ? previousGWStats : currentGWStats;
 
             for (var i = 0; i < stats.length; i++) {
                 let stat_entry_id = stats[i].entry_id;
@@ -22,11 +32,10 @@ const LeagueForm = ({league_id, currentGameweek}) => {
                 let obj = {};
                 obj.name = league_entry.entry_name;
                 obj.team_id = league_entry.id;
-                obj.form = getRecord(league_entry.id, lookback);
-                obj.avg_score = await calculateAVGScore(league_entry.id, lookback);
+                obj.form = getRecord(league_entry.id, lookback, GWvalue);
+                obj.avg_score = await calculateAVGScore(league_entry.id, lookback, GWvalue);
                 data.push(obj);
             }
-            console.log(data);
             setLeagueFormData(data);
             setIsLoading(false);
         };
