@@ -4,7 +4,7 @@ const { Owner } = require("../../models");
 // GET all owners
 router.get("/", (req, res) => {
     Owner.findAll({
-        attributes: ["id", "team_name", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id"]
+        attributes: ["id", "team_name", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id", "avatar"]
     })
     .then((dbOwnerdata) => res.status(200).json(dbOwnerdata))
     .catch(err => {
@@ -134,6 +134,32 @@ router.put("/update_secondary_league", (req, res) => {
                 id: req.body.id
             },
             attributes: ["id", "team_name", "password", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id"],
+        }
+    )
+    .then(dbOwnerData => {
+        if (!dbOwnerData) {
+            res.status(404).send({message: "No Owner found with this ID."});
+            return;
+        }
+        res.status(200).send(dbOwnerData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+    })
+});
+
+// PUT update avatar api/owners/update_avatar
+router.put("/update_avatar", (req, res) => {
+    Owner.update(
+        {
+            avatar: req.body.avatar
+        },
+        {
+            where: {
+                id: req.body.id
+            },
+            attributes: ["id", "team_name", "password", "primary_league_id", "entry_id", "fpl_id", "secondary_league_id", "avatar"],
         }
     )
     .then(dbOwnerData => {

@@ -29,7 +29,7 @@ const Homepage = () => {
       // set state variables
       setIsLoggedIn(JSON.parse(localStorage.getItem("current_user")));
       setCurrentGameweek(JSON.parse(localStorage.getItem("current_gameweek")));
-      setTeamData(JSON.parse(localStorage.getItem("league_entries")));
+      setTeamData(JSON.parse(localStorage.getItem("db_league_data")).filter((team) => team.primary_league_id === JSON.parse(localStorage.getItem("current_league"))));
       setLeagueData(JSON.parse(localStorage.getItem("league_data")));
       setMOTM(JSON.parse(localStorage.getItem("manager_of_the_month")));
 
@@ -102,8 +102,7 @@ const Homepage = () => {
           {teamData.map((team) => (
             <div key={team.id}>
               <div>
-                {team.player_first_name} {team.player_last_name} -{" "}
-                {team.entry_name}
+                {team.team_name}
               </div>
               <Link to={`profile/${team.id}`}>
                 <img

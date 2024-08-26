@@ -3,8 +3,8 @@
 
 import getStatData from "./GetStatData";
 
-const calculateAVGScore = async (entry_id, number) => {
-  let curGW = JSON.parse(localStorage.getItem("current_gameweek"));
+const calculateAVGScore = async (entry_id, number, gameweek) => {
+  let curGW = gameweek; //JSON.parse(localStorage.getItem("current_gameweek"));
   const curGWStatus = JSON.parse(
     localStorage.getItem("current_gameweek_complete")
   );
