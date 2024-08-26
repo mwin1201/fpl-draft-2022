@@ -131,7 +131,6 @@ const Dashboard = () => {
 
                     <TeamForm
                         team_id={fpl_id}
-                        number={10}
                     />
 
                     <Standings 

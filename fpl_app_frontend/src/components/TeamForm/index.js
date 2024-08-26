@@ -5,6 +5,7 @@ import getStatData from "../../data/GetStatData";
 
 const TeamForm = ({team_id}) => {
     const [avgScore, setAvgScore] = useState();
+    const [gwLookback, setGWLookback] = useState();
     const [teamRecord, setTeamRecord] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,6 +24,7 @@ const TeamForm = ({team_id}) => {
             const currentGameweek = JSON.parse(localStorage.getItem("current_gameweek"));
             const GWvalue = await checkGW(currentGameweek);
             const lookback = GWvalue > 10 ? 10 : GWvalue;
+            setGWLookback(lookback);
             setAvgScore(await calculateAVGScore(team_id, lookback, GWvalue));
             setTeamRecord(getRecord(team_id, lookback, GWvalue));
             setIsLoading(false);
@@ -43,8 +45,8 @@ const TeamForm = ({team_id}) => {
     const data =
             <div className="team-form">
                 <h2>Current Team Form</h2>
-                <h3>L10 Results (W-D-L): {teamRecord}</h3>
-                <h3>L10 Avg Score: {avgScore}pts</h3>
+                <h3>L{gwLookback} Results (W-D-L): {teamRecord}</h3>
+                <h3>L{gwLookback} Avg Score: {avgScore}pts</h3>
             </div>;
 
     if (isLoading) {

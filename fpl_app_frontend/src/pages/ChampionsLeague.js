@@ -60,7 +60,7 @@ const ChampionsLeague = () => {
   }
 
   return (
-    <div>
+    <main>
       <h1>Champions League Standings</h1>
 
       <section>
@@ -97,7 +97,7 @@ const ChampionsLeague = () => {
         <h2>Champions League Past Fixtures</h2>
         <UCLFixtureHistory teams={UCLteams} games={UCLgames} />
       </section>
-    </div>
+    </main>
   );
 };
 
