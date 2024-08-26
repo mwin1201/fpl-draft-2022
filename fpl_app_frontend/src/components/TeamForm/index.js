@@ -1,8 +1,9 @@
 import {useState, useEffect} from "react";
 import getRecord from "../../data/MatchResults";
 import calculateAVGScore from "../../data/AvgGWScore";
+import getStatData from "../../data/GetStatData";
 
-const TeamForm = ({team_id, number}) => {
+const TeamForm = ({team_id}) => {
     const [avgScore, setAvgScore] = useState();
     const [teamRecord, setTeamRecord] = useState();
     const [isLoading, setIsLoading] = useState(false);
@@ -10,15 +11,26 @@ const TeamForm = ({team_id, number}) => {
     useEffect(() => {
         setIsLoading(true);
 
+        const checkGW = async (gw) => {
+            if (!JSON.parse(localStorage.getItem("current_gameweek_complete"))) {
+                return gw - 1;
+            }
+            const stats = await getStatData(gw, JSON.parse(localStorage.getItem("current_league")));
+            return stats.length === 0 ? gw - 1 : gw;
+        };
+
         const start = async () => {
-            setAvgScore(await calculateAVGScore(team_id, number));
-            setTeamRecord(getRecord(team_id, number));
+            const currentGameweek = JSON.parse(localStorage.getItem("current_gameweek"));
+            const GWvalue = await checkGW(currentGameweek);
+            const lookback = GWvalue > 10 ? 10 : GWvalue;
+            setAvgScore(await calculateAVGScore(team_id, lookback, GWvalue));
+            setTeamRecord(getRecord(team_id, lookback, GWvalue));
             setIsLoading(false);
         };
 
         start();
 
-    }, [team_id, number]);
+    }, [team_id]);
 
     const delay = () => {
         new Promise((resolve) => {
