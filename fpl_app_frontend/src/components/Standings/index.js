@@ -18,7 +18,7 @@ const Standings = ({standings, teams}) => {
 
     const getColorCode = (index) => {
         let currentLeague = JSON.parse(localStorage.getItem("current_league"));
-        if (currentLeague === 24003) {
+        if (currentLeague === 13098) {
             if (index === 0) {
                 return "standings-top1";
             }
