@@ -104,7 +104,7 @@ const Homepage = () => {
               <div>
                 {team.team_name}
               </div>
-              <Link to={`profile/${team.id}`}>
+              <Link to={`profile/${team.fpl_id}`}>
                 <img
                   className="avatar"
                   src={team.avatar}

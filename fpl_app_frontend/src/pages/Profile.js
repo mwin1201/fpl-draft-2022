@@ -24,7 +24,6 @@ const Profile = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                     <TeamForm
                         team_id={ownerProfile[0].id}
-                        number={10}
                     />
                 </Suspense>
 
