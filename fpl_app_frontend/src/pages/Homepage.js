@@ -48,7 +48,7 @@ const Homepage = () => {
 
   const getEntryName = (entry_id) => {
     let oneTeam = teamData.filter((team) => {
-      return team.id === entry_id;
+      return team.fpl_id === entry_id;
     });
 
     return oneTeam[0].team_name;
