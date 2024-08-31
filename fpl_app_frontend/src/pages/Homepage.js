@@ -51,7 +51,7 @@ const Homepage = () => {
       return team.id === entry_id;
     });
 
-    return oneTeam[0].entry_name;
+    return oneTeam[0].team_name;
   };
 
   if (!isLoggedIn) {
