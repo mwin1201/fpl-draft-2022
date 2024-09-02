@@ -66,7 +66,7 @@ const Fixtures = () => {
             <div>
                 <form id="gameweekFilter" onSubmit={handleGameweekSubmit}>
                     <label htmlFor="gameweek">Choose a gameweek:</label>
-                    <input type="number" id="gameweek" name="gameweek" min="0" max="38" defaultValue="1"></input>
+                    <input type="number" id="gameweek" name="gameweek" min="1" max="38" defaultValue="1"></input>
                     <button type="submit">Submit</button>
                 </form>
             </div>
