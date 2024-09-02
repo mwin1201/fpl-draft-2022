@@ -47,7 +47,7 @@ const SeasonLeaders = () => {
 
         const getTransactionData = async (teamId) => {
             let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
-            return axios.get(`${currentOrigin}/getTransactions/` + teamId)
+            return axios.get(`${currentOrigin}/fpl/getTransactions/` + teamId)
             .then((apiResponse) => {
                 return apiResponse.data;
             })
