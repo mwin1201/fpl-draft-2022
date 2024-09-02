@@ -136,7 +136,7 @@ const HeadtoHead = () => {
             <section>
                 <form id="gameweekFilter" onSubmit={handleGameweekSubmit}>
                     <label htmlFor="gameweek">Choose a gameweek:</label>
-                    <input type="number" id="gameweek" name="gameweek" min="0" max="38" defaultValue={currentGameweek}></input>
+                    <input type="number" id="gameweek" name="gameweek" min="1" max="38" defaultValue={currentGameweek}></input>
                     <button type="submit">Submit</button>
                 </form>
             </section>
