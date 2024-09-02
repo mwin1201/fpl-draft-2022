@@ -10,20 +10,21 @@ const GameweekStats = () => {
     useEffect(() => {
         const start = async () => {    
             const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+            const unofficialGWStats = JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`));
     
             const currentGWStats = await getStatData(currentGameweek, currentLeague);
             if (currentGWStats.length > 0) {
                 setDisplayArr(currentGWStats);
             } else {
-                const previousGWStats = await getStatData(currentGameweek - 1, currentLeague);
-                setCurrentGameweek(currentGameweek - 1);
-                setDisplayArr(previousGWStats);
+                setDisplayArr(unofficialGWStats);
+                // const previousGWStats = await getStatData(currentGameweek - 1, currentLeague);
+                // setCurrentGameweek(currentGameweek - 1);
+                // setDisplayArr(previousGWStats);
             }
         };
         start();
 
     },[currentGameweek]);
-    console.log(displayArr);
 
     const checkWinLoss = (teamEntry) => {
         let matches = JSON.parse(localStorage.getItem("matches"));
@@ -167,7 +168,7 @@ const GameweekStats = () => {
             <form id="gw-search" onSubmit={handleSubmit}>
                 <h2>Search Stats by Gameweek</h2>
                 <label htmlFor="gameweek">Select a Gameweek:</label>
-                <input type="number" id="gameweek" name="gameweek" min="0" max="38"></input>
+                <input type="number" id="gameweek" name="gameweek" min="1" max={currentGameweek}></input>
                 <button type="submit">Submit</button>
             </form>
 

@@ -66,7 +66,7 @@ const LeagueForm = ({league_id, currentGameweek}) => {
             <h3>Hot or Not</h3>
             <form id="lookback" onSubmit={handleSubmit}>
                 <label htmlFor="searchNumber">How many games to look back:</label>
-                <input type="number" id="searchNumber" name="searchNumber" min="0" max={JSON.parse(localStorage.getItem("current_gameweek"))}></input>
+                <input type="number" id="searchNumber" name="searchNumber" min="1" max={JSON.parse(localStorage.getItem("current_gameweek"))}></input>
                 <button type="submit">Submit</button>
             </form>
             <div className="participants">
