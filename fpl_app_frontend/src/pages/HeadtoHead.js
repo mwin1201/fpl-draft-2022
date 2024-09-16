@@ -5,6 +5,7 @@ const axios = require('axios').default;
 
 const HeadtoHead = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
+    const [selectedGameweek, setSelectedGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [isLoading, setIsLoading] = useState(true);
     const [matchupData, setMatchupData] = useState();
 
@@ -79,7 +80,7 @@ const HeadtoHead = () => {
         };
 
         const start = async () => {
-            let currentGW = currentGameweek;
+            let currentGW = selectedGameweek;
             let entries = JSON.parse(localStorage.getItem("league_entries"));
             let currentFixtures = JSON.parse(localStorage.getItem("matches")).filter((fixture) => fixture.event == currentGW);
             let [gwStats, premFixtures] = await getGameweekStats(currentGW);
@@ -89,12 +90,12 @@ const HeadtoHead = () => {
         };
 
         start();
-    },[currentGameweek])
+    },[selectedGameweek])
 
     const handleGameweekSubmit = async (event) => {
         event.preventDefault();
         let gameweek = document.getElementById("gameweek").value;
-        setCurrentGameweek(gameweek);
+        setSelectedGameweek(gameweek);
     };
 
     const checkSubstitution = (minutes, finished, position) => {
@@ -114,7 +115,7 @@ const HeadtoHead = () => {
         return total;
     };
 
-    if (JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
+    if (currentGameweek === 1 && JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`)) === null) {
         return (
             <main>
                 <h2>Still waiting for the start of the 2023 season!</h2>
@@ -136,7 +137,7 @@ const HeadtoHead = () => {
             <section>
                 <form id="gameweekFilter" onSubmit={handleGameweekSubmit}>
                     <label htmlFor="gameweek">Choose a gameweek:</label>
-                    <input type="number" id="gameweek" name="gameweek" min="1" max="38" defaultValue={currentGameweek}></input>
+                    <input type="number" id="gameweek" name="gameweek" min="1" max={currentGameweek} defaultValue={selectedGameweek}></input>
                     <button type="submit">Submit</button>
                 </form>
             </section>
