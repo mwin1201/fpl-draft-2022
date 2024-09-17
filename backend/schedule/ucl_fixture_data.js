@@ -44,22 +44,26 @@ const countTimesPlayed = (team1, team2, ucl_fixtures) => {
 	return ucl_fixtures.filter((matchup) => (matchup.league_entry_1 === team1 && matchup.league_entry_2 === team2) || (matchup.league_entry_1 === team2 && matchup.league_entry_2 === team1)).length
 }; 
 
+
 const createCounterObject = (fixtures, teams) => {
   let counterObject = {};
   teams.forEach((team) => {
     let other_teams = teams.filter((t) => t !== team);
-    counterObject[team] = [
+    counterObject[team.owner_id] = [
       {
-        team: other_teams[0],
-        played: countTimesPlayed(team, other_teams[0], fixtures)
+        opponent: other_teams[0].team_name,
+        played: countTimesPlayed(team.owner_id, other_teams[0].owner_id, fixtures),
+        opponent_id: other_teams[0].owner_id
       },
       {
-        team: other_teams[1],
-        played: countTimesPlayed(team, other_teams[1], fixtures)
+        opponent: other_teams[1].team_name,
+        played: countTimesPlayed(team.owner_id, other_teams[1].owner_id, fixtures),
+        opponent_id: other_teams[1].owner_id
       },
       {
-        team: other_teams[2],
-        played: countTimesPlayed(team, other_teams[2], fixtures)
+        opponent: other_teams[2].team_name,
+        played: countTimesPlayed(team.owner_id, other_teams[2].owner_id, fixtures),
+        opponent_id: other_teams[2].owner_id
       }
     ]
   })
@@ -95,7 +99,7 @@ const checkUCLMatchup = (matches, teams, counter) => {
   let ucl_matchups = [];
   matches.forEach((match) => {
     if (teams.some(t => t.owner_id === match.league_entry_1) && teams.some(t => t.owner_id === match.league_entry_2)) {
-      if (counter[match.league_entry_1].filter((t) => t.team === match.league_entry_2)[0].played < 4) {
+      if (counter[match.league_entry_1].filter((t) => t.opponent_id === match.league_entry_2)[0].played < 4) {
         ucl_matchups.push(match);
       }
     }
