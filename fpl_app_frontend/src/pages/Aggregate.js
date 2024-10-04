@@ -14,6 +14,7 @@ const Aggregate = () => {
             }
             setPoints(totalPoints);
         };
+
         const calculatePoints = (team) => {
             let totalPoints = 0
             for (var i = 0; i < team.length; i++) {
@@ -21,15 +22,28 @@ const Aggregate = () => {
             }
             return totalPoints;
         };
+
+        const checkOwnership = (team, ownership) => {
+            let team_array = [];
+
+            team.forEach((player) => {
+                let owner = ownership.filter((owner) => owner.element === player.id)[0].owner;
+                player["owner"] = owner;
+                team_array.push(player);
+            })
+            return team_array;
+        };
+
         const calculateTeamPoints = () => {
             let teamPointsArr = [];
             let premTeams = JSON.parse(localStorage.getItem("teams"));
             let allPlayers = JSON.parse(localStorage.getItem("elements"));
+            let ownership = JSON.parse(localStorage.getItem("player_ownership"));
             for (var i = 0; i < premTeams.length; i++) {
                 let curTeam = allPlayers.filter((player) => {
                     return player.team === premTeams[i].id
                 });
-                teamPointsArr.push({teamId: premTeams[i].id, premTeam: premTeams[i].name, totalPoints: calculatePoints(curTeam), players: curTeam});
+                teamPointsArr.push({teamId: premTeams[i].id, premTeam: premTeams[i].name, totalPoints: calculatePoints(curTeam), players: checkOwnership(curTeam, ownership)});
             }
             setTeamPoints(teamPointsArr);
         };
@@ -46,6 +60,14 @@ const Aggregate = () => {
         let playerPositions = JSON.parse(localStorage.getItem("element_types"));
         let type = playerPositions.filter((pos) => pos.id === position);
         return type[0].singular_name_short;
+    };
+
+    const highlightForOwner = (owner) => {
+        if (owner) {
+            return "red-highlight";
+        } else {
+            return "green-highlight";
+        }
     };
 
     const handlePlayerButton = async (event) => {
@@ -98,7 +120,7 @@ const Aggregate = () => {
                              <tbody key={player.id}>
                                         <tr>
                                             <td>{getPosition(player.element_type)}</td>
-                                            <td>{player.first_name} {player.second_name}</td>
+                                            <td class={highlightForOwner(player.owner)}>{player.first_name} {player.second_name}</td>
                                             <td>{player.total_points}</td>
                                             <td>{doMath(player.total_points,team.totalPoints)}%</td>
                                         </tr>
