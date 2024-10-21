@@ -86,6 +86,7 @@ router.get("/getFixtureData/:event", async (req, res) => {
     const fetchOptions = {
         method: "GET"
     };
+    // Using fantasy endpoint instead of draft endpoint because we get fixture difficulty ratings this way
     const response = await fetch("https://fantasy.premierleague.com/api/fixtures/?event=" + req.params.event, fetchOptions);
     const jsonResponse = await response.json();
     res.json(jsonResponse);
