@@ -45,6 +45,50 @@ const HeadtoHead = () => {
             return "True";
         };
 
+        const getTeamId = (element, fixtures) => {
+            const allPlayers = JSON.parse(localStorage.getItem("elements"));
+            const singlePlayer = allPlayers.filter((player) => player.id === element);
+            return getSingleFixture(singlePlayer[0].team, fixtures, element);
+        };
+
+        const getSingleFixture = (team, fixtures, element) => {
+            const singleFixture = fixtures.filter((fixture) => fixture.team_a === team || fixture.team_h === team);
+            if (singleFixture[0].started === false) {
+                return "-";
+            }
+            return getBPSdata(singleFixture[0], element);
+        };
+
+        const getBPSdata = (fixture, element) => {
+            const bps_stats = fixture.stats.filter((stat) => stat["s"] === "bps");
+            const home_data = bps_stats[0]["h"];
+            const away_data = bps_stats[0]["a"];
+            const all_data = home_data.concat(away_data);
+            const sorted_data = all_data.sort((a, b) => b.value - a.value);
+            return topThreeBPS(sorted_data, element);
+        };
+
+        const topThreeBPS = (sortedData, element) => {
+            const indexOfElement = sortedData.findIndex((data) => data.element === element);
+            if (indexOfElement === -1) {
+                return "-";
+            }
+            const bpsValue = sortedData[indexOfElement].value;
+            if (indexOfElement === 0) {
+                return 3;
+            } else if (indexOfElement === 1 && bpsValue === sortedData[0].value) {
+                return 3;
+            } else if (indexOfElement === 1 && bpsValue !== sortedData[0].value) {
+                return 2;
+            } else if (indexOfElement === 2 && bpsValue === sortedData[1].value) {
+                return 2;
+            } else if (indexOfElement === 2 && bpsValue !== sortedData[1].value) {
+                return 1;
+            } else {
+                return "-";
+            }
+        };
+
         const getLineupStats = (lineup, allStats, games) => {
             let finalArr = [];
             for (var i = 0; i < lineup.length; i++) {
@@ -53,6 +97,7 @@ const HeadtoHead = () => {
                 playerObj["position"] = lineup[i].position;
                 playerObj["name"] = getPlayerName(lineup[i].element);
                 playerObj["points"] = allStats[lineup[i].element].stats["total_points"];
+                playerObj["bonus"] = getTeamId(lineup[i].element, games);
                 playerObj["minutes"] = allStats[lineup[i].element].stats["minutes"];
                 playerObj["gameweek_complete"] = checkForMoreGames(allStats[lineup[i].element].explain, games)
                 finalArr.push(playerObj);
@@ -99,7 +144,7 @@ const HeadtoHead = () => {
     };
 
     const checkSubstitution = (minutes, finished, position) => {
-        if (minutes == 0 && finished == "True" && position < 12) {
+        if (minutes === 0 && finished === "True" && position < 12) {
             return "yellow-highlight";
         }
         else {
@@ -149,11 +194,12 @@ const HeadtoHead = () => {
                         <table className="table-data table-item">
                             <thead>
                                 <tr>
-                                    <th>Position</th>
+                                    <th>Pos</th>
                                     <th>Player</th>
-                                    <th>Points</th>
-                                    <th>Minutes</th>
-                                    <th>Finished</th>
+                                    <th>Pts</th>
+                                    <th>Bonus</th>
+                                    <th>Min</th>
+                                    <th>Done</th>
                                 </tr>
                             </thead>
                         {matchup.team1_lineup.map((player) => (
@@ -162,6 +208,7 @@ const HeadtoHead = () => {
                                     <td>{player.position}</td>
                                     <td>{player.name}</td>
                                     <td>{player.points}</td>
+                                    <td>{player.bonus}</td>
                                     <td className={checkSubstitution(player.minutes, player.gameweek_complete, player.position)}>{player.minutes}</td>
                                     <td className={player.gameweek_complete === "True" ? "red-highlight" : "green-highlight"}>{player.gameweek_complete}</td>
                                 </tr>
@@ -171,11 +218,12 @@ const HeadtoHead = () => {
                         <table className="table-data table-item">
                             <thead>
                                     <tr>
-                                        <th>Position</th>
+                                        <th>Pos</th>
                                         <th>Player</th>
-                                        <th>Points</th>
-                                        <th>Minutes</th>
-                                        <th>Finished</th>
+                                        <th>Pts</th>
+                                        <th>Bonus</th>
+                                        <th>Min</th>
+                                        <th>Done</th>
                                     </tr>
                                 </thead>
                             {matchup.team2_lineup.map((player) => (
@@ -184,6 +232,7 @@ const HeadtoHead = () => {
                                         <td>{player.position}</td>
                                         <td>{player.name}</td>
                                         <td>{player.points}</td>
+                                        <td>{player.bonus}</td>
                                         <td className={checkSubstitution(player.minutes, player.gameweek_complete, player.position)}>{player.minutes}</td>
                                         <td className={player.gameweek_complete === "True" ? "red-highlight" : "green-highlight"}>{player.gameweek_complete}</td>
                                     </tr>
