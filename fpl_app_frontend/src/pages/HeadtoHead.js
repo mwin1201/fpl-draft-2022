@@ -80,6 +80,8 @@ const HeadtoHead = () => {
                 return 3;
             } else if (indexOfElement === 1 && bpsValue !== sortedData[0].value) {
                 return 2;
+            } else if (indexOfElement === 2 && bpsValue === sortedData[1].value && bpsValue === sortedData[0].value) {
+                return 3;
             } else if (indexOfElement === 2 && bpsValue === sortedData[1].value) {
                 return 2;
             } else if (indexOfElement === 2 && bpsValue !== sortedData[1].value) {
