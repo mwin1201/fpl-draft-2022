@@ -86,6 +86,12 @@ const HeadtoHead = () => {
                 return 2;
             } else if (indexOfElement === 2 && bpsValue !== sortedData[1].value) {
                 return 1;
+            } else if (indexOfElement === 3 && bpsValue === sortedData[2].value && bpsValue === sortedData[1].value && bpsValue === sortedData[0].value) {
+                return 3;
+            } else if (indexOfElement === 3 && bpsValue === sortedData[2].value && bpsValue === sortedData[1].value) {
+                return 2;
+            } else if (indexOfElement === 3 && bpsValue === sortedData[2].value) {
+                return 1;
             } else {
                 return "-";
             }
