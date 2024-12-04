@@ -1,8 +1,9 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import getUCLTeams from "../data/UCLmethods/UCLteams";
 import getUCLGames from "../data/UCLmethods/UCLgames";
 import getUCLTeamStats from "../data/UCLmethods/UCLstats";
 import UCLFixtureHistory from "../data/UCLmethods/UCLfixturehistory";
+import classNames from 'classnames'
 
 const ChampionsLeague = () => {
   // need to show a standings table for the league
@@ -17,6 +18,7 @@ const ChampionsLeague = () => {
   const [UCLgames, setUCLGames] = useState([]);
   const [UCLteams, setUCLTeams] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [gameCount, setGameCount] = useState();
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,11 +40,41 @@ const ChampionsLeague = () => {
       setUCLStandings(standings);
     };
 
+    const createCounterObject = (fixtures, teams) => {
+      let counterObject = {};
+      teams.forEach((team) => {
+        let other_teams = teams.filter((t) => t !== team);
+        counterObject[team.owner_id] = [
+          {
+            opponent: other_teams[0].team_name,
+            played: countTimesPlayed(team.owner_id, other_teams[0].owner_id, fixtures),
+            opponent_id: other_teams[0].owner_id
+          },
+          {
+            opponent: other_teams[1].team_name,
+            played: countTimesPlayed(team.owner_id, other_teams[1].owner_id, fixtures),
+            opponent_id: other_teams[1].owner_id
+          },
+          {
+            opponent: other_teams[2].team_name,
+            played: countTimesPlayed(team.owner_id, other_teams[2].owner_id, fixtures),
+            opponent_id: other_teams[2].owner_id
+          }
+        ]
+      })
+      return counterObject;
+    };
+
+    const countTimesPlayed = (team1, team2, ucl_fixtures) => {
+      return ucl_fixtures.filter((matchup) => (matchup.league_entry_1 === team1 && matchup.league_entry_2 === team2) || (matchup.league_entry_1 === team2 && matchup.league_entry_2 === team1)).length
+    }; 
+
     const start = async () => {
       const UCLteams = await getUCLTeams();
       const UCLgames = await getUCLGames();
       setUCLTeams(UCLteams);
       setUCLGames(UCLgames);
+      setGameCount(createCounterObject(UCLgames, UCLteams));
       createTeamObjects(UCLteams, UCLgames);
       setIsLoading(false);
     };
@@ -50,7 +82,16 @@ const ChampionsLeague = () => {
     start();
   }, []);
 
-  if (isLoading) {
+  const returnPlayedGames = (team1, team2) => {
+    let team1Array = gameCount[`${team1}`];
+    return team1Array.filter((opponent) => opponent.opponent_id === team2)[0].played;
+  }
+
+  const greenHighlight = (val) => {
+    return val === 4 ? true : false;
+  }
+
+  if (isLoading || !UCLteams.length || !UCLgames.length) {
     return (
       <div>
         <h1>Champions League Standings</h1>
@@ -96,6 +137,95 @@ const ChampionsLeague = () => {
       <section>
         <h2>Champions League Past Fixtures</h2>
         <UCLFixtureHistory teams={UCLteams} games={UCLgames} />
+      </section>
+      <section>
+        <h2>Matches Played Count</h2>
+        <div className="container text-center border">
+          <div className="row border">
+            <div className="col">
+            </div>
+            <div className="col">
+              {UCLteams[0].team_name}
+            </div>
+            <div className="col">
+              {UCLteams[1].team_name}
+            </div>
+            <div className="col">
+              {UCLteams[2].team_name}
+            </div>
+            <div className="col">
+              {UCLteams[3].team_name}
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="col">
+              {UCLteams[0].team_name}
+            </div>
+            <div className="col red-highlight">
+              X
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[0].owner_id, UCLteams[1].owner_id))})}>
+              {returnPlayedGames(UCLteams[0].owner_id, UCLteams[1].owner_id)}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[0].owner_id, UCLteams[2].owner_id))})}>
+            {returnPlayedGames(UCLteams[0].owner_id, UCLteams[2].owner_id)}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[0].owner_id, UCLteams[3].owner_id))})}>
+            {returnPlayedGames(UCLteams[0].owner_id, UCLteams[3].owner_id)}
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="col">
+              {UCLteams[1].team_name}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[1].owner_id, UCLteams[0].owner_id))})}>
+            {returnPlayedGames(UCLteams[1].owner_id, UCLteams[0].owner_id)}
+            </div>
+            <div className="col red-highlight">
+              X
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[1].owner_id, UCLteams[2].owner_id))})}>
+            {returnPlayedGames(UCLteams[1].owner_id, UCLteams[2].owner_id)}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[1].owner_id, UCLteams[3].owner_id))})}>
+            {returnPlayedGames(UCLteams[1].owner_id, UCLteams[3].owner_id)}
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="col">
+              {UCLteams[2].team_name}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[2].owner_id, UCLteams[0].owner_id))})}>
+            {returnPlayedGames(UCLteams[2].owner_id, UCLteams[0].owner_id)}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[2].owner_id, UCLteams[1].owner_id))})}>
+            {returnPlayedGames(UCLteams[2].owner_id, UCLteams[1].owner_id)}
+            </div>
+            <div className="col red-highlight">
+              X
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[2].owner_id, UCLteams[3].owner_id))})}>
+            {returnPlayedGames(UCLteams[2].owner_id, UCLteams[3].owner_id)}
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="col">
+              {UCLteams[3].team_name}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[3].owner_id, UCLteams[0].owner_id))})}>
+            {returnPlayedGames(UCLteams[3].owner_id, UCLteams[0].owner_id)}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[3].owner_id, UCLteams[1].owner_id))})}>
+            {returnPlayedGames(UCLteams[3].owner_id, UCLteams[1].owner_id)}
+            </div>
+            <div className={classNames({"col": true, "green-highlight": greenHighlight(returnPlayedGames(UCLteams[3].owner_id, UCLteams[2].owner_id))})}>
+            {returnPlayedGames(UCLteams[3].owner_id, UCLteams[2].owner_id)}
+            </div>
+            <div className="col red-highlight">
+              X
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   );
