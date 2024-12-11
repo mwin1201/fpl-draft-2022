@@ -53,7 +53,9 @@ const HeadtoHead = () => {
 
         const getSingleFixture = (team, fixtures, element) => {
             const singleFixture = fixtures.filter((fixture) => fixture.team_a === team || fixture.team_h === team);
-            if (singleFixture[0].started === false) {
+            if (singleFixture.length === 0) {
+                return "-";
+            } else if (singleFixture[0].started === false) {
                 return "-";
             }
             return getBPSdata(singleFixture[0], element);
