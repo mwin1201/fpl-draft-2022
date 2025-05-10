@@ -20,9 +20,9 @@ const Playoffs = ({league_id}) => {
     // 3. Print out these 2 arrays
 
     for (var i = 0; i < playoffTeams.length; i++) {
-        playoffTeams[i].avgScore = calculateAVGScore(playoffTeams[i].league_entry, 5);
+        playoffTeams[i].avgScore = calculateAVGScore(playoffTeams[i].league_entry, 5, JSON.parse(localStorage.getItem("current_gameweek")));
         playoffTeams[i].teamName = getTeamName(playoffTeams[i].league_entry);
-        playoffTeams[i].results = getRecord(playoffTeams[i].league_entry, 5);
+        playoffTeams[i].results = getRecord(playoffTeams[i].league_entry, 5, JSON.parse(localStorage.getItem("current_gameweek")));
     }
 
     // 3 vs 6
