@@ -9,11 +9,15 @@ const calculateAVGScore = async (entry_id, number, gameweek) => {
     localStorage.getItem("current_gameweek_complete")
   );
   const currentLeague = JSON.parse(localStorage.getItem("current_league"));
+  console.log("curGW: ", curGW);
+  console.log("status: ", curGWStatus);
+  console.log("current league: ", currentLeague);
   let totalScore = 0;
   if (curGWStatus) {
     for (var i = curGW - (number - 1); i <= curGW; i++) {
       let curGWStats;
       curGWStats = await getStatData(i, currentLeague);
+      console.log("Stats: ", curGWStats);
       totalScore += curGWStats.filter((team) => team.owner_id === entry_id)[0]
         .total_points;
     }
