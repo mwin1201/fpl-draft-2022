@@ -3,6 +3,8 @@ const axios = require('axios').default;
 
 const PlayoffScore = async (entry_id) => {
 
+    console.log("ID: ", entry_id);
+
     const getStatData = async (gw, leagueId) => {
         let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
         return axios.get(`${currentOrigin}/api/stats/league/` + leagueId + "/gameweek/" + gw)
@@ -21,6 +23,7 @@ const PlayoffScore = async (entry_id) => {
     let totalScore = 0;
     if (currentGW >= 36 && currentGW < 38) {
         let gw36Stats = await getStatData(36, currentLeague);
+        console.log("gw 36 stats: ", gw36Stats);
         let gw37Stats = await getStatData(37, currentLeague);
         if (gw36Stats) {
             totalScore = gw36Stats.filter((team) => team.owner_id === entry_id)[0].total_points;
