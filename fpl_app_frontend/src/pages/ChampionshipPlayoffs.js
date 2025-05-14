@@ -58,10 +58,10 @@ const ChampionshipPlayoffs = () => {
     let singleEntry = leagueEntries.filter((entry) => entry.id === curTeam.league_entry);
 
     playoffTeams[i].avatar = singleEntry[0].avatar;
-    playoffTeams[i].avgScore = calculateAVGScore(
-      playoffTeams[i].league_entry,
-      5
-    );
+    // playoffTeams[i].avgScore = calculateAVGScore(
+    //   playoffTeams[i].league_entry,
+    //   5
+    // );
     playoffTeams[i].teamName = getTeamName(playoffTeams[i].league_entry);
     playoffTeams[i].results = getRecord(playoffTeams[i].league_entry, 5);
     playoffTeams[i].id = OwnerID(playoffTeams[i].league_entry);
@@ -112,7 +112,6 @@ const ChampionshipPlayoffs = () => {
                 #{team.rank}: {team.teamName}
               </h3>
               <Link to={`/profile/${team.league_entry}`}><img className="avatar" src={team.avatar} alt="Owner Avatar"></img></Link>
-              <p>L5 Avg Score: {team.avgScore}</p>
               <p>L5 Results: {team.results}</p>
               <h4>Top Players</h4>
               {team.topPlayers.map((player, i) => (
@@ -133,7 +132,6 @@ const ChampionshipPlayoffs = () => {
                 #{team.rank}: {team.teamName}
               </h3>
               <Link to={`/profile/${team.league_entry}`}><img className="avatar" src={team.avatar} alt="Owner Avatar"></img></Link>
-              <p>L5 Avg Score: {team.avgScore}</p>
               <p>L5 Results: {team.results}</p>
               <h4>Top Players</h4>
               {team.topPlayers.map((player, i) => (
