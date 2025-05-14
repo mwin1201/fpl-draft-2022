@@ -67,6 +67,7 @@ const ChampionshipPlayoffs = () => {
     playoffTeams[i].id = OwnerID(playoffTeams[i].league_entry);
     playoffTeams[i].topPlayers = topPlayers(playoffTeams[i].id, 3);
     let scoreArray = PlayoffScore(playoffTeams[i].league_entry);
+    console.log("score array: ,", scoreArray);
     if (scoreArray.length === 1) {
       playoffTeams[i].curScore = scoreArray[0].score;
     } else {
