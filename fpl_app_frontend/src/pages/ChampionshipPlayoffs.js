@@ -104,7 +104,7 @@ const ChampionshipPlayoffs = async () => {
 
   // want to create a function that will be checked after week 38 to declare
   // a Championship playoff winner
-  if (!scoreArray) {
+  if (scoreArray.length === 0) {
     return (
       <div>
         Loading...
