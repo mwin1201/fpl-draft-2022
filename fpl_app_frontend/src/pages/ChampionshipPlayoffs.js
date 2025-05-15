@@ -14,7 +14,7 @@ import PlayoffScore from "../data/PlayoffScore";
 import { Link } from "react-router-dom";
 import checkOutcome from "../data/checkWinorLoss";
 
-const ChampionshipPlayoffs = async () => {
+const ChampionshipPlayoffs = () => {
   const gameweek = JSON.parse(localStorage.getItem("current_gameweek"));
   const gameweekStatus = JSON.parse(localStorage.getItem("current_gameweek_complete"));
 
@@ -66,7 +66,7 @@ const ChampionshipPlayoffs = async () => {
     playoffTeams[i].results = getRecord(playoffTeams[i].league_entry, 5);
     playoffTeams[i].id = OwnerID(playoffTeams[i].league_entry);
     playoffTeams[i].topPlayers = topPlayers(playoffTeams[i].id, 3);
-    let scoreArray = await PlayoffScore(playoffTeams[i].league_entry);
+    let scoreArray = PlayoffScore(playoffTeams[i].league_entry);
     console.log("score array: ,", scoreArray);
     if (scoreArray.length === 1) {
       playoffTeams[i].curScore = scoreArray[0].score;
