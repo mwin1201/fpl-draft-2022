@@ -71,8 +71,10 @@ const ChampionshipPlayoffs = async () => {
     console.log("score array: ,", scoreArray);
     if (scoreArray.length === 1) {
       playoffTeams[i].curScore = scoreArray[0].score;
-    } else {
+    } else if (scoreArray.length === 2) {
       playoffTeams[i].curScore = scoreArray[0].score + scoreArray[1].score;
+    } else {
+      continue;
     }
     playoffTeams[i] = {...playoffTeams[i], scores: scoreArray};
   }
