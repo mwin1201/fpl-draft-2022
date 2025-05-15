@@ -25,11 +25,11 @@ const PlayoffScore = async (entry_id) => {
         let gw36Stats = await getStatData(36, currentLeague);
         console.log("gw 36 stats: ", gw36Stats);
         let gw37Stats = await getStatData(37, currentLeague);
-        if (gw36Stats) {
+        if (gw36Stats.length > 0) {
             totalScore = gw36Stats.filter((team) => team.owner_id === entry_id)[0].total_points;
             scores.push({gw: 36, score: totalScore});
         }
-        if (gw37Stats) {
+        if (gw37Stats.length > 0) {
             totalScore = gw37Stats.filter((team) => team.owner_id === entry_id)[0].total_points;
             scores.push({gw: 37, score: totalScore});
         }
