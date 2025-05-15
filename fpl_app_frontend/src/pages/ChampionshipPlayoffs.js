@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import checkOutcome from "../data/checkWinorLoss";
 
 const ChampionshipPlayoffs = async () => {
-  const [scoreArray, setScoreArray] = useState();
+  const [scoreArray, setScoreArray] = useState([]);
   const gameweek = JSON.parse(localStorage.getItem("current_gameweek"));
   const gameweekStatus = JSON.parse(localStorage.getItem("current_gameweek_complete"));
 
