@@ -14,7 +14,8 @@ import PlayoffScore from "../data/PlayoffScore";
 import { Link } from "react-router-dom";
 import checkOutcome from "../data/checkWinorLoss";
 
-const ChampionshipPlayoffs = () => {
+const ChampionshipPlayoffs = async () => {
+  const [scoreArray, setScoreArray] = useState();
   const gameweek = JSON.parse(localStorage.getItem("current_gameweek"));
   const gameweekStatus = JSON.parse(localStorage.getItem("current_gameweek_complete"));
 
@@ -66,7 +67,7 @@ const ChampionshipPlayoffs = () => {
     playoffTeams[i].results = getRecord(playoffTeams[i].league_entry, 5);
     playoffTeams[i].id = OwnerID(playoffTeams[i].league_entry);
     playoffTeams[i].topPlayers = topPlayers(playoffTeams[i].id, 3);
-    let scoreArray = PlayoffScore(playoffTeams[i].league_entry);
+    setScoreArray(await PlayoffScore(playoffTeams[i].league_entry));
     console.log("score array: ,", scoreArray);
     if (scoreArray.length === 1) {
       playoffTeams[i].curScore = scoreArray[0].score;
@@ -101,7 +102,13 @@ const ChampionshipPlayoffs = () => {
 
   // want to create a function that will be checked after week 38 to declare
   // a Championship playoff winner
-
+  if (!scoreArray) {
+    return (
+      <div>
+        Loading...
+      </div>
+    )
+  }
   return (
     <section>
       <div className="container">
