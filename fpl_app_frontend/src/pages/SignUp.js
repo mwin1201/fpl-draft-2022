@@ -110,7 +110,7 @@ const SignUp = () => {
             setSuccess2("");
         } else {
             setIsSubmitLoading(true);
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             await fetch(`${currentOrigin}/api/owners`, {
                 method: "post",
                 body: JSON.stringify(formState),

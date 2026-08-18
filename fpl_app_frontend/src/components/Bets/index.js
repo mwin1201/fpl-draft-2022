@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-const axios = require('axios').default;
+import axios from "axios";
 
 const PersonalBets = ({ owner_id }) => {
     const [Bets, setBets] = useState(0);
@@ -8,7 +8,7 @@ const PersonalBets = ({ owner_id }) => {
 
     useEffect(() => {
         const getBets = () => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             axios.get(`${currentOrigin}/api/bets/owner/` + owner_id)
             .then((apiResponse) => {
                 setBets(apiResponse.data);

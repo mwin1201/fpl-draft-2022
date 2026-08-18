@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
-const axios = require('axios').default;
+import axios from "axios";
 
 const Bets = () => {
     // 1. This page will contain the functionality to make bets against game week fixtures that have not happened yet.
@@ -23,7 +23,7 @@ const Bets = () => {
     useEffect(() => {
 
         const getFixtureData = async (event) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
             .then((apiResponse) => {
                 return apiResponse.data.filter((match) => match.started === false);
@@ -31,7 +31,7 @@ const Bets = () => {
         };
 
         const getWalletValue = async (owner_id) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             return axios.get(`${currentOrigin}/api/wallets/owner/` + owner_id)
             .then((apiResponse) => {
                 return apiResponse.data.total;
@@ -52,7 +52,7 @@ const Bets = () => {
     },[]);
 
     const getFixtureData = async (event) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
         .then((apiResponse) => {
             return apiResponse.data.filter((match) => match.started === false);
@@ -99,7 +99,7 @@ const Bets = () => {
 
 
     const checkIfBetExists = async (fixture_id) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.get(`${currentOrigin}/api/bets/owner/` + JSON.parse(localStorage.getItem("current_user")).fpl_id + "/fixture/" + fixture_id)
             .then((response) => {
                 if (Array.isArray(response.data)) {
@@ -111,7 +111,7 @@ const Bets = () => {
     };
 
     const editBet = async (betData, currentBet) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         axios.put(`${currentOrigin}/api/bets`, betData)
         .then(async (response) => {
             if (response.status === 200) {
@@ -128,7 +128,7 @@ const Bets = () => {
         const owner = data.owner_id;
         const betAmount = data.amount;
         const newWalletTotal = walletValue - (betAmount - originalBetAmount);
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         axios.put(`${currentOrigin}/api/wallets`, {total: newWalletTotal, owner_id: owner})
         .then((apiResponse) => {
             if (apiResponse.status === 200) {
@@ -141,7 +141,7 @@ const Bets = () => {
     const postBet = async (betData) => {
         // check wallet value
         if (walletValue >= betData.amount) {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             axios.post(`${currentOrigin}/api/bets`, betData)
             .then(async (response) => {
                 if (response.status === 200) {

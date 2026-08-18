@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import getStatData from '../../data/GetStatData';
-const axios = require('axios').default;
+import axios from "axios";
 
 const TeamStats = ({ owner_entry_id }) => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
@@ -46,7 +46,7 @@ const TeamStats = ({ owner_entry_id }) => {
         };
 
         const getTransactionData = async (teamId) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             return axios.get(`${currentOrigin}/fpl/getTransactions/` + teamId)
             .then((apiResponse) => {
                 return apiResponse.data;

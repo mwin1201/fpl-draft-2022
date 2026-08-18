@@ -1,4 +1,4 @@
-const axios = require("axios").default;
+import axios from "axios";
 
 // This function will do the following:
 // 1. Grab all the bets and put into array
@@ -21,7 +21,7 @@ const axios = require("axios").default;
 const CheckBets = async (betOwner) => {
 
     const getAllBets = async (ownerId) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.get(`${currentOrigin}/api/bets/owner/` + ownerId)
         .then((apiResponse) => {
             return apiResponse.data;
@@ -29,7 +29,7 @@ const CheckBets = async (betOwner) => {
     };
 
     const getFixtureData = async (event) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
         .then((apiResponse) => {
             return apiResponse.data;
@@ -37,7 +37,7 @@ const CheckBets = async (betOwner) => {
     };
 
     const getWalletValue = async (ownerId) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.get(`${currentOrigin}/api/wallets/owner/` + ownerId)
         .then((apiResponse) => {
             return apiResponse.data.total;
@@ -107,7 +107,7 @@ const CheckBets = async (betOwner) => {
     };
 
     const updateWallet = async (newWalletTotal, owner) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.put(`${currentOrigin}/api/wallets`, {total: newWalletTotal, owner_id: owner})
         .then((apiResponse) => {
             if (apiResponse.status === 200) {
@@ -132,7 +132,7 @@ const CheckBets = async (betOwner) => {
             };
         }
 
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.put(`${currentOrigin}/api/bets`, betData)
             .then((apiResponse) => {
                 if (apiResponse.status === 200) {

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-bootstrap/Spinner';
-const axios = require('axios').default;
+import axios from "axios";
 
 const WalletValue = ({ owner_id }) => {
     const [walletValue, setWalletValue] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     const getWalletValue = async (owner_id) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         axios.get(`${currentOrigin}/api/wallets/owner/` + owner_id)
         .then((apiResponse) => {
                 setWalletValue(apiResponse.data.total);

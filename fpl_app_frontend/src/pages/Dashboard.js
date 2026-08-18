@@ -9,7 +9,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 import TeamForm from "../components/TeamForm";
-const axios = require('axios').default;
+import axios from "axios";
 
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +64,7 @@ const Dashboard = () => {
 
         const getWalletValue = async () => {
             const ownerId = JSON.parse(localStorage.getItem("current_user")).fpl_id;
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             axios.get(`${currentOrigin}/api/wallets/owner/` + ownerId)
             .then((apiResponse) => {
                  setWalletValue(apiResponse.data.total);
