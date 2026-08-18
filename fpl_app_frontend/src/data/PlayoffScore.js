@@ -1,12 +1,12 @@
 // purpose of this file is to return the specific team's playoff applicable score
-const axios = require('axios').default;
+import axios from "axios";
 
 const PlayoffScore = async (entry_id) => {
 
     console.log("ID: ", entry_id);
 
     const getStatData = async (gw, leagueId) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         return axios.get(`${currentOrigin}/api/stats/league/` + leagueId + "/gameweek/" + gw)
         .then((apiResponse) => {
             return apiResponse.data;

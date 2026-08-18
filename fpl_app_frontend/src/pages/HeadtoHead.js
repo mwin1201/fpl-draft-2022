@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import Spinner from 'react-bootstrap/Spinner';
-const axios = require('axios').default;
+import axios from "axios";
 
 const HeadtoHead = () => {
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
@@ -13,7 +13,7 @@ const HeadtoHead = () => {
         setIsLoading(true);
 
         const getGameweekStats = async (curGW) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             return axios.get(`${currentOrigin}/fpl/getStats/` + curGW)
             .then((apiResponse) => {
                 return [apiResponse.data.elements, apiResponse.data.fixtures];
@@ -21,7 +21,7 @@ const HeadtoHead = () => {
         };
 
         const getLineups = async (team, gameweek, stats, premFixtures) => {
-            let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
             return axios.get(`${currentOrigin}/fpl/getLineups/` + team + "/" + gameweek)
             .then((apiResponse) => {
                 return getLineupStats(apiResponse.data.picks, stats, premFixtures);

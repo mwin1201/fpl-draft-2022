@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const axios = require('axios').default;
+import axios from "axios";
 
 const Lineups = () => {
     const [teamLineups, setTeamLineups] = useState([]);
@@ -10,7 +10,7 @@ const Lineups = () => {
     let leagueTeams = JSON.parse(localStorage.getItem("league_entries"));
 
     const getLineups = (team, gameweek) => {
-        let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
         axios.get(`${currentOrigin}/getLineups/` + team + "/" + gameweek)
         .then((apiResponse) => {
             setTeamLineups(apiResponse.data.picks);

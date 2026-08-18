@@ -1,7 +1,7 @@
-const axios = require("axios").default;
+import axios from "axios";
 
 const getPlayers = async () => {
-    let currentOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_prodOrigin : "http://localhost:5000";
+    let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
     return axios.get(`${currentOrigin}/fpl/getPremPlayers`)
         .then((apiResponse) => {
             localStorage.setItem("element_types", JSON.stringify(apiResponse.data.element_types));
