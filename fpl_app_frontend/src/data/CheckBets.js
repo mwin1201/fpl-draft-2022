@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 // This function will do the following:
 // 1. Grab all the bets and put into array
@@ -21,24 +21,21 @@ import axios from "axios";
 const CheckBets = async (betOwner) => {
 
     const getAllBets = async (ownerId) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/api/bets/owner/` + ownerId)
+        return apiClient.get(`/api/bets/owner/` + ownerId)
         .then((apiResponse) => {
             return apiResponse.data;
         })
     };
 
     const getFixtureData = async (event) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
+        return apiClient.get(`/fpl/getFixtureData/` + event)
         .then((apiResponse) => {
             return apiResponse.data;
         })
     };
 
     const getWalletValue = async (ownerId) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/api/wallets/owner/` + ownerId)
+        return apiClient.get(`/api/wallets/owner/` + ownerId)
         .then((apiResponse) => {
             return apiResponse.data.total;
         })
@@ -107,8 +104,7 @@ const CheckBets = async (betOwner) => {
     };
 
     const updateWallet = async (newWalletTotal, owner) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.put(`${currentOrigin}/api/wallets`, {total: newWalletTotal, owner_id: owner})
+        return apiClient.put(`/api/wallets`, {total: newWalletTotal, owner_id: owner})
         .then((apiResponse) => {
             if (apiResponse.status === 200) {
                 return true;
@@ -132,8 +128,7 @@ const CheckBets = async (betOwner) => {
             };
         }
 
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.put(`${currentOrigin}/api/bets`, betData)
+        return apiClient.put(`/api/bets`, betData)
             .then((apiResponse) => {
                 if (apiResponse.status === 200) {
                     return true;

@@ -1,8 +1,7 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const getPlayers = async () => {
-    let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-    return axios.get(`${currentOrigin}/fpl/getPremPlayers`)
+    return apiClient.get(`/fpl/getPremPlayers`)
         .then((apiResponse) => {
             localStorage.setItem("element_types", JSON.stringify(apiResponse.data.element_types));
             localStorage.setItem("elements", JSON.stringify(apiResponse.data.elements));

@@ -1,8 +1,7 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const getStatData = async (gw, leagueId) => {
-  let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-  return axios.get(`${currentOrigin}/api/stats/league/` + leagueId + "/gameweek/" + gw)
+  return apiClient.get(`/api/stats/league/` + leagueId + "/gameweek/" + gw)
   .then((apiResponse) => {
       return apiResponse.data;
   })

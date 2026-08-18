@@ -1,8 +1,7 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const getDBLeagueData = async () => {
-    let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-    return axios.get(`${currentOrigin}/api/owners`)
+    return apiClient.get(`/api/owners`)
         .then((apiLeagueResponse) => {
             localStorage.setItem("db_league_data", JSON.stringify(apiLeagueResponse.data));
         })

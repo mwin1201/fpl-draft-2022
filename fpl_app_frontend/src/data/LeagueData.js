@@ -1,8 +1,7 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const getLeagueData = async (leagueID) => {
-    let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-    return axios.get(`${currentOrigin}/fpl/getTeams/` + leagueID)
+    return apiClient.get(`/fpl/getTeams/` + leagueID)
         .then((apiTeamResponse) => {
             localStorage.setItem("league_data", JSON.stringify(apiTeamResponse.data.league));
             localStorage.setItem("standings", JSON.stringify(apiTeamResponse.data.standings));
