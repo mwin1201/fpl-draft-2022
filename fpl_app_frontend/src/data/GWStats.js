@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const seasonStats = async (index) => {
     const createLineupArr = async (currentGameweek) => {
@@ -57,8 +57,7 @@ const seasonStats = async (index) => {
 
     // need to get team lineups per gameweek
     const getLineups = async (team,gameweek) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/fpl/getLineups/` + team + "/" + gameweek)
+        return apiClient.get(`/fpl/getLineups/` + team + "/" + gameweek)
         .then((apiResponse) => {
            return apiResponse.data.picks;
         })
@@ -66,8 +65,7 @@ const seasonStats = async (index) => {
 
     // need to pull player stats per gameweek
     const getStats = async (gameweek) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/fpl/getStats/` + gameweek)
+        return apiClient.get(`/fpl/getStats/` + gameweek)
             .then((apiResponse) => {
                 return apiResponse.data.elements;
             })

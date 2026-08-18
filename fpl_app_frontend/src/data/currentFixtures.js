@@ -1,10 +1,9 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const currentFixtures = (gameweek) => {
 
     const getFixtureData = async (event) => {
-        let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-        return axios.get(`${currentOrigin}/fpl/getFixtureData/` + event)
+        return apiClient.get(`/fpl/getFixtureData/` + event)
         .then((apiResponse) => {
             return apiResponse.data;
         })

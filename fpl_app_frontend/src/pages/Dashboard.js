@@ -1,20 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import TeamStats from "../components/TeamStats";
 import Standings from "../components/Standings";
 import FixtureHistory from "../components/FixtureHistory";
 import UpcomingFixtures from "../components/UpcomingFixtures";
 import PersonalBets from "../components/Bets";
-import DataLoad from "../data/DataLoad";
 import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 import TeamForm from "../components/TeamForm";
-import axios from "axios";
+import apiClient from "../api/client";
+import { useCurrentUser } from "../context/CurrentUserContext";
+import useLeagueData from "../hooks/useLeagueData";
 
 const Dashboard = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-    const [walletValue, setWalletValue] = useState();
+    // User + selected league now come from context instead of localStorage reads.
+    const { currentUser, currentLeagueId, setCurrentLeagueId } = useCurrentUser();
+
+    // React Query owns the load lifecycle for the selected league. Changing the
+    // league id (via the toggle below) re-keys the query and triggers a reload.
+    const { isLoading, isError, isFetching } = useLeagueData(currentLeagueId);
+
+    const fpl_id = currentUser?.fpl_id;
+    const entry_id = currentUser?.entry_id;
+    const team_name = currentUser?.team_name;
+    const primary_league_id = currentUser?.primary_league_id;
+    const secondary_league_id = currentUser?.secondary_league_id;
+
+    const { data: walletValue } = useQuery({
+        queryKey: ["wallet", fpl_id],
+        queryFn: () =>
+            apiClient
+                .get(`/api/wallets/owner/${fpl_id}`)
+                .then((apiResponse) => apiResponse.data.total),
+        enabled: fpl_id !== undefined && fpl_id !== null,
+    });
+
     // Dashboard is only accessible to those who login
     // User, aka Owner, will be able to see:
     // 1. Team Name on Top
@@ -25,81 +46,25 @@ const Dashboard = () => {
     // 6. Bet History
     // 7. Possible Place to Make Bets
 
-    const { fpl_id, entry_id, team_name } = JSON.parse(localStorage.getItem("current_user"));
-
-    useEffect(() => {
-        const getData = async () => {
-            const { primary_league_id } = JSON.parse(localStorage.getItem("current_user"));
-            const currentLeague = JSON.parse(localStorage.getItem("current_league"));
-            if (currentLeague !== primary_league_id) {
-                const currentLeagueData = new Promise( async (resolve, reject) => {
-                    const load = await DataLoad(currentLeague, false);
-                    if (load) {
-                        resolve("Data has loaded");
-                    } else {
-                        reject("Data did not load");
-                    }
-                });
-                currentLeagueData.then(() => {
-                    setIsLoading(false);
-                    getWalletValue();
-                })
-                .catch(() => setIsError(true));
-            } else {
-                const primaryLeagueData = new Promise( async (resolve, reject) => {
-                    const primaryLoad = await DataLoad(primary_league_id, false);
-                    if (primaryLoad) {
-                        resolve("Data has loaded");
-                    } else {
-                        reject("Data did not load");
-                    }
-                });
-                primaryLeagueData.then(() => {
-                    setIsLoading(false);
-                    getWalletValue();
-                })
-                .catch(() => setIsError(true));
-            }
-        };
-
-        const getWalletValue = async () => {
-            const ownerId = JSON.parse(localStorage.getItem("current_user")).fpl_id;
-            let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-            axios.get(`${currentOrigin}/api/wallets/owner/` + ownerId)
-            .then((apiResponse) => {
-                 setWalletValue(apiResponse.data.total);
-            })
-            .catch(err => console.error(err));
-        };
-
-        getData();
-    }, []);
-
-    const handleLeagueToggle = async (event) => {
+    const handleLeagueToggle = (event) => {
         event.preventDefault();
-        setIsLoading(true);
-        const { primary_league_id, secondary_league_id } = JSON.parse(localStorage.getItem("current_user"));
-        let currentLeague = JSON.parse(localStorage.getItem("current_league"));
-
-        if (currentLeague === primary_league_id) {
-            localStorage.setItem("current_league", secondary_league_id);
-            await Promise.allSettled([
-                DataLoad(secondary_league_id, true)
-            ]).then(() => {
-                setIsLoading(false);
-            }).catch(() => setIsError(true));
-        } else {
-            localStorage.setItem("current_league", primary_league_id);
-            await Promise.allSettled([
-                DataLoad(primary_league_id, true)
-            ]).then(() => {
-                setIsLoading(false);
-            }).catch(() => setIsError(true));
-        }
-
+        const nextLeague =
+            currentLeagueId === primary_league_id ? secondary_league_id : primary_league_id;
+        setCurrentLeagueId(nextLeague);
     };
 
-    if (isLoading) {
+    if (!currentUser) {
+        return (
+            <main>
+                <h2>Please log in to view your dashboard.</h2>
+            </main>
+        );
+    }
+
+    // While loading (initial) or refetching (after a league toggle) we hold the
+    // full-screen loader so the child components never read half-updated data
+    // out of localStorage.
+    if (isLoading || isFetching) {
         return (
             <main>
                 <span>Loading all gameweek data...<Spinner animation="border" variant="success" /></span>
@@ -117,13 +82,12 @@ const Dashboard = () => {
 
     return (
         <main>
-            {JSON.parse(localStorage.getItem("current_league")) === JSON.parse(localStorage.getItem("current_user")).primary_league_id
+            {currentLeagueId === primary_league_id
                 ?
                 <section>
                     <div>
                         <h4>Quick Actions</h4>
                         <button onClick={handleLeagueToggle}>Toggle Leagues</button>
-                        {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
                     </div>
 
                     <h1>{ team_name }</h1>
@@ -154,7 +118,6 @@ const Dashboard = () => {
                     <div>
                         <h4>Quick Actions</h4>
                         <button onClick={handleLeagueToggle}>Toggle Leagues</button>
-                        {isLoading ? <span>Refreshing data...<Spinner animation="border" variant="success" /></span> : ""}
                     </div>
 
                     <Standings 

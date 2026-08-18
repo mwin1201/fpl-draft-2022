@@ -1,8 +1,7 @@
-import axios from "axios";
+import apiClient from "../api/client";
 
 const getDreamteam = async (gw) => {
-    let currentOrigin = import.meta.env.PROD ? import.meta.env.VITE_PROD_ORIGIN : "http://localhost:5000";
-    return axios.get(`${currentOrigin}/fpl/getDreamteam/` + gw)
+    return apiClient.get(`/fpl/getDreamteam/` + gw)
     .then((apiResponse) => {
         localStorage.setItem("dreamteam", JSON.stringify(apiResponse.data.elements));
     })
