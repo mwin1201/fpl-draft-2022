@@ -5,10 +5,11 @@ import Standings from "../components/Standings";
 import FixtureHistory from "../components/FixtureHistory";
 import UpcomingFixtures from "../components/UpcomingFixtures";
 import PersonalBets from "../components/Bets";
-import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 import TeamForm from "../components/TeamForm";
+import Loading from "../components/Loading";
+import ErrorState from "../components/ErrorState";
 import apiClient from "../api/client";
 import { useCurrentUser } from "../context/CurrentUserContext";
 import useLeagueData from "../hooks/useLeagueData";
@@ -55,9 +56,10 @@ const Dashboard = () => {
 
     if (!currentUser) {
         return (
-            <main>
-                <h2>Please log in to view your dashboard.</h2>
-            </main>
+            <ErrorState
+                title="You're not logged in"
+                message="Please log in to view your dashboard."
+            />
         );
     }
 
@@ -65,19 +67,11 @@ const Dashboard = () => {
     // full-screen loader so the child components never read half-updated data
     // out of localStorage.
     if (isLoading || isFetching) {
-        return (
-            <main>
-                <span>Loading all gameweek data...<Spinner animation="border" variant="success" /></span>
-            </main>
-        );
+        return <Loading message="Loading all gameweek data..." />;
     }
 
     if (isError) {
-        return (
-            <main>
-                <h2>There is an error. Please try refreshing your screen.</h2>
-            </main>
-        );
+        return <ErrorState />;
     }
 
     return (
