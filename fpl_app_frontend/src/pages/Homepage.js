@@ -1,11 +1,12 @@
 import React, { useEffect, useState, Suspense } from "react";
-import Spinner from "react-bootstrap/Spinner";
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import Standings from "../components/Standings";
 import { Link } from "react-router-dom";
 import Playoffs from "../components/ChampionshipPlayoffs/index.js";
 import DreamTeam from "../components/DreamTeam/index.js";
 import LeagueForm from "../components/HotorNot/index.js";
+import Loading from "../components/Loading";
+import ErrorState from "../components/ErrorState";
 
 // seed data for testing
 //import Seeds from "../data/LocalStorage_seeds";
@@ -56,29 +57,19 @@ const Homepage = () => {
 
   if (!isLoggedIn) {
     return (
-      <main>
-        <h1>
-          Those who are not logged in shall not see the glorious data hidden
-          behind these web walls. Please log in.
-        </h1>
-      </main>
+      <ErrorState
+        title="Please log in"
+        message="Those who are not logged in shall not see the glorious data hidden behind these web walls."
+      />
     );
   }
 
   if (isLoading) {
-    //<div>Refreshing stats and populating consolidated gameweek data: {statCounter}</div>
-    return (
-      <main>
-        <span>
-          Loading...
-          <Spinner animation="border" variant="success" />
-        </span>
-      </main>
-    );
+    return <Loading />;
   }
 
   if (isError) {
-    return <main>There is an error, please refresh</main>;
+    return <ErrorState />;
   }
 
   return (
@@ -133,7 +124,7 @@ const Homepage = () => {
         league_id={JSON.parse(localStorage.getItem("current_league"))}
       />
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div className="loading-screen"><span>Loading...</span></div>}>
         <LeagueForm 
           league_id={JSON.parse(localStorage.getItem("current_league"))}
           currentGameweek={JSON.parse(localStorage.getItem("current_gameweek"))}  

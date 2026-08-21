@@ -62,8 +62,9 @@ const Login = () => {
         <main>
             <section>
                 {isLoading ?
-                    <div>
-                        <Spinner variant='danger'></Spinner>
+                    <div className="loading-screen">
+                        <Spinner animation="border" variant="success" role="status" />
+                        <span>Signing you in...</span>
                     </div>
                 :
                     <form className='login-form' onSubmit={handleLogin} autoComplete='off'>

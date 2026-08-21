@@ -1,174 +1,324 @@
-/* Our Colors */
+/* =========================================================================
+   FPL Draft - global stylesheet
+
+   Single consolidated stylesheet (previously split across index.css,
+   index-mobile.css and App.css). Organized top-to-bottom as:
+     1.  Design tokens (:root)
+     2.  Base / reset + typography
+     3.  Layout (main container)
+     4.  Header + navigation
+     5.  Footer
+     6.  Buttons
+     7.  Forms
+     8.  Tables
+     9.  Standings row colors
+    10.  Cards
+    11.  Participants / avatars
+    12.  Head to Head
+    13.  Status highlights (win/loss/draw, fixtures, bets)
+    14.  Wallet
+    15.  Loading + error states
+    16.  Page-specific bits (Championship Playoffs, Profile, Prem Players)
+    17.  Utilities
+    18.  Responsive overrides
+   Fonts are loaded via <link> tags in index.html.
+   ========================================================================= */
+
+/* ------------------------------------------------------------------ */
+/* 1. Design tokens                                                    */
+/* ------------------------------------------------------------------ */
 :root {
+  /* Brand */
   --fpl-purple: #37003c;
+  --fpl-purple-700: #4a1450;
   --fpl-green: #00ff87;
+  --fpl-cyan: #0eeffd;
   --dark-green: #00cc00;
   --red: #cd5c5c;
   --purple: #9370db;
+
+  /* Neutrals */
+  --ink: #1c1c22;
+  --muted: #6b7280;
+  --surface: #ffffff;
+  --bg: #f5f6fa;
+  --border: #e5e7eb;
+
+  /* Typography */
+  --font-body: "Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  --font-display: "Bebas Neue", var(--font-body);
+  --font-alt: "Quicksand", var(--font-body);
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Radius + shadow */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.16);
+
+  /* Layout */
+  --content-max: 1200px;
+  --header-pad-x: clamp(16px, 5vw, 80px);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Base / reset + typography                                        */
+/* ------------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
   text-decoration: none;
+  color: var(--fpl-purple);
 }
 
+a:hover {
+  color: var(--fpl-purple-700);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Layout                                                           */
+/* ------------------------------------------------------------------ */
 main {
   text-align: center;
-  font-family: "Lexend";
+  font-family: var(--font-body);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) var(--space-7);
 }
 
-/* Header Component */
+main section {
+  margin-bottom: var(--space-6);
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Header + navigation                                              */
+/* ------------------------------------------------------------------ */
 header {
-  padding: 10px 140px;
+  padding: var(--space-3) var(--header-pad-x);
   background-color: var(--fpl-purple);
-  margin: 0 0 10px 0;
-}
-
-header h1 {
-  text-align: center;
-  color: var(--fpl-green);
-  font-family: "Bebas Neue";
-  font-size: 7em;
-}
-
-header nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: "Bebas Neue";
-  font-size: 1.3em;
-}
-
-header nav a {
-  color: white;
-}
-
-header nav a:hover {
-  color: var(--fpl-green);
-}
-
-header nav a:focus {
-  color: var(--fpl-green);
-}
-
-.active-link {
-  color: var(--fpl-green); 
-  /* Add other styling properties if desired */
-}
-
-.menu {
-  display: none;
-  text-align: center;
-  margin-right: 10px;
-}
-
-.menu a, .menu .Link {
-  margin-right: 16px;
+  margin: 0 0 var(--space-4);
+  box-shadow: var(--shadow-md);
 }
 
 .logo-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px;
+  gap: var(--space-3);
+  margin: var(--space-2) 0;
 }
 
 .logo {
-  width: 6.5em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 25px;
-  margin-left: 20px;
-  margin-bottom: 15px;
+  width: clamp(3rem, 8vw, 4.5rem);
+  display: block;
 }
 
-/* Footer Component */
+header h1 {
+  text-align: center;
+  color: var(--fpl-green);
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+header nav a {
+  color: #ffffff;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+header nav a:hover,
+header nav a:focus {
+  color: var(--fpl-green);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.active-link {
+  color: var(--fpl-green);
+}
+
+.menu {
+  display: none;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Footer                                                           */
+/* ------------------------------------------------------------------ */
 footer {
-  background-color: black;
-  color: white;
+  background-color: var(--fpl-purple);
+  color: #ffffff;
   text-align: center;
   width: 100%;
-  padding: 30px 0px;
-  margin: 10px 0 0 0;
+  padding: var(--space-6) var(--space-4);
+  margin: var(--space-6) 0 0;
+  font-family: var(--font-alt);
 }
 
-/* Forms in General */
+/* ------------------------------------------------------------------ */
+/* 6. Buttons                                                          */
+/* ------------------------------------------------------------------ */
+button {
+  background: linear-gradient(90deg, var(--fpl-cyan) 0%, var(--fpl-green) 100%);
+  color: var(--fpl-purple);
+  font-family: var(--font-body);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  border: none;
+  padding: var(--space-2) var(--space-5);
+  margin: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.03);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------------ */
+/* 7. Forms                                                            */
+/* ------------------------------------------------------------------ */
+.login-form,
+#signup-search,
+#signup-submit,
+#password-update {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 420px;
+  width: 100%;
+  margin: var(--space-4) auto;
+  padding: var(--space-5);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+}
+
+label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
 #team_name,
 #password,
 #primary_league_id,
 #secondary_league_id {
   width: 100%;
-  border: 1px solid black;
-  border-radius: 5px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
 }
 
-/* button {
-  background-color: var(--fpl-purple);
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
-} */
-
-/* Login Page */
-
-.login-form, #signup-submit, #signup-search, #password-update {
-  margin: 5px 10px 5px 10px;
+#team_name:focus,
+#password:focus,
+#primary_league_id:focus,
+#secondary_league_id:focus {
+  outline: 2px solid var(--fpl-green);
+  outline-offset: 1px;
+  border-color: var(--fpl-green);
 }
 
-/* Button */
-
-button {
-  background: rgb(14,239,253);
-  background: linear-gradient(90deg, rgba(14,239,253,1) 0%, rgba(4,255,135,1) 100%);
-  box-shadow: 0px 3px 3px 0px #c7c7c7;
-  border: none;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 1.5px;
-  padding-bottom: 1.5px;
-  margin: .5em;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 800ms ease; 
-}
-
-button:hover{
-  /* background: rgb(4,255,135);
-  background: linear-gradient(90deg, rgba(4,255,135,1) 0%, rgba(14,239,253,1) 100%); */
-  transform: translate(-.5px, -.75px);
-  transition: all .4s ease-in-out 0s;
-  
-}
-
-/* Homepage */
-
+/* ------------------------------------------------------------------ */
+/* 8. Tables                                                           */
+/* ------------------------------------------------------------------ */
 .table-data {
-  width: 80%;
+  width: 100%;
+  max-width: 960px;
   border-collapse: collapse;
-  border-style: solid;
-  border-color: var(--fpl-purple);
-  margin-left: auto;
-  margin-right: auto;
+  margin: var(--space-4) auto;
   text-align: center;
-  font-family: "Lexend";
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-family: var(--font-body);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-/* .table-data tr:nth-child(even) {
-  background-color: #f2f2f2;
-} */
-
-.table-data tr:hover {
-  background-color: #ddd;
+.table-data th,
+.table-data td {
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--border);
 }
 
 .table-data th {
   background-color: var(--fpl-purple);
-  color: white;
+  color: #ffffff;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
 }
 
-/* adding color to standings rows */
+.table-data tbody tr:nth-child(even),
+.table-data tr:nth-child(even) {
+  background-color: #fafafe;
+}
+
+.table-data tr:hover {
+  background-color: #eef0f7;
+}
+
+/* ------------------------------------------------------------------ */
+/* 9. Standings row colors                                             */
+/* ------------------------------------------------------------------ */
 .standings-top1 {
   background-color: var(--dark-green);
 }
@@ -185,140 +335,133 @@ button:hover{
   background-color: var(--red);
 }
 
+/* ------------------------------------------------------------------ */
+/* 10. Cards                                                           */
+/* ------------------------------------------------------------------ */
+.card-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--space-5);
+  margin: var(--space-5) auto;
+}
+
+.card-content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  gap: var(--space-3);
+  margin-top: 0;
+  font-family: var(--font-body);
+}
+
+.team-cards,
+.stat-cards {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  height: 375px;
+  width: 250px;
+  font-family: var(--font-body);
+  text-align: center;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.stat-cards {
+  height: 350px;
+}
+
+.team-cards:hover,
+.stat-cards:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--fpl-purple);
+  color: var(--fpl-green);
+}
+
+/* ------------------------------------------------------------------ */
+/* 11. Participants / avatars                                         */
+/* ------------------------------------------------------------------ */
 .participants {
   display: flex;
   flex-wrap: wrap;
-  width: 800px;
+  justify-content: center;
+  gap: var(--space-4);
+  max-width: 800px;
   margin: 0 auto;
 }
 
 .participants > * {
-  flex: 1 1 400px;
+  flex: 1 1 180px;
+  max-width: 220px;
 }
 
 .avatar {
   width: 100px;
+  height: 100px;
+  object-fit: cover;
   border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease;
 }
 
-/* Head to Head Page */
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+/* ------------------------------------------------------------------ */
+/* 12. Head to Head                                                    */
+/* ------------------------------------------------------------------ */
 .flex-table {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  gap: var(--space-4);
 }
 
 .table-item {
-  width: 48%;
-  margin-bottom: 2%;
+  flex: 1 1 320px;
+  margin-bottom: var(--space-4);
 }
 
 .flex-table > h2 {
   width: 100%;
 }
 
-/* Prem Players Page */
-.current-filter {
-  color: var(--fpl-green);
-}
-
-.news {
-  color: red;
-}
-
-/* Gameweek stats */
-.fpl-link,
-.fpl-link:hover,
-.fpl-link:visited,
-.fpl-link:active {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Season Leaders */
-
-.card-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+/* ------------------------------------------------------------------ */
+/* 13. Status highlights                                               */
+/* ------------------------------------------------------------------ */
+.win,
+.loss,
+.draw {
+  display: inline-flex;
   align-items: center;
-  margin: 2em;
-}
-.card-content {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  gap: 10px;
-  margin-top: 0px;
-  font-family: "Lexend";
-}
-
-.team-cards {
-  border: 2px solid black;
-  border-radius: 5px;
-  padding-inline: 10px;
-  padding-bottom: 5px;
-  height: 375px;
-  width: 250px;
-  font-family: "Lexend";
-  margin-right: 1em;
-  text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
-
-.stat-cards {
-  border: 2px solid black;
-  border-radius: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  height: 350px;
-  width: 250px;
-  font-family: "Lexend";
-  margin-left: 1em;
-  text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
-
-.team-cards:hover,
-.stat-cards:hover {
-  background-color: var(--fpl-purple);
-  color: var(--fpl-green);
+  justify-content: center;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  color: black;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
 }
 
 .win {
   background-color: var(--fpl-green);
-  color: black;
-  border-radius: 100%;
-  text-align: center;
-  width: 34px;
-  height: 30px;
-  padding: 11px 15px 11px 15px;
-  font-family: "Lexend";
 }
 
 .loss {
-  background-color: red;
-  color: black;
-  border-radius: 100%;
-  text-align: center;
-  width: 34px;
-  height: 30px;
-  padding: 11px 15px 11px 15px;
-  font-family: "Lexend";
+  background-color: var(--red);
 }
 
 .draw {
-  background-color: gray;
-  color: black;
-  border-radius: 100%;
-  text-align: center;
-  width: 34px;
-  height: 30px;
-  padding: 11px 15px 11px 15px;
-  font-family: "Lexend";
+  background-color: #9aa0a6;
 }
 
-/* Prem Fixtures + Fixtures */
+/* Prem Fixtures + Fixtures difficulty */
 .red-highlight {
   background-color: #ff1751;
 }
@@ -332,43 +475,106 @@ button:hover{
 }
 
 .yellow-highlight {
-  background-color: yellow;
+  background-color: #ffd60a;
 }
 
-/* Bet Page */
+/* Bet page states */
 .red-background {
-  background: red;
+  background: var(--red);
 }
 
 .green-background {
-  background: green;
+  background: var(--dark-green);
 }
 
 .grey-background {
   background: lightgray;
 }
 
-.wallet-info{
-  margin-top: 10px;
+/* Prem Players page */
+.current-filter {
+  color: var(--dark-green);
+  font-weight: 600;
 }
 
-/* Aggregate Data Page */
-.hide-players,
-.hide-alert,
-.hide-form {
-  display: none;
+.news {
+  color: var(--red);
 }
 
-/* Championship Playoffs Page */
+/* Gameweek stats link reset */
+.fpl-link,
+.fpl-link:hover,
+.fpl-link:visited,
+.fpl-link:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* 14. Wallet                                                          */
+/* ------------------------------------------------------------------ */
+.wallet-info {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  color: var(--fpl-purple);
+}
+
+/* ------------------------------------------------------------------ */
+/* 15. Loading + error states                                         */
+/* ------------------------------------------------------------------ */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 40vh;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 30vh;
+  max-width: 520px;
+  margin: var(--space-6) auto;
+  padding: var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--red);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.error-screen h2 {
+  color: var(--fpl-purple);
+}
+
+/* ------------------------------------------------------------------ */
+/* 16. Page-specific bits                                              */
+/* ------------------------------------------------------------------ */
+/* Championship Playoffs */
 .container {
   text-align: center;
 }
 
 .team-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
-  border: solid 2px black;
-  margin-top: 10px;
+  gap: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  margin-top: var(--space-3);
+  padding: var(--space-4);
 }
 
 .stat-container {
@@ -377,31 +583,152 @@ button:hover{
   align-items: center;
 }
 
-/* Profile Page */
-.team-form > h3{
+/* Profile */
+.team-form > h3 {
   color: var(--dark-green);
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Lexend" "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ------------------------------------------------------------------ */
+/* 17. Utilities                                                       */
+/* ------------------------------------------------------------------ */
+.hide-players,
+.hide-alert,
+.hide-form {
+  display: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
+/* ------------------------------------------------------------------ */
+/* 18. Responsive overrides                                            */
+/* ------------------------------------------------------------------ */
 
-/* This hides the hamburger menu on larger screens */
-@media screen and (min-width: 768px) {
-  .menu-icon, #menuToggle {
-      display: none !important; /* !important to override inline styles */
+/* Desktop: show the horizontal nav, hide the hamburger toggle. */
+@media screen and (min-width: 769px) {
+  .menu-icon,
+  #menuToggle {
+    display: none !important;
   }
+
   .menu {
-      display: block !important; /* !important to override inline styles */
+    display: flex !important;
+  }
+}
+
+/* Mobile + tablet */
+@media screen and (max-width: 768px) {
+  header {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  header nav {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    font-size: 1.15rem;
+  }
+
+  header nav a {
+    margin: 2px;
+  }
+
+  .table-data {
+    width: 100%;
+  }
+
+  #google-slides {
+    display: none;
+  }
+
+  .player-list {
+    margin: var(--space-3);
+  }
+
+  #standings {
+    border-collapse: separate;
+  }
+
+  .participants {
+    max-width: 320px;
+  }
+
+  /* Dashboard / stat cards stack vertically */
+  .card-row {
+    display: block;
+  }
+
+  .card-content {
+    margin: var(--space-2);
+  }
+
+  .team-cards {
+    height: 350px;
+    width: 250px;
+    margin: var(--space-3) auto;
+  }
+
+  /* Hamburger menu */
+  .menu-container {
+    position: relative;
+  }
+
+  .menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .menu-icon-svg {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-right: 10px;
+    margin-bottom: 12px;
+    padding: 0;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .menu ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .menu ul li {
+    padding: 10px 0;
+  }
+
+  .menu ul li a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 15px;
+    display: block;
+  }
+
+  #menuToggle:checked ~ .menu {
+    display: block;
+  }
+
+  .menu a,
+  .menu .Link {
+    overflow: visible;
+    display: block;
+    margin: 0;
+    padding: var(--space-2);
+  }
+
+  /* Championship Playoffs even rows */
+  .stat-container h3 {
+    height: 60px;
+  }
+
+  .stat-container div p {
+    height: 48px;
   }
 }
