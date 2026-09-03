@@ -1,8 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import { hasRelegation } from '../../config/leagues';
 
 const Standings = ({standings, teams}) => {
-    const [standingsData, setStandingsData] = useState(standings);
-    const [teamData, setTeamData] = useState(teams);
+    // Read straight from props (no local state copy) so the table reflects the
+    // latest data whenever the parent re-renders after a live refresh.
+    const standingsData = standings;
+    const teamData = teams;
 
     const getEntryName = (entry_id) => {
         let oneTeam = teamData.filter((team) => {
@@ -18,7 +21,7 @@ const Standings = ({standings, teams}) => {
 
     const getColorCode = (index) => {
         let currentLeague = JSON.parse(localStorage.getItem("current_league"));
-        if (currentLeague === 13098) {
+        if (hasRelegation(currentLeague)) {
             if (index === 0) {
                 return "standings-top1";
             }

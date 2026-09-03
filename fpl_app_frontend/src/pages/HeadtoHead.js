@@ -2,8 +2,10 @@ import React, {useState, useEffect} from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import Spinner from 'react-bootstrap/Spinner';
 import axios from "axios";
+import { useLeague } from "../context/LeagueContext";
 
 const HeadtoHead = () => {
+    const { dataVersion } = useLeague();
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [selectedGameweek, setSelectedGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [isLoading, setIsLoading] = useState(true);
@@ -145,7 +147,7 @@ const HeadtoHead = () => {
         };
 
         start();
-    },[selectedGameweek])
+    },[selectedGameweek, dataVersion])
 
     const handleGameweekSubmit = async (event) => {
         event.preventDefault();

@@ -1,86 +1,53 @@
 import React, { useEffect, useState, Suspense } from "react";
-import LeagueAlert from "../alerts/LeagueAlert.js";
 import Standings from "../components/Standings";
 import { Link } from "react-router-dom";
 import Playoffs from "../components/ChampionshipPlayoffs/index.js";
 import DreamTeam from "../components/DreamTeam/index.js";
 import LeagueForm from "../components/HotorNot/index.js";
 import Loading from "../components/Loading";
-import ErrorState from "../components/ErrorState";
-
-// seed data for testing
-//import Seeds from "../data/LocalStorage_seeds";
+import { useLeague } from "../context/LeagueContext";
 
 const Homepage = () => {
+  const { currentLeagueId, dataVersion } = useLeague();
   const [teamData, setTeamData] = useState([]);
   const [leagueData, setLeagueData] = useState([]);
+  const [standings, setStandings] = useState([]);
+  const [leagueEntries, setLeagueEntries] = useState([]);
   const [MOTM, setMOTM] = useState([]);
   const [currentGameweek, setCurrentGameweek] = useState();
   const [currentGWStatus, setCurrentGWStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    JSON.parse(localStorage.getItem("current_user"))
-  );
 
+  // Re-read whenever a data load/refresh completes (dataVersion bumps) so live
+  // scores and standings stay current as matches progress.
   useEffect(() => {
     setIsLoading(true);
-
-    const start = async () => {
-      // set state variables
-      setIsLoggedIn(JSON.parse(localStorage.getItem("current_user")));
-      setCurrentGameweek(JSON.parse(localStorage.getItem("current_gameweek")));
-      setTeamData(JSON.parse(localStorage.getItem("db_league_data")).filter((team) => team.primary_league_id === JSON.parse(localStorage.getItem("current_league"))));
-      setLeagueData(JSON.parse(localStorage.getItem("league_data")));
-      setMOTM(JSON.parse(localStorage.getItem("manager_of_the_month")));
-
-      if (
-        JSON.parse(localStorage.getItem("current_gameweek_complete")) === false
-      ) {
-        setCurrentGWStatus("Incomplete");
-      } else {
-        setCurrentGWStatus("Complete");
-      }
-      setIsLoading(false);
-    };
-
-    start();
-  }, []);
-
-  const getEntryName = (entry_id) => {
-    let oneTeam = teamData.filter((team) => {
-      return team.fpl_id === entry_id;
-    });
-
-    return oneTeam[0].team_name;
-  };
-
-  if (!isLoggedIn) {
-    return (
-      <ErrorState
-        title="Please log in"
-        message="Those who are not logged in shall not see the glorious data hidden behind these web walls."
-      />
+    const entries = JSON.parse(localStorage.getItem("league_entries")) || [];
+    setLeagueEntries(entries);
+    setTeamData(entries);
+    setLeagueData(JSON.parse(localStorage.getItem("league_data")) || {});
+    setStandings(JSON.parse(localStorage.getItem("standings")) || []);
+    setMOTM(JSON.parse(localStorage.getItem("manager_of_the_month")) || []);
+    setCurrentGameweek(JSON.parse(localStorage.getItem("current_gameweek")));
+    setCurrentGWStatus(
+      JSON.parse(localStorage.getItem("current_gameweek_complete")) === false
+        ? "Incomplete"
+        : "Complete"
     );
-  }
+    setIsLoading(false);
+  }, [dataVersion]);
+
+  const getEntryName = (owner_id) => {
+    const oneTeam = teamData.filter((team) => team.id === owner_id);
+    return oneTeam.length > 0 ? oneTeam[0].entry_name : "Unknown";
+  };
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
-    return <ErrorState />;
-  }
-
   return (
     <main>
-      <LeagueAlert
-        data={{
-          user: JSON.parse(localStorage.getItem("current_user")),
-          league: JSON.parse(localStorage.getItem("current_league")),
-          leagueData: JSON.parse(localStorage.getItem("league_data")),
-        }}
-      />
       <section>
         <u>
           <h1>{leagueData.name}</h1>
@@ -90,18 +57,14 @@ const Homepage = () => {
       <section>
         <h3>The Participants</h3>
         <div className="participants">
-          {teamData.map((team) => (
+          {leagueEntries.map((team) => (
             <div key={team.id}>
-              <div>
-                {team.team_name}
-              </div>
-              <Link to={`profile/${team.fpl_id}`}>
-                <img
-                  className="avatar"
-                  src={team.avatar}
-                  alt="Owner avatar"
-                ></img>
+              <Link to={`/profile/${team.id}`}>
+                <div>{team.entry_name}</div>
               </Link>
+              <div className="participant-owner">
+                {team.player_first_name} {team.player_last_name}
+              </div>
             </div>
           ))}
         </div>
@@ -113,22 +76,14 @@ const Homepage = () => {
         </h3>
       </section>
 
-      <Standings
-        standings={JSON.parse(localStorage.getItem("standings"))}
-        teams={JSON.parse(localStorage.getItem("league_entries"))}
-      />
+      <Standings standings={standings} teams={leagueEntries} />
 
       <DreamTeam />
 
-      <Playoffs
-        league_id={JSON.parse(localStorage.getItem("current_league"))}
-      />
+      <Playoffs league_id={currentLeagueId} />
 
       <Suspense fallback={<div className="loading-screen"><span>Loading...</span></div>}>
-        <LeagueForm 
-          league_id={JSON.parse(localStorage.getItem("current_league"))}
-          currentGameweek={JSON.parse(localStorage.getItem("current_gameweek"))}  
-        />
+        <LeagueForm league_id={currentLeagueId} currentGameweek={currentGameweek} />
       </Suspense>
 
       <br></br>

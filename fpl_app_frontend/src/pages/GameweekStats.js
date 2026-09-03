@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import LeagueAlert from "../alerts/LeagueAlert.js";
 import getStatData from "../data/GetStatData.js";
+import { useLeague } from "../context/LeagueContext";
 
 const GameweekStats = () => {
+    const { dataVersion } = useLeague();
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [displayArr, setDisplayArr] = useState([]);
     const [toggleStat, setToggleStat] = useState(0);
@@ -10,21 +12,12 @@ const GameweekStats = () => {
     useEffect(() => {
         const start = async () => {    
             const currentLeague = JSON.parse(localStorage.getItem("current_league"));
-            const unofficialGWStats = JSON.parse(localStorage.getItem(`gw_${currentGameweek}_stats`));
-    
             const currentGWStats = await getStatData(currentGameweek, currentLeague);
-            if (currentGWStats.length > 0) {
-                setDisplayArr(currentGWStats);
-            } else {
-                setDisplayArr(unofficialGWStats);
-                // const previousGWStats = await getStatData(currentGameweek - 1, currentLeague);
-                // setCurrentGameweek(currentGameweek - 1);
-                // setDisplayArr(previousGWStats);
-            }
+            setDisplayArr(currentGWStats || []);
         };
         start();
 
-    },[currentGameweek]);
+    },[currentGameweek, dataVersion]);
 
     const checkWinLoss = (teamEntry) => {
         let matches = JSON.parse(localStorage.getItem("matches"));
