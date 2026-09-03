@@ -11,7 +11,7 @@
 //   championshipPlayoffs  -> compute + show the end-of-season championship playoff bracket
 export const LEAGUES = [
   { id: 9574, name: "Premiership", relegation: true, championshipPlayoffs: false, championsLeague: true },
-  { id: 29556, name: "League Two", relegation: true, championshipPlayoffs: true, championsLeague: false },
+  { id: 6231, name: "Championship", relegation: true, championshipPlayoffs: true, championsLeague: false },
   { id: 24003, name: "League Three", relegation: false, championshipPlayoffs: false, championsLeague: false },
 ];
 
