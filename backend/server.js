@@ -7,6 +7,14 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const inProduction = process.env.NODE_ENV === "production";
 
+// Safety net: never let a stray rejection/exception take down the proxy.
+process.on("unhandledRejection", (reason) => {
+    console.error("Unhandled promise rejection:", reason);
+});
+process.on("uncaughtException", (error) => {
+    console.error("Uncaught exception:", error);
+});
+
 // Stateless FPL API proxy. No database, no sessions, no auth. The frontend is a
 // static site; this server exists only to relay requests to the official FPL
 // API, which does not send CORS headers and so cannot be called from a browser.

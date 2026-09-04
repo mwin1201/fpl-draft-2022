@@ -58,6 +58,10 @@ const sumStartingEleven = (picks, allPlayerStats) => {
 // Compute + cache stats for a single gameweek. Pass { force: true } to
 // recompute even if a cached value already exists (used for the live gameweek).
 const seasonStats = async (index, { force = false } = {}) => {
+  // Guard against a null/undefined/invalid gameweek so we never build a bad
+  // FPL URL like `.../api/event/undefined/live`.
+  if (index == null || index < 1) return index;
+
   const cacheKey = `gw_${index}_stats`;
   if (!force && localStorage.getItem(cacheKey) !== null) {
     return index;

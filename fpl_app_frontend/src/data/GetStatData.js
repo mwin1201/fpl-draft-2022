@@ -8,6 +8,11 @@ import seasonStats from "./GWStats";
 // The `leagueId` argument is kept for call-site compatibility but is unused
 // (the active league's data already lives in localStorage).
 const getStatData = async (gw, leagueId) => {
+  // Guard against a null/undefined/invalid gameweek so callers reading the
+  // gameweek from localStorage or component state can't trigger a bad
+  // `.../api/event/undefined/live` request.
+  if (gw == null || gw < 1) return [];
+
   const cached = localStorage.getItem(`gw_${gw}_stats`);
   if (cached !== null) {
     return JSON.parse(cached);
