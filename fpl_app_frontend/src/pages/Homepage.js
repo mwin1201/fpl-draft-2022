@@ -86,20 +86,6 @@ const Homepage = () => {
         <LeagueForm league_id={currentLeagueId} currentGameweek={currentGameweek} />
       </Suspense>
 
-      <br></br>
-      <section id="google-slides">
-        <iframe
-          src="https://docs.google.com/presentation/d/e/2PACX-1vRuCPWsexhKg0LYndxebXzoC0KnQU_blmIdviXz0xjPm8hzlUySTHYEXFSOywMDgbJqaBPqt74cG35H/embed?start=true&loop=true&delayms=5000"
-          title="Chicago Dogs terms and conditions"
-          frameBorder="0"
-          width="960"
-          height="569"
-          allowFullScreen="true"
-          mozallowfullscreen="true"
-          webkitallowfullscreen="true"
-        ></iframe>
-      </section>
-      <br></br>
       <section>
         <h2>
           Manager of the Month

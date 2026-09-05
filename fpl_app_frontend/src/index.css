@@ -319,19 +319,23 @@ label {
 /* ------------------------------------------------------------------ */
 /* 9. Standings row colors                                             */
 /* ------------------------------------------------------------------ */
-.standings-top1 {
+/* Scoped under .table-data tbody tr so these reach specificity 0-2-2, matching
+   the highest-specificity conflicting rule (.table-data tbody tr:nth-child(even),
+   which is 0-2-2). Equal specificity AND later in source order means these win
+   the cascade, so standings colors aren't overridden on even/hovered rows. */
+.table-data tbody tr.standings-top1 {
   background-color: var(--dark-green);
 }
 
-.standings-top4 {
+.table-data tbody tr.standings-top4 {
   background-color: var(--fpl-green);
 }
 
-.standings-playoff4 {
+.table-data tbody tr.standings-playoff4 {
   background-color: var(--purple);
 }
 
-.standings-bottom3 {
+.table-data tbody tr.standings-bottom3 {
   background-color: var(--red);
 }
 
