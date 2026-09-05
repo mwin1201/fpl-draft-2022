@@ -12,7 +12,7 @@
 export const LEAGUES = [
   { id: 9574, name: "Premiership", relegation: true, championshipPlayoffs: false, championsLeague: true },
   { id: 6231, name: "Championship", relegation: true, championshipPlayoffs: true, championsLeague: false },
-  { id: 24003, name: "League Three", relegation: false, championshipPlayoffs: false, championsLeague: false },
+  { id: 25709, name: "League One", relegation: false, championshipPlayoffs: true, championsLeague: false },
 ];
 
 export const DEFAULT_LEAGUE_ID = LEAGUES[0].id;
