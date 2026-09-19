@@ -28,5 +28,8 @@ export const hasRelegation = (leagueId) => Boolean(getLeagueConfig(leagueId)?.re
 export const hasChampionshipPlayoffs = (leagueId) =>
   Boolean(getLeagueConfig(leagueId)?.championshipPlayoffs);
 export const hasChampionsLeague = (leagueId) => Boolean(getLeagueConfig(leagueId)?.championsLeague);
+export const isPremiership = (leagueId) => Boolean(getLeagueConfig(leagueId)?.name === "Premiership")
+export const isChampionship = (leagueId) => Boolean(getLeagueConfig(leagueId)?.name === "Championship")
+export const isLeagueOne = (leagueId) => Boolean(getLeagueConfig(leagueId)?.name === "League One")
 
 export default LEAGUES;
