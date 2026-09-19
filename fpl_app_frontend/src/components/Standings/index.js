@@ -1,5 +1,5 @@
 import React from 'react';
-import { hasRelegation } from '../../config/leagues';
+import { isPremiership, isChampionship, isLeagueOne } from '../../config/leagues';
 
 const Standings = ({standings, teams}) => {
     // Read straight from props (no local state copy) so the table reflects the
@@ -21,12 +21,26 @@ const Standings = ({standings, teams}) => {
 
     const getColorCode = (index) => {
         let currentLeague = JSON.parse(localStorage.getItem("current_league"));
-        if (hasRelegation(currentLeague)) {
+        if (isPremiership(currentLeague)) {
             if (index === 0) {
                 return "standings-top1";
             }
             else if (index > 0 && index < 4) {
                 return "standings-top4";
+            }
+            else if (index > 6 && index < 10) {
+                return "standings-bottom3";
+            }
+        }
+        else if (isChampionship(currentLeague)) {
+            if (index === 0) {
+                return "standings-top1";
+            }
+            else if (index === 1) {
+                return "standings-top4";
+            }
+            else if (index > 1 && index < 6) {
+                return "standings-playoff4";
             }
             else if (index > 6 && index < 10) {
                 return "standings-bottom3";
