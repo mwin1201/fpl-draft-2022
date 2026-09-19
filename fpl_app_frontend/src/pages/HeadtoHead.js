@@ -40,7 +40,7 @@ const HeadtoHead = () => {
             const arrayLength = playerStatArray.length;
             for (var i = 0; i < arrayLength; i++) {
                 let singleFixture = fixtures.filter((fixture) => fixture.id === playerStatArray[i][1]);
-                if (singleFixture[0].finished === false) {
+                if (singleFixture[0].finished_provisional === false) {
                     return "False";
                 }
             }
