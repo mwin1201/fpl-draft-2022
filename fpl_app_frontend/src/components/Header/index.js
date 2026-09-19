@@ -1,19 +1,11 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Logo from "../../pl-main-logo.png";
-import { LEAGUES } from "../../config/leagues";
 import { useLeague } from "../../context/LeagueContext";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const navigate = useNavigate();
-    const { currentLeagueId, hasLeagueSelected, setCurrentLeagueId } = useLeague();
-
-    const handleSwitchLeague = (event) => {
-        const leagueId = Number(event.target.value);
-        setCurrentLeagueId(leagueId);
-        navigate("/overview");
-    };
+    const { hasLeagueSelected } = useLeague();
 
     return (
         <header>
@@ -48,21 +40,6 @@ const Header = () => {
                         <NavLink to="/gameweekStats">Gameweek Stats</NavLink>
                         <NavLink to="/seasonLeaders">Season Leaders</NavLink>
                         <NavLink to="/premFixtures">Prem Fixtures</NavLink>
-                        <label htmlFor="leagueSwitcher" className="league-switcher-label">
-                            League:
-                        </label>
-                        <select
-                            id="leagueSwitcher"
-                            className="league-switcher"
-                            value={currentLeagueId ?? ""}
-                            onChange={handleSwitchLeague}
-                        >
-                            {LEAGUES.map((league) => (
-                                <option key={league.id} value={league.id}>
-                                    {league.name}
-                                </option>
-                            ))}
-                        </select>
                     </>
                 )}
             </nav>
