@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import getStatData from '../../data/GetStatData';
 import axios from "axios";
+import { useLeague } from "../../context/LeagueContext";
 
 const TeamStats = ({ owner_entry_id }) => {
+    const { dataVersion } = useLeague();
     const [currentGameweek, setCurrentGameweek] = useState(JSON.parse(localStorage.getItem("current_gameweek")));
     const [isLoading, setIsLoading] = useState(true);
     const [myGameweekStats, setMyGameweekStats] = useState([]);
@@ -96,7 +98,7 @@ const TeamStats = ({ owner_entry_id }) => {
 
         start();
 
-    },[owner_entry_id]);
+    },[owner_entry_id, dataVersion]);
 
     const checkWinLoss = (teamEntry) => {
         let matches = JSON.parse(localStorage.getItem("matches"));

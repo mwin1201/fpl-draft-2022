@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
-import { CurrentUserProvider } from './context/CurrentUserContext';
+import { LeagueProvider } from './context/LeagueContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,9 +22,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <CurrentUserProvider>
+      <LeagueProvider>
         <App />
-      </CurrentUserProvider>
+      </LeagueProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

@@ -319,19 +319,23 @@ label {
 /* ------------------------------------------------------------------ */
 /* 9. Standings row colors                                             */
 /* ------------------------------------------------------------------ */
-.standings-top1 {
+/* Scoped under .table-data tbody tr so these reach specificity 0-2-2, matching
+   the highest-specificity conflicting rule (.table-data tbody tr:nth-child(even),
+   which is 0-2-2). Equal specificity AND later in source order means these win
+   the cascade, so standings colors aren't overridden on even/hovered rows. */
+.table-data tbody tr.standings-top1 {
   background-color: var(--dark-green);
 }
 
-.standings-top4 {
+.table-data tbody tr.standings-top4 {
   background-color: var(--fpl-green);
 }
 
-.standings-playoff4 {
+.table-data tbody tr.standings-playoff4 {
   background-color: var(--purple);
 }
 
-.standings-bottom3 {
+.table-data tbody tr.standings-bottom3 {
   background-color: var(--red);
 }
 
@@ -731,4 +735,111 @@ label {
   .stat-container div p {
     height: 48px;
   }
+
+  .welcome-league-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Welcome landing page                                                */
+/* ------------------------------------------------------------------ */
+.welcome {
+  text-align: center;
+}
+
+.welcome-hero {
+  padding: var(--space-7) var(--space-4) var(--space-5);
+}
+
+.welcome-hero h1 {
+  font-family: var(--font-display);
+  color: var(--fpl-purple);
+  letter-spacing: 1px;
+}
+
+.welcome-hero p {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.welcome-league-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.league-button {
+  flex: 1 1 240px;
+  max-width: 320px;
+  min-height: 160px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--fpl-purple), var(--fpl-purple-700));
+  color: var(--fpl-green);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.league-button:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ------------------------------------------------------------------ */
+/* Refresh bar                                                         */
+/* ------------------------------------------------------------------ */
+.refresh-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-alt);
+  font-size: 0.9rem;
+}
+
+.refresh-bar-league {
+  font-weight: 700;
+  color: var(--fpl-purple);
+}
+
+.refresh-bar-status {
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.refresh-bar-button {
+  border: 1px solid var(--fpl-purple);
+  background: var(--fpl-purple);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+}
+
+.refresh-bar-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.participant-owner {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.league-switcher-label {
+  margin-left: var(--space-2);
+}
+
+.league-switcher {
+  margin-left: var(--space-2);
 }

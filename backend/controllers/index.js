@@ -1,12 +1,9 @@
 const router = require("express").Router();
-const homeRoutes = require("./home-routes");
-const dashboardRoutes = require("./dashboard-routes");
-const apiRoutes = require("./api");
 const fplRoutes = require("./fpl-routes");
 
-//router.use("/", homeRoutes);
-router.use("/api", apiRoutes);
-//router.use("/dashboard", dashboardRoutes);
+// This app is now a stateless proxy: the only routes are the /fpl/* endpoints
+// that relay requests to the official FPL API (which blocks direct browser
+// calls via CORS). There is no database and no /api/* application routes.
 router.use("/fpl", fplRoutes);
 
 router.use((req, res) => {

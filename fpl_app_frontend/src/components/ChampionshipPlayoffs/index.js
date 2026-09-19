@@ -1,12 +1,12 @@
 import React from "react";
-import calculateAVGScore from "../../data/AvgGWScore";
 import getTeamName from "../../data/TeamName";
 import getRecord from "../../data/MatchResults";
 import { Link } from "react-router-dom";
+import { hasChampionshipPlayoffs } from "../../config/leagues";
 
 const Playoffs = ({league_id}) => {
 
-    if (league_id === 13098 || !localStorage.getItem("championship_playoff_teams")) {
+    if (!hasChampionshipPlayoffs(league_id) || !localStorage.getItem("championship_playoff_teams")) {
         return(
             <div></div>
         );
@@ -31,8 +31,7 @@ const Playoffs = ({league_id}) => {
     // 4 vs 5
     let secondMatchup = playoffTeams.filter((team) => team.rank === 4 || team.rank === 5);
 
-    if (league_id === 29556) {
-        return (
+    return (
             <div className="container">
                 <Link to='/championshipPlayoffs'><h3>Championship Playoffs</h3></Link>
                 <div className="row row-cols-2">
@@ -53,7 +52,6 @@ const Playoffs = ({league_id}) => {
                 </div>
             </div>
         );
-    }
 
 };
 
