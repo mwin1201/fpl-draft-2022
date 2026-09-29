@@ -24,18 +24,7 @@ const TeamRow = ({ team, gameweek, showScore, isWinner, isLoser, showTiebreak })
   <div className={`fa-cup-team${isWinner ? " fa-cup-winner" : ""}${isLoser ? " fa-cup-loser" : ""}`}>
     <div className="fa-cup-team-info">
       {team.seed && <span className="fa-cup-seed">Seed {team.seed}</span>}
-      {team.entryId ? (
-        <a
-          href={`https://draft.premierleague.com/entry/${team.entryId}/event/${gameweek}`}
-          rel="noreferrer"
-          target="_blank"
-          className="fpl-link"
-        >
-          {team.name}
-        </a>
-      ) : (
-        <span className="fa-cup-tbd">{team.name}</span>
-      )}
+      <span className="fa-cup-tbd">{team.name}</span>
       {team.league && <span className="fa-cup-league">{team.league}</span>}
       {showTiebreak && (
         <span className="fa-cup-tiebreak-stats">

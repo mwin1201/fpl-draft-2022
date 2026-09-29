@@ -935,13 +935,17 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--space-3);
   padding: var(--space-2);
   border-radius: var(--radius-sm);
 }
 
 .fa-cup-team-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .fa-cup-winner {
@@ -954,8 +958,8 @@ label {
 }
 
 .fa-cup-tbd {
-  color: var(--muted);
-  font-style: italic;
+  color: inherit;
+  text-decoration: none;
 }
 
 .fa-cup-seed,
