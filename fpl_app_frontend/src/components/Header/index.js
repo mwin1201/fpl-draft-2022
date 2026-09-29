@@ -29,6 +29,7 @@ const Header = () => {
 
             <nav className="menu" style={{ display: isMenuOpen ? 'block' : 'none' }}>
                 <NavLink to="/">Home</NavLink>
+                <NavLink to="/faCup">FA Cup</NavLink>
                 {hasLeagueSelected && (
                     <>
                         <NavLink to="/overview">Overview</NavLink>

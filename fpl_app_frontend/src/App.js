@@ -12,6 +12,7 @@ import SeasonLeaders from "./pages/SeasonLeaders";
 import PremFixtures from "./pages/PremFixtures";
 import Profile from "./pages/Profile";
 import ChampionshipPlayoffs from "./pages/ChampionshipPlayoffs";
+import FACup from "./pages/FACup";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -24,6 +25,9 @@ function App() {
       <Routes>
         {/* Public welcome page: choose a league */}
         <Route path="/" element={<Welcome />}></Route>
+
+        {/* Cross-league tournament: works without a selected league */}
+        <Route path="/faCup" element={<FACup />}></Route>
 
         {/* Everything else is scoped to a selected league. LeagueLayout loads
             the data and redirects to "/" if no league is selected. */}

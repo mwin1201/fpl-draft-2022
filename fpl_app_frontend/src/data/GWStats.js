@@ -24,22 +24,22 @@ const STAT_KEYS = [
 ];
 
 // Small delay to avoid hammering the FPL API when looping over many teams/GWs.
-const apiTimeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+export const apiTimeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Live per-player stats for a gameweek (fetched once per GW, not per team).
-const getStats = (gameweek) =>
+export const getStats = (gameweek) =>
   apiClient
     .get(`/fpl/getStats/` + gameweek)
     .then((apiResponse) => apiResponse.data.elements);
 
 // A single team's picks (lineup) for a gameweek.
-const getLineups = (team, gameweek) =>
+export const getLineups = (team, gameweek) =>
   apiClient
     .get(`/fpl/getLineups/` + team + "/" + gameweek)
     .then((apiResponse) => apiResponse.data.picks);
 
 // Sum the starting-11 stats for one team from the shared per-player stats map.
-const sumStartingEleven = (picks, allPlayerStats) => {
+export const sumStartingEleven = (picks, allPlayerStats) => {
   const totals = {};
   for (const key of STAT_KEYS) {
     let counter = 0;

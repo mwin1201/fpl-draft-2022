@@ -843,3 +843,137 @@ label {
 .league-switcher {
   margin-left: var(--space-2);
 }
+
+/* ------------------------------------------------------------------ */
+/* FA Cup                                                              */
+/* ------------------------------------------------------------------ */
+.welcome-cup {
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-4) var(--space-6);
+}
+
+.fa-cup-button {
+  min-height: 100px;
+  max-width: 400px;
+}
+
+.fa-cup {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+}
+
+.fa-cup h1,
+.fa-cup-round h2 {
+  font-family: var(--font-display);
+  color: var(--fpl-purple);
+  letter-spacing: 1px;
+}
+
+.fa-cup-subtitle {
+  color: var(--muted);
+}
+
+.fa-cup-champion {
+  background: linear-gradient(135deg, var(--fpl-purple), var(--fpl-purple-700));
+  color: var(--fpl-green);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+.fa-cup-champion h2 {
+  font-family: var(--font-display);
+  letter-spacing: 1px;
+}
+
+.fa-cup-champion p {
+  color: #fff;
+  margin: 0;
+}
+
+.fa-cup-round {
+  margin-top: var(--space-6);
+}
+
+.fa-cup-matchups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.fa-cup-matchup {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-3);
+}
+
+.fa-cup-matchup-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: var(--space-2);
+}
+
+.fa-cup-status-live {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.fa-cup-status-final {
+  color: var(--fpl-purple);
+  font-weight: 700;
+}
+
+.fa-cup-team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.fa-cup-team-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fa-cup-winner {
+  background: rgba(0, 255, 135, 0.2);
+  font-weight: 700;
+}
+
+.fa-cup-loser {
+  opacity: 0.6;
+}
+
+.fa-cup-tbd {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.fa-cup-seed,
+.fa-cup-league,
+.fa-cup-tiebreak-stats {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.fa-cup-score {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--fpl-purple);
+}
+
+.fa-cup-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: var(--space-2) 0 0;
+}
