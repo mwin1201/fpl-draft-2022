@@ -34,6 +34,16 @@ const Welcome = () => {
           </button>
         ))}
       </section>
+
+      <section className="welcome-cup">
+        <button
+          type="button"
+          className="league-button fa-cup-button"
+          onClick={() => navigate("/faCup")}
+        >
+          FA Cup
+        </button>
+      </section>
     </main>
   );
 };
